@@ -25,7 +25,7 @@
   ],
   "license": "MIT",
   "homepage": "fdf.hunteron.com",
-  "private": true,
+  "private": false,
   "ignore": [
     "**/.*",
     "node_modules",
