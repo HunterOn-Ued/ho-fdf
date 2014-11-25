@@ -1,0 +1,11 @@
+<section class="content front-pg">
+    <div class="front-header">
+        <div class="logo"></div>
+        <ul>
+            <li class="upload"><a ng-class="{'current': module == 'resume'}" ui-sref="front.resume"></a></li>
+            <li class="tag"><a ng-class="{'current': module == 'login'}" ui-sref="front.login"></a></li>
+            <li class="tool"><a ng-class="{'current': module == 'search'}" ui-sref="front.search"></a></li>
+        </ul>
+    </div>
+    <div ui-view=""></div>
+</section>

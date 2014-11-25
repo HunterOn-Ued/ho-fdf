@@ -1,0 +1,38 @@
+{
+  "name": "fdf",
+  "version": "0.1.0",
+  "authors": [
+    "Mizi <mizi.lin@hunteron.com>"
+  ],
+  "description": "hunteron front-end development framework // bower 版本必须升级到1.3.9以上",
+  "dependencies": {
+    "angular": "1.2.26",
+    "json3": "~3.3.1",
+    "es5-shim": "~3.1.0",
+    "angular-resource": "1.2.26",
+    "angular-cookies": "1.2.26",
+    "angular-sanitize": "1.2.26",
+    "angular-animate": "1.2.26",
+    "angular-route": "1.2.26",
+    "jquery": "1.11.1",
+    "underscore": "~1.7.0",
+    "angular-ui-router": "0.2.11"
+  },
+  "keywords": [
+    "hunteron",
+    "front-end"
+  ],
+  "license": "MIT",
+  "homepage": "fdf.hunteron.com",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "devDependencies": {
+    "angular-form-for": "~1.6.0"
+  }
+}

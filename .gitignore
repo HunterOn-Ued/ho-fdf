@@ -1,0 +1,10 @@
+node_modules
+.tmp
+.sass-cache
+test/bower_components
+old/
+coverage/
+karma.conf.js
+.idea/
+dist/
+app/lib

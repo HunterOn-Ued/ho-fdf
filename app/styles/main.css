@@ -1,0 +1,79 @@
+body {
+  background: #222;
+  font-size: 14px; }
+
+#front {
+  padding: 150px 0 0; }
+  #front .content.front-pg {
+    margin: 0 auto;
+    width: 400px;
+    border-radius: 5px; }
+    #front .content.front-pg .front-header {
+      padding: 20px;
+      color: #fff;
+      background: #151515; }
+      #front .content.front-pg .front-header .logo {
+        height: 41px;
+        background: url("http://hd.hunteron.com/images/hd-index-logo.png") center center no-repeat; }
+      #front .content.front-pg .front-header ul {
+        margin: 25px 0 0 50px; }
+      #front .content.front-pg .front-header ul > li {
+        display: inline-block;
+        margin-right: 32px;
+        width: 64px;
+        height: 64px;
+        border-radius: 50%;
+        background-color: #1ABC9C;
+        background-size: contain; }
+        #front .content.front-pg .front-header ul > li a {
+          display: block;
+          width: 100%;
+          height: 100%; }
+          #front .content.front-pg .front-header ul > li a.current {
+            border-radius: 50%;
+            background: rgba(26, 188, 156, 0.5); }
+      #front .content.front-pg .front-header ul > li:hover {
+        background-size: 200%;
+        cursor: pointer; }
+      #front .content.front-pg .front-header .upload {
+        background: url("http://hd.hunteron.com/images/front/upload.gif") no-repeat center center;
+        background-color: #fff;
+        background-size: 80%; }
+      #front .content.front-pg .front-header .tag {
+        background: url("http://hd.hunteron.com/images/front/resume.gif") no-repeat center center;
+        background-color: #fff;
+        background-size: 80%; }
+      #front .content.front-pg .front-header .tool {
+        background: url("http://hd.hunteron.com/images/front/search.gif") no-repeat center center;
+        background-color: #fff;
+        background-size: 80%; }
+    #front .content.front-pg .content {
+      padding: 20px;
+      min-height: 150px;
+      color: #fff;
+      line-height: 1.8; }
+    #front .content.front-pg .resume-pg {
+      background: #323232; }
+      #front .content.front-pg .resume-pg h1 {
+        font-size: 24px; }
+    #front .content.front-pg .login-pg {
+      background: #2f2f2f; }
+      #front .content.front-pg .login-pg input[type="text"],
+      #front .content.front-pg .login-pg input[type="password"] {
+        padding: 6px;
+        width: 100%;
+        height: 44px;
+        line-height: 32px;
+        background: #fff;
+        border-radius: 3px;
+        font-size: 16px; }
+      #front .content.front-pg .login-pg dl > dd {
+        padding: 5px 10px; }
+        #front .content.front-pg .login-pg dl > dd label > span {
+          display: block;
+          padding: 0 0 3px;
+          color: #fff;
+          font-weight: bold;
+          font-size: 14px; }
+
+/*# sourceMappingURL=main.css.map */

@@ -1,0 +1,176 @@
+@charset "utf-8";
+/*
+ * CSS RESET
+ * 不考虑IE6/7
+ * @author mizi
+ * @version 1.0.20080317
+ * @version 1.1.20080516 去除 * 暴力
+ * @version 1.2.20100709 清除不常用标签重置
+ * @version 1.3.20130911 添加HTML5标签兼容
+ * @version 1.4.20140321 重新调整结合Normalize
+ */
+
+/*
+ * Remove Spacing
+ * 清除内外边距(块级元素)
+ */
+
+body, h1, h2, h3, h4, h5, h6, p, blockquote, /** 结构元素 */
+
+dl, dd, ul, ol,  /** 列表元素 */
+
+pre, p, /** 文本格式元素 */
+
+form, button, input, textarea, /** 表单元素 */
+
+fieldset, legend { /** 表单元素, 不经常用，可考虑去除 */
+    margin: 0;
+}
+
+/* 只有部分元素才需要重设 padding */
+body, ol, ul, p, form, button, input, textarea,
+th, td { /** 表单元素 */
+    padding: 0;
+}
+
+/*
+ * HTML5 新元素，低版本浏览器兼容
+ */
+article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
+    display: block;
+}
+
+/*
+ * h系列初始化, 去除字号大小（字号大小由各项目，自行决定 ）
+ * 保留h系列粗体 500
+ */
+h1, h2, h3, h4, h5, h6{ font-size: 100%; font-weight: 500; }
+
+/*
+ * 将斜体扶正
+ */
+address, cite, dfn, em, var, i { font-style:normal; }
+
+/*
+ * 将特殊字体样式，还原字体无样式
+ */
+caption, mark, b { font-style:normal; }
+
+/*
+ * 去除粗体
+ * 保留 strong 粗体样式
+ */
+b, th { font-weight: normal; }
+
+/*
+ * del，贯穿线
+ */
+del { text-decoration:line-through; }
+
+/*
+ * 同一等宽字体样式
+ * 中文默认字体为 宋体
+ */
+code, kbd, pre, samp, tt { font-family: "Courier New", Courier, monospace, "\5b8b\4f53", sans-serif; }
+
+small { display: inline-block; font-size: 11px; -webkit-transform: scale(0.91); -o-transform: scale(0.91); } /** 汉字一般小于11px，在14寸屏上几乎不能看*/
+
+/*
+ * 重设列表样式
+ */
+ol, ul { list-style: none; }
+
+/*
+ * 重设链接元素 a 样式
+ */
+a { color: #333; text-decoration: none; outline: none; }
+a:hover{ text-decoration: underline; }
+
+/*
+ * 重设文本格式样式
+ */
+abbr[title], acronym[title] { /* 注：1.ie6 不支持 abbr; 2.这里用了属性选择符，ie6 下无效果 */
+    border-bottom: 1px dotted; cursor: help;
+}
+
+q:before, q:after { content: ''; }
+
+/*
+ * 重设表单元素
+ */
+legend { color: #000; } /** for ie6 */
+fieldset { border: none; }
+button, input, select, textarea {
+    /* font-family: inherit;  修正所有浏览器中未被继承的字体类型，PS: 这里注销掉，是因为后面会重设字体等; */
+    font-size: 100%; /** 使得表单元素在 ie 下能继承字体大小 */
+    outline: none; /** 鼠标触发无虚框 */
+}
+
+button,
+input[type="button"],
+input[type="reset"],
+input[type="submit"]{ cursor:pointer; -webkit-appearance:button; }
+
+/*
+ * 重设图像 img 元素，让其无边框
+ */
+img {
+    border:0; vertical-align: top; max-width:100%;
+    -ms-interpolation-mode: bicubic; /** ie7, 缩放图片大小时，提交图片精度 */
+}
+
+/*
+ * 重设多媒体元素
+ */
+audio, audio[controls], canvas, video{ display:inline-block; *display:inline; *zoom:1; }
+
+/*
+ * 重设表单元素
+ */
+table{ width: 100%; border-collapse:collapse; border-spacing:0; }
+th, td{ text-align: left;  vertical-align: top; }
+
+iframe{ display: block; } /** ie6 7 8 显示为行内表现 */
+
+/*
+ * 重设hr样式
+ */
+hr { overflow: hidden; font-size: 0; height: 1; line-height: 0; margin: 0; padding: 0; }
+
+/*
+ * 重设字体
+ * "\5b8b\4f53" 宋体
+ * "microsoft yahei", "\5FAE\8F6F\96C5\9ED1" 微软雅黑
+ * 部分浏览器对中文名称排斥，所以建议最好使用 ASCII
+ */
+body, button, input, select, textarea{
+    font: 12px/1.5 'Helvetica Neue',Helvetica,Arial,"\5FAE\8F6F\96C5\9ED1",Sans-serif;
+}
+
+/*
+ * 重设HTML样式
+ */
+html{
+    height: 100%;
+    -webkit-text-size-adjust:100%; -ms-text-size-adjust:100%;  /** 支持字体放大缩小 */
+    overflow-y: scroll; /** 让非ie浏览器，默认显示纵向滚动条，避免因滚动条引起的屏幕闪烁 */
+}
+
+/*
+ * fix bugs && hack
+ */
+html, body{ _width:100%; _height:100%; }
+
+[hidden] { display: none; } /** 处理 IE 8/9 中不存在的样式 */
+
+svg:not(:root) { overflow: hidden; } /** 修正 IE 9 中显示古怪的溢出内容 */
+
+input[type="checkbox"], input[type="radio"] {
+    box-sizing: border-box; /* 处理 IE 8/9 中设置为 'content-box' 的盒子模型 */
+    padding: 0; /* 删除 IE 8/9 中多余的内边距 */
+}
+
+textarea {
+    overflow: auto; /* 删除 IE8/9 中默认的垂直滚动条 */
+    vertical-align: top; /* 改善所有浏览器中的可读性并使文本垂直对齐 */
+}
