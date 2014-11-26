@@ -7,10 +7,6 @@
     ],
     "description": "hunteron front-end development framework // bower 版本必须升级到1.3.9以上",
     "main": "app/scripts/app.js",
-    "repository": {
-        "type": "git",
-        "url": "git://github.com/HunterOn-Ued/ho-fdf.git"
-    },
     "dependencies": {
         "angular": "1.2.26",
         "json3": "~3.3.1",
@@ -23,7 +19,7 @@
         "jquery": "1.11.1",
         "underscore": "~1.7.0",
         "angular-ui-router": "0.2.11",
-        "ho-fdf": "~0.1.0"
+        "ho-fdf": "~1.1.0"
     },
     "keywords": [
         "hunteron",
