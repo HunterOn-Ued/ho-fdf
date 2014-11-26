@@ -47,5 +47,5 @@
     },
     "_source": "git://github.com/HunterOn-Ued/ho-fdf.git",
     "_target": "~1.0.0",
-    "_originalSource": "json3"
+    "_originalSource": "ho-fdf"
 }
