@@ -44,23 +44,25 @@ angular.module('fdf.config.setting', [])
         return {
             request: function (config) {
                 var url = config.url;
+
+                /**
+                 * 处理请求url
+                 */
+
+                // 为第三方请求的链接添加uri
+                url = app._uri(url, config.uri);
+
                 // 为每次请求，添加版本控制
-                config.url = app._ver(config.url);
+                url = app._ver(url);
 
                 /**
                  * 添加百度统计对异步页的监控
                  */
                 try{
-                    app.$log.log('::->::->', url);
-                    app.run(_hmt, function(){
-                        _hmt.push(['_trackPageview', url]);
-                    });
+                    _hmt.push(['_trackPageview', url]);
+                }catch(e){}
 
-                    // TODO 每次异步请求，用户行为监控
-
-                }catch(e){
-                }
-
+                config.url = url;
                 return config;
             },
 
@@ -119,17 +121,22 @@ angular.module('fdf.config.setting', [])
              * @returns {*}
              */
             responseError: function (res) {
-                var config = res.config,
-                    alertError = config.alertError || false,
-                    url = config.url;
+                var config = res.config;
 
-                if (alertError) {
-                    app.$log.log(':::::load fail::::', res.status, '::::::', url);
-                } else {
-                    app.$log.log(':::::load fail no alert::::', res.status, '::::::', url)
-                }
+                return app.run(config, function(){
+                    var alertError = config.alertError || false,
+                        url = config.url;
 
-                return app.$q.reject(res);
+                    if (alertError) {
+                        app.$log.log(':::::load fail::::', res.status, '::::::', url);
+                    } else {
+                        app.$log.log(':::::load fail no alert::::', res.status, '::::::', url)
+                    }
+
+                    return app.$q.reject(res);
+                }, function(){
+                    return app.$q.reject(res);
+                });
             }
         };
     });
@@ -162,17 +169,21 @@ angular.module('fdf.config.setting', [])
     })();
 }])
 
+.config(['$resourceProvider', function($resourceProvider) {
+    //1.2.x 版本暂时还不支持对 $resourceProvider 进行配置，1.3.x 支持
+}])
+
 .run(['app', 'constant', 'utils', '$injector',
     function (app, constant, utils, $injector) {
 
-        //常量赋值
+        // 常量赋值
         app = angular.extend(app, constant);
 
-        //方法类
+        // 方法类
         // angular 1.2.27 的 extend 有bug， 1.3.2 无
         app = utils.extend(app, utils);
 
-        //常用服务初始化
+        // 常用服务初始化
         app.$rootScope = $injector.get('$rootScope');
         app.$location = $injector.get('$location');
         app.$timeout = $injector.get('$timeout');
@@ -190,63 +201,36 @@ angular.module('fdf.config.setting', [])
         app.$rootScope.current = app.storage(app.KEY.CURRENT) || {};
 
         /**
+         * app._evt
          * 事件监听
          * @param e => $event
          */
-        app.evt = function(e){
-            // _hmt.push(['_trackEvent', category, action, opt_label, opt_value]);
-            // category：要监控的目标的类型名称，通常是同一组目标的名字，比如"视频"、"音乐"、"软件"、"游戏"等等。该项必选。
-            // action：用户跟目标交互的行为，如"播放"、"暂停"、"下载"等等。该项必选。
-            // opt_label：事件的一些额外信息，通常可以是歌曲的名称、软件的名称、链接的名称等等。该项可选。
-            // opt_value：事件的一些数值信息，比如权重、时长、价格等等，在报表中可以看到其平均值等数据。该项可选。
+        app._evt = function(e){
+            var currentUser = app.storage(app.KEY.CURRENT);
+            return app.$Base.bahavior(e, currentUser);
+        };
 
-            var currentUser = store.get(app.KEY.CURRENT);
+        /**
+         * app._ver
+         * @param url
+         * @returns {string}
+         */
+        app._ver = function (url){
+            var ver = app.storage(app.KEY.VERSION) || '1.1.0';
+            return app.params(url, {'v': ver } );
+        };
 
-            var evt = {
-                type: e.type,
-                timeStamp: e.timeStamp,
-                info: {
-                    // 当事件被触发时鼠标指针向对于浏览器页面（或客户区）的坐标
-                    clientX: e.clientX,
-                    clientY: e.clinetY,
-                    // 发生事件的地点在事件源元素的坐标
-                    offsetX: e.offsetX,
-                    offsetY: e.offsetY,
-                    // 鼠标指针的位置，相对于文档的左边缘
-                    pageX: e.pageX,
-                    pageY: e.pageY,
-                    // 窗口的左上角在屏幕上的的 x 坐标和 y 坐标 (ie不支持)
-                    screenX: e.screenX,
-                    screenY: e.ecreenY,
-                    target: {
-                        innerHTML: e.target.innerHTML,
-                        tagName: e.target.tagName,
-                        offsetWidth: e.target.offsetWidth,
-                        offsetHeight: e.target.offsetHeight,
-                        offsetLeft: e.target.offsetLeft,
-                        offsetTop: e.target.offsetTop,
-                        offsetParent: e.target.offsetParent,
-                        scrollHeight: e.target.scrollHeight,
-                        scrollLeft: e.target.scrollLeft,
-                        scrollTop: e.target.scrollTop,
-                        scrollWidth: e.target.scrollWidth
-                    }
-                }
+        app._uri = function(url, type){
+            if(!type){
+                return url;
             }
 
-
-
-        };
-
-        //获得当前版本信息
-        app._ver = function (url){
-            //TODO 版本控制
-            return url + '?v=' + ( false || '1.0' );
-        };
-
-        app.isLogin = function () {
-            var loginInfo = app.storage(app.KEY.LOGIN_INFO) || {};
-            return loginInfo.isLogin || false;
+            switch(type){
+                case 'bahavior':
+                    return 'bahavior' + url;
+                default:
+                    return type + url;
+            }
         };
 
         //身份令牌的设置
@@ -255,32 +239,11 @@ angular.module('fdf.config.setting', [])
             app.$http.defaults.headers.common['X-AUTH-TOKEN'] = loginInfo['userToken'] || 'user token value';
         });
 
-        /**
-         * 检测用户是否登录
-         */
-//   app.$interval(function(){
-//        var loginInfo = app.storage(app.KEY.LOGIN_INFO) || {},
-//            lastTime = loginInfo.lastTime || 0;
-//        var currentTime = + new Date();
-//        if( (currentTime - lastTime > 1000*60*5) ){
-//            $http({
-//                method: 'get',
-//                url: '/store/test/current.json',
-//                ajaxType: 'active'
-//            }).success(function(rst){
-//                if(rst.success){
-//                    loginInfo.lastTime = + new Date();
-//                    app.storage(app.KEY.LOGIN_INFO, loginInfo);
-//                }
-//            });
-//        }
-//    }, 1000*6 );
-
-        app.$http({method: 'get', url: '/store/test/test.json', ajaxType: 'normal', data: {
-            'ccc': 2
-        }});
-
-        app.$Base.bahavior({});
+        //init
+        app.run(function(){
+            app.storage(app.KEY.CURRENT, {});
+            app.storage(app.KEY.VERSION, '1.1.0');
+        });
 
     }])
 ;

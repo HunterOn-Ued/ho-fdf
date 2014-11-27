@@ -39,11 +39,10 @@ angular.module('fdf', [
     'ngSanitize',
     'ngResource',
     'fdf.config',
-    'fdf.filters',
-//    'fdf.routers',
-    'fdf.directives',
     'fdf.resources',
     'fdf.services',
+    'fdf.filters',
+    'fdf.directives',
     'fdf.controllers'
 ]);
 

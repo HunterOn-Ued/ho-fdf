@@ -5,14 +5,13 @@
 
 angular.module('fdf.resources.base', [])
 
-.value('uri', {
-    hd: function(url){
-        return "sss" + url;
-    }
-})
-
-.service('$BaseResource', ['uri', '$resource', function(uri, $resource){
+.service('$BaseResource', ['$resource', function($resource){
     return {
-        bahavior: $resource(uri.hd('/bahavior'))
+        bahavior: $resource('/bahavior', null, {
+            'post': {
+                method: 'POST',
+                uri: 'bahavior'
+            }
+        })
     }
 }]);

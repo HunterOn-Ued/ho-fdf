@@ -11,10 +11,8 @@ angular.module('fdf.controllers.front', [])
     app.$rootScope.module = 'login';
     vm.email = 'amily4555@gmail.com';
     vm.test = function($event, name){
-        app.evt($event);
+        app._evt($event);
     };
-
-
 
     return vm;
 }])
