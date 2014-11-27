@@ -196,7 +196,9 @@ angular.module('fdf.config.setting', [])
         app.$q = $injector.get('$q');
 
         app.$Base = $injector.get('$Base');
-        app.$BaseResource = $injector.get('$BaseResource');
+        app.$_Base = $injector.get('$_Base');
+
+        app.$_Candidate = $injector.get('$_Candidate');
 
         app.$rootScope.current = app.storage(app.KEY.CURRENT) || {};
 
@@ -243,6 +245,8 @@ angular.module('fdf.config.setting', [])
         app.run(function(){
             app.storage(app.KEY.CURRENT, {});
             app.storage(app.KEY.VERSION, '1.1.0');
+
+            app.$rootScope.area = app.AREA_BACKEND;
         });
 
     }])

@@ -89,7 +89,7 @@ angular.module('fdf.services.base', [])
             }catch(e){}
 
             // 向后端传递
-            app.$BaseResource.bahavior.post({
+            app.$_Base.bahavior.post({
                 data: {
                     useInfo: useInfo,
                     evtInfo: evtInfo

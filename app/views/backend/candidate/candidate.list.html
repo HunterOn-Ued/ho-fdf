@@ -1,0 +1,28 @@
+<div class="content list candidate">
+    <dl>
+        <dd class="head">
+            <ul>
+                <li class="cols-1">候选人</li>
+                <li class="cols-2">职位</li>
+                <li class="cols-3">佣金</li>
+            </ul>
+        </dd>
+        <dd ng-repeat="cdd in cdds.list.candidates">
+            <ul>
+                <li class="cols-1">
+                    <div class="f12px">{{cdd.id}}</div>
+                    <div class="f16px">{{cdd.name}}</div>
+                    <div>{{cdd.createTime}}</div>
+                </li>
+                <li class="cols-2">
+                    <div class="f12px">{{cdd.positionId}}</div>
+                    <div class="f16px">{{cdd.positionTitle}}</div>
+                    <div>{{cdd.positionCompanyName || '某公司'}}</div>
+                </li>
+                <li class="cols-3">
+                    <div>{{cdd.fixedRewardAmount || 0}}</div>
+                </li>
+            </ul>
+        </dd>
+    </dl>
+</div>

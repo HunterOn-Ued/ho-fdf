@@ -1,13 +1,41 @@
-<div id="wrapper">
+<div class="content">
     <header>
-        this is menu
+        <span class="logo"></span>
+        <nav>
+            <menu>
+                <a ng-href="javascript:;" ui-sref="backend.candidate">候选人</a>
+            </menu>
+            <menu>
+                <a ng-href="javascript:;" ui-sref="backend.interview">面试</a>
+            </menu>
+            <menu>
+                <a ng-href="javascript:;" ui-sref="backend.position">职位</a>
+            </menu>
+            <menu>
+                <a ng-href="javascript:;" ui-sref="backend.talent">人才库</a>
+            </menu>
+        </nav>
     </header>
-    <div class="mainer">
+    <div id="mainer">
         <div class="content">
             <nav class="left">
-                left menu
+                <menu>
+                    <a ng-href="javascript:;" ui-sref="backend.candidate">候</a>
+                </menu>
+                <menu>
+                    <a ng-href="javascript:;" ui-sref="backend.interview">面</a>
+                </menu>
+                <menu>
+                    <a ng-href="javascript:;" ui-sref="backend.position">职</a>
+                </menu>
+                <menu>
+                    <a ng-href="javascript:;" ui-sref="backend.talent">库</a>
+                </menu>
             </nav>
-            <section ui-view="main">
+            <section class="center" ui-view="main">
+
+            </section>
+            <section class="right" ui-view="detail">
 
             </section>
         </div>

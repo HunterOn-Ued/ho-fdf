@@ -5,7 +5,7 @@
 
 angular.module('fdf.resources.base', [])
 
-.service('$BaseResource', ['$resource', function($resource){
+.service('$_Base', ['$resource', function($resource){
     return {
         bahavior: $resource('/bahavior', null, {
             'post': {

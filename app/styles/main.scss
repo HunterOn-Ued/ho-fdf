@@ -1,10 +1,13 @@
 body {
-    background: #222;
+    height: 100%;
     font-size: 14px;
+    background: #222;
 }
 
-#front {
+#front .view {
     padding: 150px 0 0;
+    height: 100%;
+
     .content {
         &.front-pg {
             margin: 0 auto;

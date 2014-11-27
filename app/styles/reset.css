@@ -23,13 +23,16 @@ pre, p, /** 文本格式元素 */
 
 form, button, input, textarea, /** 表单元素 */
 
-fieldset, legend { /** 表单元素, 不经常用，可考虑去除 */
+fieldset, legend,  /** 表单元素, 不经常用，可考虑去除 */
+
+menu /** h5 */ {
     margin: 0;
 }
 
 /* 只有部分元素才需要重设 padding */
 body, ol, ul, p, form, button, input, textarea,
-th, td { /** 表单元素 */
+th, td,
+menu /** h5 */ {
     padding: 0;
 }
 

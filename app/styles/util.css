@@ -1005,11 +1005,6 @@ a.btn:hover {
     color: #666;
 }
 
-body .hd-dropmenu.white .qtip-content li:hover {
-    background: #fff;
-    color: #666;
-}
-
 /** 遮罩mask */
 .mask {
     position: absolute;

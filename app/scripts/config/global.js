@@ -4,6 +4,14 @@ angular.module('fdf.config.global', [])
 
 //设置全局常量
 .constant('constant', {
+    /**
+     * 页面样式
+     */
+    AREA_FRONT: 'front',
+    AREA_BACKEND: 'backend',
+
+
+
     USER_TYPE: {
         '1': '企业',
         '2': '猎头'

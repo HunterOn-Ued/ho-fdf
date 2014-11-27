@@ -17,80 +17,85 @@ angular.module('fdf.config.routers', ['ui.router'])
         $urlRouterProvider.otherwise('/login');
 
         $stateProvider
-            /**
-             * front display
-             * 前台展示页
-             */
-            .state('front', {
-                url: '/front',
-                views: {
-                    'front@': {
-                        templateUrl: 'views/front.html'
-                    }
+        /**
+         * front display
+         * 前台展示页
+         */
+        .state('front', {
+            url: '/front',
+            views: {
+                'front@': {
+                    templateUrl: '/views/front.html',
+                    controller: ['app', function(app){
+                        app.$rootScope.area = app.AREA_FRONT;
+                    }]
                 }
-            })
+            }
+        })
 
-            //登录页
-            .state('front.login',{
-                url: '^/login',
-                views: {
-                    '@front': {
-                        templateUrl: 'views/front/login.html',
-                        controller: 'FrontLoginCtrl as login'
-                    }
+        //登录页
+        .state('front.login',{
+            url: '^/login',
+            views: {
+                '@front': {
+                    templateUrl: '/views/front/login.html',
+                    controller: 'FrontLoginCtrl as login'
                 }
-            })
+            }
+        })
 
-            // front resume moudle
-            .state('front.resume',{
-                url: '^/resume',
-                views: {
-                    '@front': {
-                        templateUrl: 'views/front/resume.html',
-                        controller: 'FrontResumeCtrl as resume'
-                    }
+        // front resume moudle
+        .state('front.resume',{
+            url: '^/resume',
+            views: {
+                '@front': {
+                    templateUrl: '/views/front/resume.html',
+                    controller: 'FrontResumeCtrl as resume'
                 }
-            })
+            }
+        })
 
-            // front resume search
-            .state('front.search',{
-                url: '^/search',
-                views: {
-                    '@front': {
-                        templateUrl: function(stateParam){
-                            return 'views/front/search.html';
-                        },
+        // front resume search
+        .state('front.search',{
+            url: '^/search',
+            views: {
+                '@front': {
+                    templateUrl: function(stateParam){
+                        return '/views/front/search.html';
+                    },
 
-                        controller: 'FrontSearchCtrl as search'
+                    controller: 'FrontSearchCtrl as search'
 
-                    }
                 }
-            })
+            }
+        })
 
-            /**
-             * back-end management
-             * 后端管理页
-             */
+        /**
+         * back-end management
+         * 后端管理页
+         */
 
-            .state('backend', {
-                url: '/backend',
-                views: {
-                    'backend@': {
-                        templateUrl: '../../views/backend.html'
-                    }
+        .state('backend', {
+            url: '/backend',
+            views: {
+                'backend@': {
+                    templateUrl: '/views/backend.html',
+                    controller: ['app', function(app){
+                        app.$rootScope.area = app.AREA_BACKEND;
+                    }]
                 }
-            })
+            }
+        })
 
-            //候选人页
-            .state('backend.candidate',{
-                url: '^/candidate',
-                views: {
-                    'main@backend': {
-                        template: '<a ui-sref-active="active" ui-sref="front.login">cdd to login page</a>'
-                    }
+        //候选人页
+        .state('backend.candidate',{
+            url: '^/candidate',
+            views: {
+                'main@backend': {
+                    templateUrl: '/views/backend/candidate/candidate.list.html',
+                    controller: 'CandidateListCtrl as cdds'
                 }
-            })
-
-        ;
+            }
+        });
     }
 ]);
