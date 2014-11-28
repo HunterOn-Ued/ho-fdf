@@ -11,7 +11,9 @@
             <ul>
                 <li class="cols-1">
                     <div class="f12px">{{cdd.id}}</div>
-                    <div class="f16px">{{cdd.name}}</div>
+                    <div class="f16px">
+                        <a ui-sref="b.m.candidate.detail({id:cdd.id})">{{cdd.name}}</a>
+                    </div>
                     <div>{{cdd.createTime}}</div>
                 </li>
                 <li class="cols-2">

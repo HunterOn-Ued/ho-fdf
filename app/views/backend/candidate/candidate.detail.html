@@ -1,0 +1,68 @@
+<div class="content detail candidate">
+    <dl>
+        <dt>推荐信息</dt>
+        <dd>
+            <ol>
+                <li>
+                    <span class="f16px">{{cdd.detail.positionTitle}}</span>
+                    <span class="f12px">#{{cdd.detail.positionId}}</span>
+                </li>
+                <li>
+                    <span>推荐顾问：</span>
+                    <span>{{cdd.detail.hhTrueName}}</span>
+                </li>
+                <li>
+                    <span>推荐时间：</span>
+                    <span>{{cdd.detail.createTime}}</span>
+                </li>
+            </ol>
+        </dd>
+        <dt>基本信息</dt>
+        <dd>
+            <ol>
+                <li>
+                    <span class="f24px">{{cdd.detail.name}}</span>
+                    <span class="f12px">#{{cdd.detail.id}}</span>
+                </li>
+                <li>
+                    <span>{{cdd.detail.email}}</span>
+                    <span>|</span>
+                    <span>{{cdd.detail.cellPhone}}</span>
+                </li>
+            </ol>
+        </dd>
+        <dt>推荐报告</dt>
+        <dd class="report">
+            <ol>
+                <li>
+                    <h5>推荐理由</h5>
+                    <p>{{cdd.detail.recommendReason}}</p>
+                </li>
+                <li>
+                    <h5>求职动机</h5>
+                    <p>{{cdd.detail.motivation}}</p>
+                </li>
+                <li>
+                    <h5>离职期</h5>
+                    <p>{{cdd.detail.expectOnboardTime}}</p>
+                </li>
+                <li>
+                    <h5>目前年薪</h5>
+                    <p>{{cdd.detail.currentAnnual}}</p>
+                </li>
+                <li>
+                    <h5>期望年薪</h5>
+                    <p>{{cdd.detail.expectAnnual}}</p>
+                </li>
+                <li>
+                    <h5>期望面试时间</h5>
+                    <p>{{cdd.detail.interviewTimeWindow}}</p>
+                </li>
+            </ol>
+        </dd>
+        <dt>候选人简历</dt>
+        <dd ng-bind-html="cdd.detail.resumeContent">
+        </dd>
+    </dl>
+
+</div>

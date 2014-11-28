@@ -5,23 +5,25 @@
  */
 angular.module('fdf.config.routers', ['ui.router'])
 
-.run(['$rootScope', '$state', '$stateParams',
-    function ($rootScope,   $state,   $stateParams) {
-        $rootScope.$state = $state;
-        $rootScope.$stateParams = $stateParams;
+.run(['app', '$state', '$stateParams',
+    function (app, $state, $stateParams) {
+        app.$state = $state;
+        app.$stateParams = $stateParams;
     }
 ])
 
 .config(['app', '$stateProvider', '$urlRouterProvider',
     function(app, $stateProvider, $urlRouterProvider){
+
         $urlRouterProvider.otherwise('/login');
 
         $stateProvider
         /**
          * front display
+         * front alias f
          * 前台展示页
          */
-        .state('front', {
+        .state('f', {
             url: '/front',
             views: {
                 'front@': {
@@ -33,50 +35,49 @@ angular.module('fdf.config.routers', ['ui.router'])
             }
         })
 
-        //登录页
-        .state('front.login',{
+        //front -> login 登录页
+        .state('f.login',{
             url: '^/login',
             views: {
-                '@front': {
+                '@f': {
                     templateUrl: '/views/front/login.html',
                     controller: 'FrontLoginCtrl as login'
                 }
             }
         })
 
-        // front resume moudle
-        .state('front.resume',{
+        // front -> resume
+        .state('f.resume',{
             url: '^/resume',
             views: {
-                '@front': {
+                '@f': {
                     templateUrl: '/views/front/resume.html',
                     controller: 'FrontResumeCtrl as resume'
                 }
             }
         })
 
-        // front resume search
-        .state('front.search',{
+        // front -> search
+        .state('f.search',{
             url: '^/search',
             views: {
-                '@front': {
+                '@f': {
                     templateUrl: function(stateParam){
                         return '/views/front/search.html';
                     },
-
                     controller: 'FrontSearchCtrl as search'
-
                 }
             }
         })
 
         /**
          * back-end management
+         * backend alias b
          * 后端管理页
          */
 
-        .state('backend', {
-            url: '/backend',
+        .state('b', {
+            url: '^/backend',
             views: {
                 'backend@': {
                     templateUrl: '/views/backend.html',
@@ -87,15 +88,81 @@ angular.module('fdf.config.routers', ['ui.router'])
             }
         })
 
+        /**
+         * layout 1-1-1
+         * backend.main alias b.m
+         * 左中右三列布局模式
+         */
+        .state('b.m', {
+            url: '^/backend/main',
+            views: {
+                'main@b': {
+                    templateUrl: '/views/backend/layout.html',
+                    controller: ['app', function(app){
+                        app.$rootScope.layout = app.LAYOUT_DOUBLE;
+                    }]
+                }
+            }
+        })
+
         //候选人页
-        .state('backend.candidate',{
+        .state('b.m.candidate',{
             url: '^/candidate',
             views: {
-                'main@backend': {
+                'list@b.m': {
                     templateUrl: '/views/backend/candidate/candidate.list.html',
                     controller: 'CandidateListCtrl as cdds'
                 }
             }
+        })
+
+        .state('b.m.candidate.detail',{
+            url: '^/candidate/:id',
+            views: {
+                'detail@b.m': {
+                    templateUrl: '/views/backend/candidate/candidate.detail.html',
+                    controller: 'CandidateDetailCtrl as cdd'
+                }
+            }
+        })
+
+        .state('b.m.candidate.detail.single',{
+            url: '^/candidate/:id/:layout',
+            views: {
+                'main@b': {
+                    templateUrl: '/views/backend/candidate/candidate.detail.html',
+                    controller: 'CandidateDetailCtrl as cdd'
+                }
+            }
         });
+
+        /**
+         * back-end management
+         * layout 1-1 左右布局模式
+         * backend.single alias b.s
+         * 后端管理页
+         */
+//        .state('b.s', {
+//           url: '^/backend/single',
+//           views: {
+//               'main@b': {
+//                   controller: ['app', function(app){
+//                       app.$rootScope.layout = app.LAYOUT_SINGLE;
+//                   }]
+//               }
+//           }
+//        })
+//
+//        .state('b.s.candidate', {})
+//        .state('b.s.candidate.detail',{
+//            url: '^/single/candidate/:id',
+//            views: {
+//                'main@b': {
+//                    templateUrl: '/views/backend/candidate/candidate.detail.html',
+//                    controller: 'CandidateDetailCtrl as cdd'
+//                }
+//            }
+//        });
+
     }
 ]);

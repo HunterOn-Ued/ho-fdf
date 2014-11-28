@@ -9,8 +9,11 @@ angular.module('fdf.config.global', [])
      */
     AREA_FRONT: 'front',
     AREA_BACKEND: 'backend',
-
-
+    /**
+     * 布局样式
+     */
+    LAYOUT_SINGLE: 'single',
+    LAYOUT_DOUBLE: 'double',
 
     USER_TYPE: {
         '1': '企业',

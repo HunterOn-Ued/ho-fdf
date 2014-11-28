@@ -1,9 +1,16 @@
 @charset "utf-8";
 
 $headerHeight: 42px;
-$centerWidth: 476px;
+$centerWidth: 576px;
+$rightWidth: 600px;
 $leftWidth: 64px;
 $maxWidth: 1240px;
+
+$headerHeight_: 42;
+$centerWidth_: 576;
+$rightWidth_: 600;
+$leftWidth_: 64;
+$maxWidth_: 1240;
 
 ::-webkit-scrollbar-track {
     box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
@@ -45,9 +52,12 @@ html {
     }
 
     header {
-        position: fixed; top: 0; left: 0; z-index: 999;
+        position: absolute; top: 0; left: 0; z-index: 999;
         width: 100%; height: $headerHeight;
         background: rgba(21, 21, 21, .8);
+
+        /** hack ie8 */
+        background: rgb(21, 21, 21)\9;
 
         .logo {
             display: inline-block;
@@ -55,6 +65,9 @@ html {
             vertical-align: middle;
             background: url('../images/hd64.png') no-repeat center center;
             background-size: 60%;
+
+            /** hack ie8 */
+            background-image: url('../images/hd32.png')\9;
         }
 
         nav {
@@ -73,9 +86,45 @@ html {
         }
     }
 
+    .main {
+        height: 100%;
+    }
+
+    .single {
+        section.main {
+            position: absolute; top: 0; left: $leftWidth; right: 0; z-index: 10;
+            box-sizing: border-box;
+            overflow-y: scroll;
+            width: calc(100% - #{$leftWidth}); min-width: calc(#{$centerWidth} + #{$rightWidth}); min-height: 100%; max-height: 100%;
+        }
+    }
+
+    .double {
+        section.center {
+            position: absolute; top: 0; left: $leftWidth; z-index: 10;
+            box-sizing: border-box;
+            overflow-y: scroll;
+            width: $centerWidth; height: 100%; max-height: 100%; min-height: 100%;
+        }
+
+        section.right {
+            position: absolute; top: 0; left: calc(#{$leftWidth} + #{$centerWidth}); z-index: 10;
+            box-sizing: border-box;
+            overflow-y: scroll;
+            min-width: $rightWidth; height: 100%;
+            background: #1f1f1f;
+
+            /** hack ie8 */
+            left: 640px \9;
+        }
+    }
+
     #mainer {
         position: absolute; top: $headerHeight; left: 0;
         width: 100%; height: calc(100% - 42px);
+
+        /** hack ie8 */
+        height: 100%\9;
 
         > .content {
             position: relative; top: 0;
@@ -110,20 +159,6 @@ html {
                 }
             }
         }
-
-        section.center {
-            position: absolute; top: 0; left: 64px; z-index: 10;
-            box-sizing: border-box;
-            overflow-y: scroll;
-            width: 476px; max-height: 100%; min-height: 100%;
-        }
-
-        section.right {
-            position: absolute; top: 0; left: calc(#{$leftWidth} + #{$centerWidth}); right: 0; z-index: 10;
-            box-sizing: border-box;
-            height: 100%;
-            background: #1f1f1f;
-        }
     }
 
     .list {
@@ -134,12 +169,18 @@ html {
                 margin: 2px; padding: 5px 8px;
                 background: rgba(255, 255, 255, .05);
 
+                /** ie8 hack */
+                background: rgb(44, 44, 44)\9;
+
                 &:hover {
                     background: rgba(155, 155, 155, .15);
+
+                    /** ie8 hack */
+                    background: rgb(51, 51, 51)\9;
                 }
 
                 ul {
-                    display:flex;
+                    display: flex;
 
                     li {
                         display: inline-block;
@@ -153,14 +194,36 @@ html {
         &.list {
             .cols-1 {
                 flex: 3;
+
+                /** ie8 hack */
+                width: 30%\9;
             }
 
             .cols-2 {
                 flex: 5;
+
+                /** ie8 hack */
+                width: 55%\9;
             }
 
             .cols-3 {
                 flex: 1;
+            }
+        }
+    }
+
+    .detail {
+        &.candidate {
+            padding: 10px;
+
+            dt {
+                margin: 15px 0 5px 0;
+                font-size: 20px; color: #9CD6B8;
+            }
+
+            h5 {
+                padding: 5px 0;
+                line-height: 1.8; font-size: 16px;
             }
         }
     }

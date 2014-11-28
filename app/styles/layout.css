@@ -29,20 +29,24 @@ html {
       #backend #wrapper .backend.view > .content {
         height: 100%; }
   #backend header {
-    position: fixed;
+    position: absolute;
     top: 0;
     left: 0;
     z-index: 999;
     width: 100%;
     height: 42px;
-    background: rgba(21, 21, 21, 0.8); }
+    background: rgba(21, 21, 21, 0.8);
+    /** hack ie8 */
+    background: #151515 \9; }
     #backend header .logo {
       display: inline-block;
       width: 64px;
       height: 100%;
       vertical-align: middle;
       background: url("../images/hd64.png") no-repeat center center;
-      background-size: 60%; }
+      background-size: 60%;
+      /** hack ie8 */
+      background-image: url("../images/hd32.png") \9; }
     #backend header nav {
       display: inline-block;
       height: 100%; }
@@ -53,12 +57,51 @@ html {
       #backend header menu a {
         font-size: 14px;
         color: #fff; }
+  #backend .main {
+    height: 100%; }
+  #backend .single section.main {
+    position: absolute;
+    top: 0;
+    left: 64px;
+    right: 0;
+    z-index: 10;
+    box-sizing: border-box;
+    overflow-y: scroll;
+    width: calc(100% - 64px);
+    min-width: calc(576px + 600px);
+    min-height: 100%;
+    max-height: 100%; }
+  #backend .double section.center {
+    position: absolute;
+    top: 0;
+    left: 64px;
+    z-index: 10;
+    box-sizing: border-box;
+    overflow-y: scroll;
+    width: 576px;
+    height: 100%;
+    max-height: 100%;
+    min-height: 100%; }
+  #backend .double section.right {
+    position: absolute;
+    top: 0;
+    left: calc(64px + 576px);
+    z-index: 10;
+    box-sizing: border-box;
+    overflow-y: scroll;
+    min-width: 600px;
+    height: 100%;
+    background: #1f1f1f;
+    /** hack ie8 */
+    left: 640px \9; }
   #backend #mainer {
     position: absolute;
     top: 42px;
     left: 0;
     width: 100%;
-    height: calc(100% - 42px); }
+    height: calc(100% - 42px);
+    /** hack ie8 */
+    height: 100% \9; }
     #backend #mainer > .content {
       position: relative;
       top: 0;
@@ -88,42 +131,41 @@ html {
           font-size: 28px;
           color: #c3c3c3;
           text-decoration: none; }
-    #backend #mainer section.center {
-      position: absolute;
-      top: 0;
-      left: 64px;
-      z-index: 10;
-      box-sizing: border-box;
-      overflow-y: scroll;
-      width: 476px;
-      max-height: 100%;
-      min-height: 100%; }
-    #backend #mainer section.right {
-      position: absolute;
-      top: 0;
-      left: calc(64px + 476px);
-      right: 0;
-      z-index: 10;
-      box-sizing: border-box;
-      height: 100%;
-      background: #1f1f1f; }
   #backend .list.content {
     padding: 2px; }
     #backend .list.content dd {
       margin: 2px;
       padding: 5px 8px;
-      background: rgba(255, 255, 255, 0.05); }
+      background: rgba(255, 255, 255, 0.05);
+      /** ie8 hack */
+      background: #2c2c2c \9; }
       #backend .list.content dd:hover {
-        background: rgba(155, 155, 155, 0.15); }
+        background: rgba(155, 155, 155, 0.15);
+        /** ie8 hack */
+        background: #333333 \9; }
       #backend .list.content dd ul {
         display: flex; }
         #backend .list.content dd ul li {
           display: inline-block; }
   #backend .candidate.list .cols-1 {
-    flex: 3; }
+    flex: 3;
+    /** ie8 hack */
+    width: 30% \9; }
   #backend .candidate.list .cols-2 {
-    flex: 5; }
+    flex: 5;
+    /** ie8 hack */
+    width: 55% \9; }
   #backend .candidate.list .cols-3 {
     flex: 1; }
+  #backend .detail.candidate {
+    padding: 10px; }
+    #backend .detail.candidate dt {
+      margin: 15px 0 5px 0;
+      font-size: 20px;
+      color: #9CD6B8; }
+    #backend .detail.candidate h5 {
+      padding: 5px 0;
+      line-height: 1.8;
+      font-size: 16px; }
 
 /*# sourceMappingURL=layout.css.map */

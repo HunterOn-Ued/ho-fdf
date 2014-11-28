@@ -3,16 +3,16 @@
         <span class="logo"></span>
         <nav>
             <menu>
-                <a ng-href="javascript:;" ui-sref="backend.candidate">候选人</a>
+                <a ng-href="javascript:;" ui-sref="b.m.candidate">候选人</a>
             </menu>
             <menu>
-                <a ng-href="javascript:;" ui-sref="backend.interview">面试</a>
+                <a ng-href="javascript:;" ui-sref="b.m.interview">面试</a>
             </menu>
             <menu>
-                <a ng-href="javascript:;" ui-sref="backend.position">职位</a>
+                <a ng-href="javascript:;" ui-sref="b.m.position">职位</a>
             </menu>
             <menu>
-                <a ng-href="javascript:;" ui-sref="backend.talent">人才库</a>
+                <a ng-href="javascript:;" ui-sref="b.m.talent">人才库</a>
             </menu>
         </nav>
     </header>
@@ -20,24 +20,19 @@
         <div class="content">
             <nav class="left">
                 <menu>
-                    <a ng-href="javascript:;" ui-sref="backend.candidate">候</a>
+                    <a ng-href="javascript:;" ui-sref="b.m.candidate">候</a>
                 </menu>
                 <menu>
-                    <a ng-href="javascript:;" ui-sref="backend.interview">面</a>
+                    <a ng-href="javascript:;" ui-sref="b.m.interview">面</a>
                 </menu>
                 <menu>
-                    <a ng-href="javascript:;" ui-sref="backend.position">职</a>
+                    <a ng-href="javascript:;" ui-sref="b.m.position">职</a>
                 </menu>
                 <menu>
-                    <a ng-href="javascript:;" ui-sref="backend.talent">库</a>
+                    <a ng-href="javascript:;" ui-sref="b.m.talent">库</a>
                 </menu>
             </nav>
-            <section class="center" ui-view="main">
-
-            </section>
-            <section class="right" ui-view="detail">
-
-            </section>
+            <section class="main" ui-view="main"></section>
         </div>
     </div>
     <footer>

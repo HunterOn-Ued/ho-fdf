@@ -14,7 +14,7 @@
 
 <div id="wrapper">
     <div ui-view="front" class="view front"></div>
-    <div ui-view="backend" class="view backend"></div>
+    <div ui-view="backend" class="view backend {{layout}}"></div>
 </div>
 
 </body>
@@ -31,6 +31,8 @@
 <script type="text/javascript" src="lib/angular-resource/angular-resource.js"></script>
 <script type="text/javascript" src="lib/angular-sanitize/angular-sanitize.js"></script>
 <script type="text/javascript" src="lib/angular-ui-router/release/angular-ui-router.js"></script>
+
+<script type="text/javascript" src="lib/es5-shim/es5-shim.js"></script>
 
 <script type="text/javascript" src="scripts/config/global.js"></script>
 <script type="text/javascript" src="scripts/config/setting.js"></script>
