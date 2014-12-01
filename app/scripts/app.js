@@ -3,8 +3,7 @@
 'use strict';
 
 angular.module('fdf.resources', [
-    'fdf.resources.base',
-    'fdf.resources.candidate'
+    'fdf.resources.base'
 ]);
 
 angular.module('fdf.services', [
@@ -12,8 +11,7 @@ angular.module('fdf.services', [
 ]);
 
 angular.module('fdf.controllers', [
-    'fdf.controllers.front',
-    'fdf.controllers.candidate'
+    'fdf.controllers.front'
 ]);
 
 angular.module('fdf.filters', [
