@@ -1,3 +1,4 @@
+(function(window, angular, undefined){
 'use strict';
 
 angular.module('fdf.config.global', [])
@@ -39,3 +40,5 @@ angular.module('fdf.config.global', [])
 .constant('app', {
     version: '0.1.0'
 });
+
+;})(window, angular);

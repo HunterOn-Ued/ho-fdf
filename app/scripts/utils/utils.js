@@ -1,3 +1,4 @@
+(function (window, angular, undefined) {
 'use strict';
 
 angular.module('fdf.config.utils', [])
@@ -7,7 +8,7 @@ angular.module('fdf.config.utils', [])
 })
 
 //用户工具类
-.run(['utils', function(utils){
+.run(['utils', function (utils) {
     /**
      * underscroe 中文文档
      * http://www.css88.com/doc/underscore/
@@ -22,10 +23,10 @@ angular.module('fdf.config.utils', [])
      * @param fn1
      * @returns {*}
      */
-    utils.run = function(condition, fn, fn1 ){
-        if(utils.isFunction(condition)){
+    utils.run = function (condition, fn, fn1) {
+        if (utils.isFunction(condition)) {
             return condition();
-        }else{
+        } else {
             return condition ? fn() : fn1 ? fn1() : null;
         }
     };
@@ -35,20 +36,20 @@ angular.module('fdf.config.utils', [])
      * @param key
      * @param val
      */
-    utils.storage = function(key, val){
-        return utils.run(val == null, function(){
+    utils.storage = function (key, val) {
+        return utils.run(val == null, function () {
             var _val = localStorage.getItem(key);
-            if(typeof _val != 'string' ){
+            if (typeof _val != 'string') {
                 return undefined;
             }
 
-            try{
+            try {
                 return JSON.parse(_val);
-            }catch(e){
+            } catch (e) {
                 return _val || undefined;
             }
 
-        }, function(){
+        }, function () {
             localStorage.setItem(key, JSON.stringify(val));
         });
     };
@@ -57,8 +58,8 @@ angular.module('fdf.config.utils', [])
      * 获得当前时间戳
      * @returns {number}
      */
-    utils.timestamp = function(){
-        return (+ new Date());
+    utils.timestamp = function () {
+        return (+new Date());
     };
 
     /**
@@ -67,32 +68,34 @@ angular.module('fdf.config.utils', [])
      * @param url
      * @returns {{source: (*|string), protocol: *, host: (options.hostname|*|.connect.options.hostname|string|ua.hostname|urlResolve.hostname), port: *, query: *, params, file: *, hash: *, path: *, relative: *, segments: *}}
      */
-    utils.parseUrl = function(url) {
+    utils.parseUrl = function (url) {
         url = url || location.href;
-        var a =  document.createElement('a');
-        a.href = url ;
+        var a = document.createElement('a');
+        a.href = url;
         return {
             source: url,
-            protocol: a.protocol.replace(':',''),
+            protocol: a.protocol.replace(':', ''),
             host: a.hostname,
             port: a.port,
             query: a.search,
-            params: (function(){
+            params: (function () {
                 var ret = {},
-                    seg = a.search.replace(/^\?/,'').split('&'),
+                    seg = a.search.replace(/^\?/, '').split('&'),
                     len = seg.length, i = 0, s;
-                for (;i<len;i++) {
-                    if (!seg[i]) { continue; }
+                for (; i < len; i++) {
+                    if (!seg[i]) {
+                        continue;
+                    }
                     s = seg[i].split('=');
                     ret[s[0]] = s[1];
                 }
                 return ret;
             })(),
-            file: (a.pathname.match(/\/([^\/?#]+)$/i) || [,''])[1],
-            hash: a.hash.replace('#',''),
-            path: a.pathname.replace(/^([^\/])/,'/$1'),
-            relative: (a.href.match(/tps?:\/\/[^\/]+(.+)/) || [,''])[1],
-            segments: a.pathname.replace(/^\//,'').split('/')
+            file: (a.pathname.match(/\/([^\/?#]+)$/i) || [, ''])[1],
+            hash: a.hash.replace('#', ''),
+            path: a.pathname.replace(/^([^\/])/, '/$1'),
+            relative: (a.href.match(/tps?:\/\/[^\/]+(.+)/) || [, ''])[1],
+            segments: a.pathname.replace(/^\//, '').split('/')
         };
     };
 
@@ -105,19 +108,21 @@ angular.module('fdf.config.utils', [])
      * @param params
      * @use utils.parseUrl
      */
-    utils.params = function(url, params){
+    utils.params = function (url, params) {
         var arr = Array.prototype.slice.call(arguments, 0);
-        if(utils.isObject(arr[0])){
+        if (utils.isObject(arr[0])) {
             return jQuery.param(arr[0]);
-        }else{
+        } else {
             var o = utils.parseUrl(url),
                 p = utils.params(params);
-            if(o.query){
+            if (o.query) {
                 return o.path + o.query + '&' + p;
-            }else{
+            } else {
                 return o.path + '?' + p;
             }
         }
     };
 
 }]);
+
+})(window, angular);

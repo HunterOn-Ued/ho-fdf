@@ -1,11 +1,9 @@
-/**
- * Created by mizi on 2014/11/24.
- */
+(function (window, angular, undefined) {
 'use strict';
 
 angular.module('fdf.resources.base', [])
 
-.service('$_Base', ['$resource', function($resource){
+.service('$_Base', ['$resource', function ($resource) {
     return {
         bahavior: $resource('/bahavior', null, {
             'post': {
@@ -15,3 +13,5 @@ angular.module('fdf.resources.base', [])
         })
     }
 }]);
+
+})(window, angular);

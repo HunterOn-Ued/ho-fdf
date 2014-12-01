@@ -1,6 +1,5 @@
-/**
- * Created by mizi on 2014/11/11.
- */
+(function (window, angular, undefined) {
+
 'use strict';
 
 angular.module('fdf.resources', [
@@ -48,8 +47,8 @@ angular.module('fdf', [
     'fdf.controllers'
 ]);
 
-angular.element(document).ready(function() {
+angular.element(document).ready(function () {
     angular.bootstrap(document, ['fdf']);
 });
 
-
+})(window, angualr);

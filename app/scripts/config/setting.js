@@ -1,3 +1,5 @@
+(function (window, angular, undefined) {
+
 'use strict';
 /**
  * 全局环境配置
@@ -251,6 +253,7 @@ angular.module('fdf.config.setting', [])
         });
 
     }])
-;
+
+;})(window, angular);
 
 

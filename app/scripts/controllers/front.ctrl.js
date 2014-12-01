@@ -1,16 +1,18 @@
+(function (window, angular, undefined) {
+
 'use strict';
 
 angular.module('fdf.controllers.front', [])
 
 /**
- * front login
- */
-.controller('FrontLoginCtrl',['app', function(app){
+* front login
+*/
+.controller('FrontLoginCtrl', ['app', function (app) {
     //https://github.com/bvaughn/angular-form-for
     var vm = this;
     app.$rootScope.module = 'login';
     vm.email = 'amily4555@gmail.com';
-    vm.test = function($event, name){
+    vm.test = function ($event, name) {
         app._evt($event);
     };
 
@@ -19,15 +21,17 @@ angular.module('fdf.controllers.front', [])
 
 
 /**
- * front resume
- */
-.controller('FrontResumeCtrl',['app', function(app){
+* front resume
+*/
+.controller('FrontResumeCtrl', ['app', function (app) {
     app.$rootScope.module = 'resume';
 }])
 
 /**
- * front search
- */
-.controller('FrontSearchCtrl',['app', function(app){
+* front search
+*/
+.controller('FrontSearchCtrl', ['app', function (app) {
     app.$rootScope.module = 'search';
 }]);
+
+})(window, angular);
