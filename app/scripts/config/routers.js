@@ -15,7 +15,9 @@ angular.module('fdf.config.routers', ['ui.router'])
 .config(['app', '$stateProvider', '$urlRouterProvider',
     function(app, $stateProvider, $urlRouterProvider){
 
-        $urlRouterProvider.otherwise('/login');
+        $urlRouterProvider.when("", "/login")
+            .when("/", "/login")
+            .otherwise('/404');
 
         $stateProvider
         /**
@@ -116,6 +118,7 @@ angular.module('fdf.config.routers', ['ui.router'])
             }
         })
 
+        // 查看候选人detail
         .state('b.m.candidate.detail',{
             url: '^/candidate/:id',
             views: {
@@ -126,8 +129,9 @@ angular.module('fdf.config.routers', ['ui.router'])
             }
         })
 
+        // 查看候选人detail 单页显示
         .state('b.m.candidate.detail.single',{
-            url: '^/candidate/:id/:layout',
+            url: '^/candidate/{id}/{layout}',
             views: {
                 'main@b': {
                     templateUrl: '/views/backend/candidate/candidate.detail.html',
@@ -135,34 +139,5 @@ angular.module('fdf.config.routers', ['ui.router'])
                 }
             }
         });
-
-        /**
-         * back-end management
-         * layout 1-1 左右布局模式
-         * backend.single alias b.s
-         * 后端管理页
-         */
-//        .state('b.s', {
-//           url: '^/backend/single',
-//           views: {
-//               'main@b': {
-//                   controller: ['app', function(app){
-//                       app.$rootScope.layout = app.LAYOUT_SINGLE;
-//                   }]
-//               }
-//           }
-//        })
-//
-//        .state('b.s.candidate', {})
-//        .state('b.s.candidate.detail',{
-//            url: '^/single/candidate/:id',
-//            views: {
-//                'main@b': {
-//                    templateUrl: '/views/backend/candidate/candidate.detail.html',
-//                    controller: 'CandidateDetailCtrl as cdd'
-//                }
-//            }
-//        });
-
     }
 ]);

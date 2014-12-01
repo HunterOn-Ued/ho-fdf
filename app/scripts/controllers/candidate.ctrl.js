@@ -15,6 +15,8 @@ angular.module('fdf.controllers.candidate', [])
     var vm = this;
     var stateParams = app.$stateParams;
 
+        console.debug(stateParams);
+
     app.run(stateParams.layout, function(){
         app.$rootScope.layout = stateParams.layout == app.LAYOUT_SINGLE ? app.LAYOUT_SINGLE : app.LAYOUT_DOUBLE;
     });

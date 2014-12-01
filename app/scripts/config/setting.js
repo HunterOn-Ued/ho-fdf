@@ -184,6 +184,7 @@ angular.module('fdf.config.setting', [])
         app = utils.extend(app, utils);
 
         // 常用服务初始化
+        app.$injector = $injector;
         app.$rootScope = $injector.get('$rootScope');
         app.$location = $injector.get('$location');
         app.$timeout = $injector.get('$timeout');
@@ -198,7 +199,7 @@ angular.module('fdf.config.setting', [])
         app.$Base = $injector.get('$Base');
         app.$_Base = $injector.get('$_Base');
 
-        app.$_Candidate = $injector.get('$_Candidate');
+//        app.$_Candidate = $injector.get('$_Candidate');
 
         app.$rootScope.current = app.storage(app.KEY.CURRENT) || {};
 

@@ -14,6 +14,10 @@
                     <div class="f16px">
                         <a ui-sref="b.m.candidate.detail({id:cdd.id})">{{cdd.name}}</a>
                     </div>
+                    <div>
+                        <a target="_blank"
+                           ui-sref="b.m.candidate.detail.single({id:cdd.id, layout:'single'})">单页查看候选人信息</a>
+                    </div>
                     <div>{{cdd.createTime}}</div>
                 </li>
                 <li class="cols-2">
