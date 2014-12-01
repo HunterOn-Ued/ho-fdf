@@ -42,7 +42,7 @@
         'fdf.controllers'
     ]);
 
-})(window, angular, jQuery);
+})(window, angular);
 
 
 
