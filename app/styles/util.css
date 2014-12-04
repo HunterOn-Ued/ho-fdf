@@ -16,7 +16,6 @@
 }
 
 .clearfix {
-    overflow: hidden;
     *zoom: 1;
 }
 
@@ -217,7 +216,7 @@ span.key {
 /** 默认金钱样式 */
 .currency {
     color: #f60;
-    font-family: 'Georgia';
+    font-family: 'Georgia',serif;
 }
 
 /** 字号大小 */
@@ -334,7 +333,7 @@ span.key {
 }
 
 .mt0px {
-    margin-top: 0px;
+    margin-top: 0;
 }
 
 .mt1px {
@@ -382,7 +381,7 @@ span.key {
 }
 
 .ml0px {
-    margin-left: 0px;
+    margin-left: 0;
 }
 
 .ml1px {
@@ -410,7 +409,7 @@ span.key {
 }
 
 .mr0px {
-    margin-right: 0px;
+    margin-right: 0;
 }
 
 .mr1px {
@@ -442,7 +441,7 @@ span.key {
 }
 
 .mb0px {
-    margin-bottom: 0px;
+    margin-bottom: 0;
 }
 
 .mb1px {
@@ -470,7 +469,7 @@ span.key {
 }
 
 .m0px {
-    margin: 0px;
+    margin: 0;
 }
 
 .m1px {
@@ -498,8 +497,8 @@ span.key {
 }
 
 .mlr0px {
-    margin-left: 0px;
-    margin-right: 0px;
+    margin-left: 0;
+    margin-right: 0;
 }
 
 .mlr1px {
@@ -534,7 +533,7 @@ span.key {
 
 /** padding 距离值 */
 .pt0px {
-    padding-top: 0px;
+    padding-top: 0;
 }
 
 .pt1px {
@@ -562,7 +561,7 @@ span.key {
 }
 
 .pl0px {
-    padding-left: 0px;
+    padding-left: 0;
 }
 
 .pl1px {
@@ -590,7 +589,7 @@ span.key {
 }
 
 .pr0px {
-    padding-right: 0px;
+    padding-right: 0;
 }
 
 .pr1px {
@@ -618,7 +617,7 @@ span.key {
 }
 
 .pb0px {
-    padding-bottom: 0px;
+    padding-bottom: 0;
 }
 
 .pb1px {
@@ -646,7 +645,7 @@ span.key {
 }
 
 .p0px {
-    padding: 0px;
+    padding: 0;
 }
 
 .p1px {
@@ -766,8 +765,8 @@ span.key {
 
 /** 宽度 */
 .w0px {
-    width: 0px !important;
-    min-width: 0px !important;
+    width: 0 !important;
+    min-width: 0 !important;
     border: none;
 }
 
@@ -898,13 +897,13 @@ ul.horizontal li {
 
 /** 覆盖浏览器默认填写表单项的黄色背景，改为白色 */
 input.autofill:-webkit-autofill {
-    -webkit-box-shadow: 0 0 0px 1000px #fff inset;
+    -webkit-box-shadow: 0 0 0 1000px #fff inset;
 }
 
 /** tt 只显示数字 */
 tt {
     font-size: 13px;
-    font-family: "Tahoma";
+    font-family: "Tahoma",serif;
 }
 
 /** 高亮显示, 黄底红字 */
@@ -1031,8 +1030,8 @@ i.avatar {
 /** i 标签专用与 字符icon, icon, 头像显示 */
 i {
     display: inline-block;
-    min-height: 16px;
-    min-width: 16px;
+    height: 16px;
+    width: 16px;
     line-height: 16px;
     text-align: center;
     vertical-align: middle;
@@ -1044,11 +1043,12 @@ i {
     -ms-box-sizing: border-box;
 }
 
-i.view {
-    cursor: pointer;
+i.icon a {
+    display: block;
+    width: 100%; height: 100%; min-height: 100%;
 }
 
-i.cirle:hover {
+i.icon.cirle:hover {
     color: #fff !important;
     border-radius: 50%;
     background: #007935;
@@ -1080,21 +1080,4 @@ textarea {
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     -ms-box-sizing: border-box;
-}
-
-/** 标题 */
-dt.title {
-    padding-left: 10px;
-    min-height: 40px;
-    line-height: 40px;
-    font-size: 18px;
-}
-
-/** loading */
-.loading {
-    display: inline-block;
-    background: url("http://static.hunterdrive.com/base/images/loading.gif") no-repeat;
-    width: 16px;
-    height: 16px;
-    vertical-align: middle;
 }

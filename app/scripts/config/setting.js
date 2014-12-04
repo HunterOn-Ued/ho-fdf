@@ -226,15 +226,12 @@ angular.module('fdf.config.setting', [])
         };
 
         app._uri = function(url, type){
-            if(!type){
-                return url;
-            }
-
             switch(type){
                 case 'bahavior':
                     return 'bahavior' + url;
                 default:
-                    return type + url;
+                    var uri = location.pathname;
+                    return uri + url;
             }
         };
 
