@@ -197,6 +197,7 @@ angular.module('fdf.config.setting', [])
         app.$http = $injector.get('$http');
         app.$log = $injector.get('$log');
         app.$q = $injector.get('$q');
+        app.$templateCache = $injector.get('$templateCache');
 
         app.$Base = $injector.get('$Base');
         app.$_Base = $injector.get('$_Base');
@@ -210,9 +211,14 @@ angular.module('fdf.config.setting', [])
          * 事件监听
          * @param e => $event
          */
-        app._evt = function(e){
-            var currentUser = app.storage(app.KEY.CURRENT);
-            return app.$Base.bahavior(e, currentUser);
+        app._ver = function (url){
+            if(app.$templateCache.get(url)){
+                return url;
+            }
+
+            var ver = app.ie() == 8 ? (+ new Date()) : (app.storage(app.KEY.VERSION) || '1.1.0');
+            return app.params(url, {'v': ver } );
+
         };
 
         /**
