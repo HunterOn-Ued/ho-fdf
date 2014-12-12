@@ -52,7 +52,7 @@ angular.module('fdf.config.setting', [])
                  */
 
                 // 为第三方请求的链接添加uri
-                url = app._uri(url, config.uri);
+                // url = app._uri(url, config.uri);
 
                 // 为每次请求，添加版本控制
                 url = app._ver(url);
