@@ -52,7 +52,7 @@ angular.module('fdf.config.setting', [])
                  */
 
                 // 为第三方请求的链接添加uri
-                // url = app._uri(url, config.uri);
+                url = app._uri(url, config.uri);
 
                 // 为每次请求，添加版本控制
                 url = app._ver(url);
@@ -211,14 +211,9 @@ angular.module('fdf.config.setting', [])
          * 事件监听
          * @param e => $event
          */
-        app._ver = function (url){
-            if(app.$templateCache.get(url)){
-                return url;
-            }
-
-            var ver = app.ie() == 8 ? (+ new Date()) : (app.storage(app.KEY.VERSION) || '1.1.0');
-            return app.params(url, {'v': ver } );
-
+        app._evt = function(e){
+            var currentUser = app.storage(app.KEY.CURRENT);
+            return app.$Base.bahavior(e, currentUser);
         };
 
         /**
@@ -227,7 +222,11 @@ angular.module('fdf.config.setting', [])
          * @returns {string}
          */
         app._ver = function (url){
-            var ver = app.storage(app.KEY.VERSION) || '1.1.0';
+            if(app.$templateCache.get(url)){
+                return url;
+            }
+
+            var ver = app.ie() == 8 ? (+ new Date()) : (app.storage(app.KEY.VERSION) || '1.1.0');
             return app.params(url, {'v': ver } );
         };
 
