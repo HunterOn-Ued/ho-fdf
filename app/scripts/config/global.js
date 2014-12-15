@@ -33,6 +33,10 @@ angular.module('fdf.config.global', [])
 
     ERROR: {
         'NO_LOGIN': 'ERR1217326'
+    },
+
+    SYS: {
+        ICON: 'images/hd64.png'
     }
 })
 
