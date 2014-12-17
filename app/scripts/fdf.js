@@ -20,9 +20,7 @@
     ]);
 
     angular.module('fdf.directives', [
-//    'fdf.directives.dom',
-//    'fdf.directives.ui',
-//    'fdf.directives.widget'
+        'fdf.directives.base'
     ]);
 
     angular.module('fdf.config', [

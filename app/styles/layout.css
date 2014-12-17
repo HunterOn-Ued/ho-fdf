@@ -135,7 +135,7 @@ html {
     padding: 2px; }
     #backend .list.content dd {
       margin: 2px;
-      padding: 5px 8px;
+      padding: 8px 10px;
       background: rgba(255, 255, 255, 0.05);
       /** ie8 hack */
       background: #2c2c2c \9; }
@@ -147,16 +147,8 @@ html {
         display: flex; }
         #backend .list.content dd ul li {
           display: inline-block; }
-  #backend .candidate.list .cols-1 {
-    flex: 3;
-    /** ie8 hack */
-    width: 30% \9; }
-  #backend .candidate.list .cols-2 {
-    flex: 5;
-    /** ie8 hack */
-    width: 55% \9; }
-  #backend .candidate.list .cols-3 {
-    flex: 1; }
+          #backend .list.content dd ul li > div {
+            line-height: 1.8; }
   #backend .detail.candidate {
     padding: 10px; }
     #backend .detail.candidate dt {

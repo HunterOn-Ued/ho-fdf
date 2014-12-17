@@ -166,7 +166,7 @@ html {
             padding: 2px;
 
             dd {
-                margin: 2px; padding: 5px 8px;
+                margin: 2px; padding: 8px 10px;
                 background: rgba(255, 255, 255, .05);
 
                 /** ie8 hack */
@@ -184,30 +184,12 @@ html {
 
                     li {
                         display: inline-block;
+
+                        > div {
+                           line-height: 1.8;
+                        }
                     }
                 }
-            }
-        }
-    }
-
-    .candidate {
-        &.list {
-            .cols-1 {
-                flex: 3;
-
-                /** ie8 hack */
-                width: 30%\9;
-            }
-
-            .cols-2 {
-                flex: 5;
-
-                /** ie8 hack */
-                width: 55%\9;
-            }
-
-            .cols-3 {
-                flex: 1;
             }
         }
     }

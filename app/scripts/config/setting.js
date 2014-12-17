@@ -52,7 +52,7 @@ angular.module('fdf.config.setting', [])
                  */
 
                 // 为第三方请求的链接添加uri
-                // url = app._uri(url, config.uri);
+                url = app._uri(url, config.uri);
 
                 // 为每次请求，添加版本控制
                 url = app._ver(url);
@@ -197,7 +197,6 @@ angular.module('fdf.config.setting', [])
         app.$http = $injector.get('$http');
         app.$log = $injector.get('$log');
         app.$q = $injector.get('$q');
-        app.$templateCache = $injector.get('$templateCache');
 
         app.$Base = $injector.get('$Base');
         app.$_Base = $injector.get('$_Base');
@@ -216,17 +215,21 @@ angular.module('fdf.config.setting', [])
             return app.$Base.bahavior(e, currentUser);
         };
 
+        app._btn = function(e){
+            var elm = angular.element(e.currentTarget);
+            app.$timeout(function(){
+                elm.removeClass('loading').removeAttr('disabled');
+                elm.attr('ng-disabled', 'false');
+            }, 500);
+        };
+
         /**
          * app._ver
          * @param url
          * @returns {string}
          */
         app._ver = function (url){
-            if(app.$templateCache.get(url)){
-                return url;
-            }
-
-            var ver = app.ie() == 8 ? (+ new Date()) : (app.storage(app.KEY.VERSION) || '1.1.0');
+            var ver = app.storage(app.KEY.VERSION) || '1.1.0';
             return app.params(url, {'v': ver } );
         };
 

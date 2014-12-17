@@ -32,15 +32,6 @@ angular.module('fdf.config.utils', [])
     };
 
     /**
-     * 判断ie浏览器版本
-     * @returns {Number|*} -> 大于0 ie
-     */
-    utils.ie = function(){
-        var myNav = navigator.userAgent.toLowerCase();
-        return (myNav.indexOf('msie') != -1) ? parseInt(myNav.split('msie')[1]) : false;
-    };
-
-    /**
      * 本地localStroage 存储读取
      * @param key
      * @param val
@@ -70,7 +61,7 @@ angular.module('fdf.config.utils', [])
     utils.timestamp = function () {
         return (+new Date());
     };
-    
+
     /**
      * urils.paseUrl（String url)
      * 解构一个url地址
