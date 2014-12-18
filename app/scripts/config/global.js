@@ -33,6 +33,18 @@ angular.module('fdf.config.global', [])
 
     ERROR: {
         'NO_LOGIN': 'ERR1217326'
+    },
+
+    SYS: {
+        ICON: 'images/hd64.png',
+
+        //用户行为分析
+        BAHAVIOR: {
+            //是否打开用户行为分析
+            RUN: false,
+            //用户行为注册地址
+            URL: 'http://post.hunteron.com/post'
+        }
     }
 })
 
@@ -41,4 +53,4 @@ angular.module('fdf.config.global', [])
     version: '0.1.0'
 });
 
-;})(window, angular);
+})(window, angular);

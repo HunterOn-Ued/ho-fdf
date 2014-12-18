@@ -45,17 +45,7 @@ angular.module('fdf.config.setting', [])
     $httpProvider.interceptors.push(function () {
         return {
             request: function (config) {
-                var url = config.url;
-
-                /**
-                 * 处理请求url
-                 */
-
-                // 为第三方请求的链接添加uri
-                url = app._uri(url, config.uri);
-
-                // 为每次请求，添加版本控制
-                url = app._ver(url);
+                var url = app.$Base.version(config.url);
 
                 /**
                  * 添加百度统计对异步页的监控
@@ -197,13 +187,10 @@ angular.module('fdf.config.setting', [])
         app.$http = $injector.get('$http');
         app.$log = $injector.get('$log');
         app.$q = $injector.get('$q');
+        app.$templateCache = $injector.get('$templateCache');
 
         app.$Base = $injector.get('$Base');
         app.$_Base = $injector.get('$_Base');
-
-//        app.$_Candidate = $injector.get('$_Candidate');
-
-        app.$rootScope.current = app.storage(app.KEY.CURRENT) || {};
 
         /**
          * app._evt
@@ -211,16 +198,7 @@ angular.module('fdf.config.setting', [])
          * @param e => $event
          */
         app._evt = function(e){
-            var currentUser = app.storage(app.KEY.CURRENT);
-            return app.$Base.bahavior(e, currentUser);
-        };
-
-        app._btn = function(e){
-            var elm = angular.element(e.currentTarget);
-            app.$timeout(function(){
-                elm.removeClass('loading').removeAttr('disabled');
-                elm.attr('ng-disabled', 'false');
-            }, 500);
+            return app.$Base.evt.begin(e);
         };
 
         /**
@@ -229,8 +207,7 @@ angular.module('fdf.config.setting', [])
          * @returns {string}
          */
         app._ver = function (url){
-            var ver = app.storage(app.KEY.VERSION) || '1.1.0';
-            return app.params(url, {'v': ver } );
+            return app.$Base.ver(url);
         };
 
         app._uri = function(url, type){
@@ -254,6 +231,7 @@ angular.module('fdf.config.setting', [])
             app.storage(app.KEY.CURRENT, {});
             app.storage(app.KEY.VERSION, '1.1.0');
 
+            app.$rootScope.current = app.storage(app.KEY.CURRENT) || {};
             app.$rootScope.area = app.AREA_BACKEND;
         });
 
