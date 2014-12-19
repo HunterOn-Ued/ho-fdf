@@ -11,7 +11,7 @@ angular.module('fdf.services', [
 ]);
 
 angular.module('fdf.controllers', [
-    'b.controllers.front'
+    'demoApp.controllers.front'
 ]);
 
 angular.module('fdf.filters', [

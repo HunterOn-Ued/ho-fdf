@@ -2,7 +2,7 @@
 
 'use strict';
 
-angular.module('b.controllers.front', [])
+angular.module('demoApp.controllers.front', [])
 
 /**
 * front login

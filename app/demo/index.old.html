@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html id="{{area}}">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>HunterDrive 简历宝</title>
+
+    <link rel="stylesheet" href="styles/reset.css" />
+    <link rel="stylesheet" href="styles/util.css" />
+    <link rel="stylesheet" href="styles/layout.css" />
+    <link rel="stylesheet" href="styles/main.css" />
+</head>
+<body>
+
+<div id="wrapper">
+    <div ui-view="front" class="view front"></div>
+    <div ui-view="backend" class="view backend {{layout}}"></div>
+</div>
+
+</body>
+
+<!--[if lt IE 9]>
+<script src="../lib/es5-shim/es5-shim.js"></script>
+<script src="../lib/json3/lib/json3.min.js"></script>
+<![endif]-->
+
+<script type="text/javascript" src="../lib/jquery/dist/jquery.min.js"></script>
+<script type="text/javascript" src="../lib/underscore/underscore.js"></script>
+
+<script type="text/javascript" src="../lib/angular/angular.js"></script>
+<script type="text/javascript" src="../lib/angular-resource/angular-resource.js"></script>
+<script type="text/javascript" src="../lib/angular-sanitize/angular-sanitize.js"></script>
+<script type="text/javascript" src="../lib/angular-ui-router/release/angular-ui-router.js"></script>
+
+<script type="text/javascript" src="../lib/es5-shim/es5-shim.js"></script>
+
+<script type="text/javascript" src="../scripts/config/global.js"></script>
+<script type="text/javascript" src="../scripts/config/setting.js"></script>
+<script type="text/javascript" src="../scripts/config/routers.js"></script>
+<script type="text/javascript" src="../scripts/utils/utils.js"></script>
+<script type="text/javascript" src="../scripts/resources/resource.base.js"></script>
+<script type="text/javascript" src="../scripts/services/service.base.js"></script>
+
+<script type="text/javascript" src="scripts/controllers/front.ctrl.js"></script>
+<script type="text/javascript" src="scripts/app.old.js"></script>
+
+</html>
