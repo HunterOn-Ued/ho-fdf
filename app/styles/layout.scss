@@ -1,0 +1,212 @@
+@charset "utf-8";
+
+$headerHeight: 42px;
+$centerWidth: 576px;
+$rightWidth: 600px;
+$leftWidth: 64px;
+$maxWidth: 1240px;
+
+$headerHeight_: 42;
+$centerWidth_: 576;
+$rightWidth_: 600;
+$leftWidth_: 64;
+$maxWidth_: 1240;
+
+::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    background-color: rgba(0, 0, 0, .1);
+}
+
+::-webkit-scrollbar {
+    width: 12px;
+    background-color: #1f1f1f;
+}
+
+::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
+    background-color: #555;
+}
+
+html {
+    overflow-y: hidden;
+}
+
+#backend {
+    height: 100%;
+
+    body {
+        width: 100%; min-width: 1240px; height: 100%;
+        color: #fff;
+    }
+
+    #wrapper {
+        height: 100%;
+        .backend.view {
+            height: 100%;
+            > .content {
+                height: 100%;
+            }
+        }
+    }
+
+    header {
+        position: absolute; top: 0; left: 0; z-index: 999;
+        width: 100%; height: $headerHeight;
+        background: rgba(21, 21, 21, .8);
+
+        /** hack ie8 */
+        background: rgb(21, 21, 21)\9;
+
+        .logo {
+            display: inline-block;
+            width: 64px; height: 100%;
+            vertical-align: middle;
+            background: url('../images/hd64.png') no-repeat center center;
+            background-size: 60%;
+
+            /** hack ie8 */
+            background-image: url('../images/hd32.png')\9;
+        }
+
+        nav {
+            display: inline-block;
+            height: 100%;
+        }
+
+        menu {
+            display: inline-block;
+            padding: 0 15px;
+            line-height: $headerHeight;
+
+            a {
+                font-size: 14px; color: #fff;
+            }
+        }
+    }
+
+    .main {
+        height: 100%;
+    }
+
+    .single {
+        section.main {
+            position: absolute; top: 0; left: $leftWidth; right: 0; z-index: 10;
+            box-sizing: border-box;
+            overflow-y: scroll;
+            width: calc(100% - #{$leftWidth}); min-width: calc(#{$centerWidth} + #{$rightWidth}); min-height: 100%; max-height: 100%;
+        }
+    }
+
+    .double {
+        section.center {
+            position: absolute; top: 0; left: $leftWidth; z-index: 10;
+            box-sizing: border-box;
+            overflow-y: scroll;
+            width: $centerWidth; height: 100%; max-height: 100%; min-height: 100%;
+        }
+
+        section.right {
+            position: absolute; top: 0; left: calc(#{$leftWidth} + #{$centerWidth}); z-index: 10;
+            box-sizing: border-box;
+            overflow-y: scroll;
+            min-width: $rightWidth; height: 100%;
+            background: #1f1f1f;
+
+            /** hack ie8 */
+            left: 640px \9;
+        }
+    }
+
+    #mainer {
+        position: absolute; top: $headerHeight; left: 0;
+        width: 100%; height: calc(100% - 42px);
+
+        /** hack ie8 */
+        height: 100%\9;
+
+        > .content {
+            position: relative; top: 0;
+            box-sizing: border-box;
+            height: 100%;
+        }
+
+        nav.left {
+            position: fixed; top: $headerHeight; left: 0; z-index: 100;
+            width: 64px; height: 100%;
+            background: #1f1f1f;
+
+            menu {
+                height: 64px;
+                text-align: center;
+                border-bottom: 3px solid rgba(15, 15, 15, .3);
+
+                &:last-child {
+                    border-bottom: none;
+                }
+
+                &:hover,
+                .selected {
+                    background: rgba(0, 0, 0, .3);
+                    cursor: pointer;
+                }
+
+                a {
+                    display: inline-block;
+                    line-height: 64px; font-size: 28px; color: #c3c3c3;
+                    text-decoration: none;
+                }
+            }
+        }
+    }
+
+    .list {
+        &.content {
+            padding: 2px;
+
+            dd {
+                margin: 2px; padding: 8px 10px;
+                background: rgba(255, 255, 255, .05);
+
+                /** ie8 hack */
+                background: rgb(44, 44, 44)\9;
+
+                &:hover {
+                    background: rgba(155, 155, 155, .15);
+
+                    /** ie8 hack */
+                    background: rgb(51, 51, 51)\9;
+                }
+
+                ul {
+                    display: flex;
+
+                    li {
+                        display: inline-block;
+
+                        > div {
+                           line-height: 1.8;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .detail {
+        &.candidate {
+            padding: 10px;
+
+            dt {
+                margin: 15px 0 5px 0;
+                font-size: 20px; color: #9CD6B8;
+            }
+
+            h5 {
+                padding: 5px 0;
+                line-height: 1.8; font-size: 16px;
+            }
+        }
+    }
+}

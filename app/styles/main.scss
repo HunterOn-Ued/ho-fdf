@@ -1,0 +1,119 @@
+body {
+    height: 100%;
+    font-size: 14px;
+    background: #222;
+}
+
+#front .view {
+    padding: 150px 0 0;
+    height: 100%;
+
+    .content {
+        &.front-pg {
+            margin: 0 auto;
+            width: 400px;
+            border-radius: 5px;
+
+            .front-header {
+                padding: 20px;
+                color: #fff;
+                background: #151515;
+
+                .logo {
+                    height: 41px;
+                    background: url('http://hd.hunteron.com/images/hd-index-logo.png') center center no-repeat;
+                }
+
+                ul {
+                    margin: 25px 0 0 50px;
+                }
+
+                ul > li {
+                    display: inline-block;
+                    margin-right: 32px;
+                    width: 64px;
+                    height: 64px;
+                    border-radius: 50%;
+                    background-color: #1ABC9C;
+                    background-size: contain;
+
+                    a {
+                        display: block;
+                        width: 100%;
+                        height: 100%;
+
+                        &.current {
+                            border-radius: 50%;
+                            background: rgba(26, 188, 156, .5);
+                        }
+                    }
+                }
+
+                ul > li:hover {
+                    background-size: 200%;
+                    cursor: pointer;
+                }
+
+                .upload {
+                    background: url('http://hd.hunteron.com/images/front/upload.gif') no-repeat center center ;
+                    background-color: #fff;
+                    background-size: 80%;
+                }
+
+                .tag {
+                    background: url('http://hd.hunteron.com/images/front/resume.gif') no-repeat center center;
+                    background-color: #fff;
+                    background-size: 80%;
+                }
+
+                .tool {
+                    background: url('http://hd.hunteron.com/images/front/search.gif') no-repeat center center ;
+                    background-color: #fff;
+                    background-size: 80%;
+                }
+
+            }
+
+            .content {
+                padding: 20px;
+                min-height: 150px;
+                color: #fff;
+                line-height: 1.8;
+            }
+
+            .resume-pg {
+                background: #323232;
+
+                h1 {
+                    font-size: 24px;
+                }
+            }
+
+            .login-pg {
+                background: #2f2f2f;
+
+                input[type="text"],
+                input[type="password"] {
+                    padding: 6px;
+                    width: 100%;
+                    height: 44px;
+                    line-height: 32px;
+                    background: #fff;
+                    border-radius: 3px;
+                    font-size: 16px;
+                }
+
+                dl > dd {
+                    padding: 5px 10px;
+                    label > span {
+                        display: block;
+                        padding: 0 0 3px;
+                        color: #fff;
+                        font-weight: bold;
+                        font-size: 14px;
+                    }
+                }
+            }
+        }
+    }
+}

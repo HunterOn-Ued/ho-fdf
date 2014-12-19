@@ -1,0 +1,1088 @@
+@charset "utf-8";
+/*
+ * CSS UTIL
+ * 常用工具类
+ * @author mizi
+ * @version 1.0.20080317
+ * @version 1.4.20140324 重新调整结合Normalize
+ */
+
+/** 清除浮动 */
+.clearfix:after {
+    content: "\200B";
+    display: block;
+    height: 0;
+    clear: both;
+}
+
+.clearfix {
+    overflow: hidden;
+    *zoom: 1;
+}
+
+.cl {
+    clear: left;
+}
+
+.cr {
+    clear: right;
+}
+
+.cb {
+    clear: both;
+}
+
+.zoom {
+    zoom: 1;
+}
+
+/** 浮动 */
+.fl {
+    float: left;
+}
+
+.fr {
+    float: right;
+}
+
+/*
+ * 显示，隐藏，块级与联级转换
+ */
+.hide {
+    display: none;
+}
+
+/** 隐藏，消失，实际不占位 */
+.hidden {
+    visibility: hidden;
+}
+
+/** 看不见，隐形，实际占位 */
+.show, .block {
+    display: block;
+}
+
+/** 显示为块级 -> hide */
+.show-il, .il {
+    display: inline;
+}
+
+/** 显示为联级 -> hide */
+.show-il-b, .il-b {
+    display: inline-block;
+}
+
+/** 显示为inline-block ->hide */
+.visible {
+    visibility: visible;
+}
+
+/** 显示 -> hidden */
+
+/*
+ * 文字排列
+ */
+.tl {
+    text-align: left;
+}
+
+.tr {
+    text-align: right;
+}
+
+.tc {
+    text-align: center;
+}
+
+.vt {
+    vertical-align: top;
+}
+
+.vm {
+    vertical-align: middle;
+}
+
+.vb {
+    vertical-align: bottom;
+}
+
+.nowrap {
+    white-space: nowrap;
+}
+
+/*
+ * 字体样式
+ */
+.b {
+    font-weight: 400;
+}
+
+.bb {
+    font-weight: 500;
+}
+
+/** bold default */
+.bbb {
+    font-weight: 600;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+/*
+ * 鼠标手势
+ */
+.pointer {
+    cursor: pointer;
+}
+
+.no-pointer {
+    cursor: default;
+}
+
+/** 下划线 */
+.unln {
+    text-decoration: underline;
+}
+
+.unln-n {
+    text-decoration: none;
+}
+
+/** 字体颜色 */
+.black {
+    color: #000;
+}
+
+.white {
+    color: #fff;
+}
+
+.red {
+    color: #f00;
+}
+
+.gray {
+    color: #ccc;
+}
+
+.remark {
+    color: #777;
+}
+
+.brown {
+    color: #A38360;
+}
+
+.orange {
+    color: #FF9000
+}
+
+.green {
+    color: #006600
+}
+
+.c999 {
+    color: #999;
+}
+
+.cccc {
+    color: #ccc;
+}
+
+.c666 {
+    color: #666;
+}
+
+.c333 {
+    color: #333;
+}
+
+.key {
+    font-size: 12px;
+    font-style: normal;
+    color: #777
+}
+
+.key:after {
+    content: "："
+}
+
+span.key {
+    display: inline-block;
+    min-width: 50px;
+}
+
+/** 默认金钱样式 */
+.currency {
+    color: #f60;
+    font-family: 'Georgia',serif;
+}
+
+/** 字号大小 */
+.f10px {
+    font-size: 10px;
+    -webkit-transform: scale(0.83);
+    -o-transform: scale(1);
+}
+
+.f11px {
+    font-size: 11px;
+    -webkit-transform: scale(0.91);
+    -o-transform: scale(1);
+}
+
+.f12px {
+    font-size: 12px;
+}
+
+.f14px {
+    font-size: 14px;
+}
+
+.f16px {
+    font-size: 16px;
+}
+
+.f18px {
+    font-size: 18px;
+}
+
+.f20px {
+    font-size: 20px;
+}
+
+.f24px {
+    font-size: 24px;
+}
+
+.f28px {
+    font-size: 28px;
+}
+
+.f32px {
+    font-size: 32px;
+}
+
+.f48px {
+    font-size: 48px;
+}
+
+/*
+ * 间距
+ */
+.lh15 {
+    line-height: 1.5;
+}
+
+.lh18 {
+    line-height: 1.8;
+}
+
+.lh20 {
+    line-height: 2;
+}
+
+.lh16px {
+    line-height: 16px;
+}
+
+.lh18px {
+    line-height: 18px;
+}
+
+.lh20px {
+    line-height: 20px;
+}
+
+.lh22px {
+    line-height: 22px;
+}
+
+.lh24px {
+    line-height: 24px;
+}
+
+.lh28px {
+    line-height: 28px;
+}
+
+.lh30px {
+    line-height: 30px;
+}
+
+.lh32px {
+    line-height: 32px;
+}
+
+.lh40px {
+    line-height: 40px;
+}
+
+/** margin */
+.mt-1px {
+    margin-top: -1px;
+}
+
+.mt-2px {
+    margin-top: -2px;
+}
+
+.mt-3px {
+    margin-top: -3px;
+}
+
+.mt0px {
+    margin-top: 0;
+}
+
+.mt1px {
+    margin-top: 1px;
+}
+
+.mt2px {
+    margin-top: 2px;
+}
+
+.mt3px {
+    margin-top: 3px;
+}
+
+.mt5px {
+    margin-top: 5px;
+}
+
+.mt8px {
+    margin-top: 8px;
+}
+
+.mt10px {
+    margin-top: 10px;
+}
+
+.mt12px {
+    margin-top: 12px;
+}
+
+.mt15px {
+    margin-top: 15px;
+}
+
+.ml-1px {
+    margin-left: -1px;
+}
+
+.ml-2px {
+    margin-left: -2px;
+}
+
+.ml-3px {
+    margin-left: -3px;
+}
+
+.ml0px {
+    margin-left: 0;
+}
+
+.ml1px {
+    margin-left: 1px;
+}
+
+.ml3px {
+    margin-left: 3px;
+}
+
+.ml5px {
+    margin-left: 5px;
+}
+
+.ml8px {
+    margin-left: 8px;
+}
+
+.ml10px {
+    margin-left: 10px;
+}
+
+.ml15px {
+    margin-left: 15px;
+}
+
+.mr0px {
+    margin-right: 0;
+}
+
+.mr1px {
+    margin-right: 1px;
+}
+
+.mr2px {
+    margin-right: 2px;
+}
+
+.mr3px {
+    margin-right: 3px;
+}
+
+.mr5px {
+    margin-right: 5px;
+}
+
+.mr8px {
+    margin-right: 8px;
+}
+
+.mr10px {
+    margin-right: 10px;
+}
+
+.mr15px {
+    margin-right: 15px;
+}
+
+.mb0px {
+    margin-bottom: 0;
+}
+
+.mb1px {
+    margin-bottom: 1px;
+}
+
+.mb3px {
+    margin-bottom: 3px;
+}
+
+.mb5px {
+    margin-bottom: 5px;
+}
+
+.mb8px {
+    margin-bottom: 8px;
+}
+
+.mb10px {
+    margin-bottom: 10px;
+}
+
+.mb15px {
+    margin-bottom: 15px;
+}
+
+.m0px {
+    margin: 0;
+}
+
+.m1px {
+    margin: 1px;
+}
+
+.m3px {
+    margin: 3px;
+}
+
+.m5px {
+    margin: 5px;
+}
+
+.m8px {
+    margin: 8px;
+}
+
+.m10px {
+    margin: 10px;
+}
+
+.m15px {
+    margin: 15px;
+}
+
+.mlr0px {
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.mlr1px {
+    margin-left: 1px;
+    margin-right: 1px;
+}
+
+.mlr3px {
+    margin-left: 3px;
+    margin-right: 3px;
+}
+
+.mlr5px {
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.mlr8px {
+    margin-left: 8px;
+    margin-right: 8px;
+}
+
+.mlr10px {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.mlr15px {
+    margin-left: 15px;
+    margin-right: 15px;
+}
+
+/** padding 距离值 */
+.pt0px {
+    padding-top: 0;
+}
+
+.pt1px {
+    padding-top: 1px;
+}
+
+.pt3px {
+    padding-top: 3px;
+}
+
+.pt5px {
+    padding-top: 5px;
+}
+
+.pt8px {
+    padding-top: 8px;
+}
+
+.pt10px {
+    padding-top: 10px;
+}
+
+.pt15px {
+    padding-top: 15px;
+}
+
+.pl0px {
+    padding-left: 0;
+}
+
+.pl1px {
+    padding-left: 1px;
+}
+
+.pl3px {
+    padding-left: 3px;
+}
+
+.pl5px {
+    padding-left: 5px;
+}
+
+.pl8px {
+    padding-left: 8px;
+}
+
+.pl10px {
+    padding-left: 10px;
+}
+
+.pl15px {
+    padding-left: 15px;
+}
+
+.pr0px {
+    padding-right: 0;
+}
+
+.pr1px {
+    padding-right: 1px;
+}
+
+.pr3px {
+    padding-right: 3px;
+}
+
+.pr5px {
+    padding-right: 5px;
+}
+
+.pr8px {
+    padding-right: 8px;
+}
+
+.pr10px {
+    padding-right: 10px;
+}
+
+.pr15px {
+    padding-right: 15px;
+}
+
+.pb0px {
+    padding-bottom: 0;
+}
+
+.pb1px {
+    padding-bottom: 1px;
+}
+
+.pb3px {
+    padding-bottom: 3px;
+}
+
+.pb5px {
+    padding-bottom: 5px;
+}
+
+.pb8px {
+    padding-bottom: 8px;
+}
+
+.pb10px {
+    padding-bottom: 10px;
+}
+
+.pb15px {
+    padding-bottom: 15px;
+}
+
+.p0px {
+    padding: 0;
+}
+
+.p1px {
+    padding: 1px;
+}
+
+.p3px {
+    padding: 3px;
+}
+
+.p5px {
+    padding: 5px;
+}
+
+.p8px {
+    padding: 8px;
+}
+
+.p10px {
+    padding: 10px;
+}
+
+.p15px {
+    padding: 15px;
+}
+
+.p20px {
+    padding: 20px;
+}
+
+/** 最小宽高度, 常用于 icon  */
+.wh16px {
+    width: 16px;
+    height: 16px;
+}
+
+.wh18px {
+    width: 18px;
+    height: 18px;
+}
+
+.wh20px {
+    width: 20px;
+    height: 20px;
+}
+
+.wh22px {
+    width: 22px;
+    height: 22px;
+}
+
+.wh24px {
+    width: 24px;
+    height: 24px;
+}
+
+.wh28px {
+    width: 28px;
+    height: 28px;
+}
+
+.wh30px {
+    width: 30px;
+    height: 30px;
+}
+
+.wh32px {
+    width: 32px;
+    height: 32px;
+}
+
+.wh40px {
+    width: 40px;
+    height: 40px;
+}
+
+/** 高度 */
+.h10px {
+    height: 10px;
+}
+
+.h20px {
+    height: 20px;
+}
+
+.h30px {
+    height: 30px;
+}
+
+.h50px {
+    height: 50px;
+}
+
+.h80px {
+    height: 80px;
+}
+
+.h100px {
+    height: 100px;
+}
+
+.h130px {
+    height: 130px;
+}
+
+.h150px {
+    height: 150px;
+}
+
+.h180px {
+    height: 180px;
+}
+
+.h200px {
+    height: 200px;
+}
+
+/** 宽度 */
+.w0px {
+    width: 0 !important;
+    min-width: 0 !important;
+    border: none;
+}
+
+.w10px {
+    width: 10px;
+}
+
+.w20px {
+    width: 20px;
+}
+
+.w30px {
+    width: 30px;
+}
+
+.w50px {
+    width: 50px;
+}
+
+.w80px {
+    width: 80px;
+}
+
+.w100px {
+    width: 100px;
+}
+
+.w130px {
+    width: 130px;
+}
+
+.w150px {
+    width: 150px;
+}
+
+.w180px {
+    width: 180px;
+}
+
+.w200px {
+    width: 200px;
+}
+
+.w10pec {
+    width: 10%;
+}
+
+.w20pec {
+    width: 20%;
+}
+
+.w30pec {
+    width: 30%;
+}
+
+.w40pec {
+    width: 40%;
+}
+
+.w50pec {
+    width: 50%;
+}
+
+.w60pec {
+    width: 60%;
+}
+
+.w70pec {
+    width: 70%;
+}
+
+.w80pec {
+    width: 80%;
+}
+
+.w90pec {
+    width: 90%;
+}
+
+.w100pec {
+    width: 100%;
+}
+
+/** text-overflow **/
+.ellipsis {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis
+}
+
+/*border line*/
+.bb-gray {
+    border-bottom: 1px solid #e3e4e8;
+}
+
+/*
+ * 常用样式类
+ */
+
+/*链接*/
+a {
+    color: #007000;
+}
+
+a:hover {
+    color: #009000;
+}
+
+a[disabled] {
+    color: #888;
+    cursor: not-allowed;
+}
+
+a[disabled]:hover {
+    text-decoration: none;
+}
+
+/** 习惯于ul横向显示列表，而ol纵向显示列表 */
+ul.horizotal {
+    font-size: 0;
+    *word-spacing: -1px; /* IE6、7 */
+}
+
+ul.horizontal li {
+    display: inline-block;
+    *display: inline; /* IE8 */
+}
+
+/** 覆盖浏览器默认填写表单项的黄色背景，改为白色 */
+input.autofill:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 1000px #fff inset;
+}
+
+/** tt 只显示数字 */
+tt {
+    font-size: 13px;
+    font-family: "Tahoma",serif;
+}
+
+/** 高亮显示, 黄底红字 */
+mark {
+    color: #f00;
+    background: #ff0;
+}
+
+/** 错误提醒 */
+label.error {
+    color: #f00;
+}
+
+/** 按钮 */
+.btn {
+    min-width: 50px;
+    min-height: 24px;
+    line-height: 24px;
+    color: #FFF;
+    font-size: 14px;
+    padding: 3px 25px;
+    border: 1px solid #1ABC9C;
+    background: #1ABC9C;
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+}
+
+a.btn {
+    text-align: center;
+    display: inline-block;
+    vertical-align: middle;
+    border-radius: 2px;
+    border: 1px solid #1ABC9C;
+    white-space: nowrap;
+}
+
+a.btn:hover {
+    text-decoration: none;
+    color: #FFF
+}
+
+.btn:hover {
+    background: #0eb188;
+}
+
+.btn.inactive,
+.btn.disabled,
+.btn[disabled] {
+    color: #595757;
+    background: #ccc;
+    border: 1px solid #ccc;
+    cursor: not-allowed;
+}
+
+/** btn skin */
+.btn-skin-lightgreen {
+    background: #A9D86E;
+    color: #FFF;
+    border: 1px solid #A9D86E;
+}
+
+.btn-group {
+    display: inline-block;
+    min-height: 24px;
+    line-height: 24px;
+    font-size: 0;
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+}
+
+/*.btn-group .btn {
+	padding-right: 3px;
+}*/
+
+.btn-group .btn-icon {
+    width: 20px;
+    min-height: 24px;
+    line-height: 24px;
+    color: #fff;
+    font-size: 14px;
+    background: #00612a;
+    border: 1px solid #039643;
+    border-left: none;
+}
+
+.btn-group .btn-icon.hover,
+.btn-group .btn-icon:hover {
+    background: #039643;
+}
+
+.btn-group.white .btn,
+.btn-group.white .btn-icon {
+    background: #fff;
+    color: #666;
+}
+
+/** 遮罩mask */
+.mask {
+    position: absolute;
+    left: -9999px;
+    top: -9999px;
+    width: 100%;
+    height: 100%;
+    z-index: 9000;
+    display: none;
+    background: rgba(255, 255, 255, .5) url('http://static.hunterdrive.com/base/images/spinner.gif') no-repeat center 35%;
+    background-size: 10%;
+}
+
+/** 默认头像显示 */
+i.avatar {
+    background-color: #f3f3f3;
+    background-image: url("http://static.hunterdrive.com/base/images/avatar-default.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    border: none;
+}
+
+/** i 标签专用与 字符icon, icon, 头像显示 */
+i {
+    display: inline-block;
+    height: 18px;
+    width: 18px;
+    line-height: 16px;
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+    border: 1px solid transparent;
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+}
+
+i.icon a {
+    display: inline-block;
+    width: 100%; height: 100%;
+}
+
+i.icon a.empty {
+    margin-left: -16px;
+}
+
+i.icon.cirle:hover {
+    color: #fff !important;
+    border-radius: 50%;
+    background: #007935;
+    border: 1px solid #e5e5e5;
+}
+
+/** 表单元素 input */
+input[type=text],
+input[type=password],
+input[type=email] {
+    font-size: 12px;
+    line-height: 24px;
+    height: 26px;
+    border: 1px solid #dedede;
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+}
+
+/** 隐藏 highchart 版权说明 */
+text[text-anchor='end'] tspan {
+    display: none;
+}
+
+textarea {
+    border: 1px solid #dedede;
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+}
