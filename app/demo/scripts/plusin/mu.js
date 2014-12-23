@@ -265,7 +265,7 @@ mu.each = function(/**AOC*/aoc, /**Fn*/fn, /**Obj*/scope){
     // 鸭式判断数组（字符串）aoc.length === + aoc.length
     if(aoc.length === + aoc.length){
         for(var i = 0, l = aoc.length; i < l; i ++){
-            if(fn.call(scope, aoc[i], i, aoc) === false){
+            if(fn.call(scope, aoc[i], i, aoc) != null){
                 return;
             }
         }
@@ -273,7 +273,7 @@ mu.each = function(/**AOC*/aoc, /**Fn*/fn, /**Obj*/scope){
     }else{
         for(var key in aoc){
             if(aoc.hasOwnProperty(key)){
-                if(fn.call(scope, aoc[key], key, aoc) === false){
+                if(fn.call(scope, aoc[key], key, aoc) != null){
                     break;
                 }
             }
@@ -359,6 +359,108 @@ mu.clone = function(/**T*/ t){
     }
 
     return $$.extend({}, t);
+};
+
+/**
+ * mu.newly(T t)
+ * 根据不同的类型，生成空对象
+ * @param t
+ * @returns {*}
+ */
+mu.newly = function(/**T*/ t){
+    switch ($$.type(t)){
+        case "array":
+            return [];
+        case "string":
+            return "";
+        case "date":
+            return new Date();
+        default:
+            return {};
+    }
+};
+
+/**
+ * mu.find(AOC aoc, Function fn, Object scope)
+ * 在集合中按条件搜索，返回第一个匹配条件
+ * @param aoc
+ * @param fn
+ * @param scope
+ * @returns {Array || Object}
+ */
+mu.find = mu.one = function(/*AOC*/aoc, /*Function*/ fn, /**Object*/ scope){
+    var i, val;
+    var isArray = $$.type(aoc, 'array'),
+        rst = isArray ? [] : {};
+    for(i in aoc) if( aoc.hasOwnProperty(i)) {
+        val = aoc[i];
+        if(fn.call(scope, val, i, aoc)){
+            rst = mu.push(rst, val, isArray ? 0 : i);
+            return rst;
+        }
+    }
+};
+
+/**
+ * mu.filter(AOC aoc, Function fn, Object scope)
+ * 在集合中按条件搜索，返回所有匹配条件
+ * @param aoc
+ * @param fn(val, key, aoc)
+ * @param scope
+ * @returns {Array || Object}
+ */
+mu.filter = mu.more = function(/*AOC*/aoc, /*Function*/ fn, /**Object*/ scope){
+    var i, val;
+    var isArray = $$.type(aoc, 'array'),
+        rst = isArray ? [] : {};
+
+    $$.each(aoc, function(val, i){
+        val = aoc[i];
+        if(fn.call(scope, val, i, aoc)){
+            rst = mu.push(rst, val, !isArray && i);
+        }
+    });
+
+    return rst;
+};
+
+/**
+ * mu.pick(AOC aoc, SI key)
+ * 摘出指定项, 若该项不存在则返回 undefined
+ * @param aoc
+ * @param keys
+ * @returns {Array || Object}
+ */
+mu.pick = function(/**AOC*/ aoc, /**SI...*/ keys){
+    var args = $$.args(arguments);
+    aoc = args.shift();
+    var rst = $$.newly(aoc);
+    var isArray = $$.type(aoc, "array");
+    $$.each(args, function(v){
+        rst = $$.push(rst, aoc[v], !isArray && v);
+    });
+    return rst;
+};
+
+/**
+ * mu.pick.except(AOC aoc, SI key)
+ * 摘出指定项剩下的项
+ * @param aoc
+ * @param keys
+ * @returns {*}
+ */
+mu.pick.except = function(/**AOC*/ aoc, /**SI...*/ keys){
+    var args = $$.args(arguments);
+    aoc = args.shift();
+    var rst = $$.newly(aoc);
+    var isArray = $$.type(aoc, "array");
+    var srcKeys = $$.keys(aoc);
+    $$.each(srcKeys, function(v){
+        if( $$.indexOf(args,v) ==-1){
+            rst = $$.push(rst, aoc[v], !isArray && v);
+        }
+    });
+    return rst;
 };
 
 /**
@@ -570,6 +672,24 @@ mu.ns = function(/**String*/ ns, /**T*/ t){
 };
 
 /**
+ * mu.push(AOC aoc, T t, SI key)
+ * 给对象或数组 添加/更新项
+ * 数组默认添加到最后一项，返回原对象/数组
+ * @param aoc
+ * @param val
+ * @param key
+ * @returns {AOC}
+ */
+mu.push = function(/*AOC*/aoc, /**T*/ val, /**SI*/key){
+    if(!key){
+        aoc[aoc.length] = val;
+    }else{
+        aoc[key] = val;
+    }
+    return aoc;
+};
+
+/**
  * -----------------
  * 数组 Array
  * -----------------
@@ -592,11 +712,27 @@ mu.reindex = function(/**Array*/ arr){
 };
 
 /**
+ * mu.indexOf(Array arr, T item)
+ * 返回 item 所处在数组的索引位置
+ * @param arr
+ * @param item
+ * @returns {number}
+ */
+mu.indexOf = function(/**Array*/ arr, /**T*/ item){
+    for(var i = 0, l= arr.length; i < l; i++){
+        if(arr[i] === item){
+            return i;
+        }
+    }
+    return -1;
+};
+
+/**
  * mu.first(Array arr[, Int n])
  * 获得数组的前几项，默认返回数组的第一项
  * @param arr
  * @param n 非必填 || 1
- * @returns {*}
+ * @returns {array}
  */
 mu.first = function(/**Array*/arr, /**Int*/n){
     if(arr == null){
@@ -610,6 +746,13 @@ mu.first = function(/**Array*/arr, /**Int*/n){
     return arr['slice']( 0, n || 1);
 };
 
+/**
+ * mu.first.except(Array arr[, Int n])
+ * 返回数组中除了N个元素外的其他全部元素, 即mu.first后剩下的元素
+ * @param arr
+ * @param n
+ * @returns {array}
+ */
 mu.first.except = function(/**Array*/arr, /**Int*/n){
     if(arr == null){
         return;
@@ -620,6 +763,44 @@ mu.first.except = function(/**Array*/arr, /**Int*/n){
     }
 
     return arr['slice'](n || 1);
+};
+
+/**
+ * mu.last(Array arr[, Int n])
+ * 返回数组中最后N个元素，默认返回最后一个元素
+ * @param arr
+ * @param n
+ * @returns {array}
+ */
+mu.last = function(/**Array*/arr, /**Int*/n){
+    if (arr == null) {
+        return;
+    }
+
+    if (n <= 0) {
+        return [];
+    }
+
+    return arr['slice'](Math.max(arr.length -(n || 1), 0))
+};
+
+/**
+ * mu.last.except(Array arr[, Int n])
+ * 返回数组中最后N个元素的剩下元素
+ * @param arr
+ * @param n
+ * @returns {array}
+ */
+mu.last.except = function(/**Array*/arr, /**Int*/n){
+    if(arr == null){
+        return;
+    }
+
+    if(n <=0 ){
+        return arr;
+    }
+
+    return arr['slice'](0, Math.max(arr.length -(n || 1), 0));
 };
 
 /**
