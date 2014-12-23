@@ -41,6 +41,15 @@ angular.module('fdf.config.utils', [])
     };
 
     /**
+     * 将 arguments 转为一个数组
+     * @param args => arguments
+     * @returns {Array.<T>}
+     */
+    utils.args = function( args ){
+        return Array.prototype.slice.call( args, 0 );
+    };
+
+    /**
      * 本地localStroage 存储读取
      * @param key
      * @param val
@@ -131,6 +140,8 @@ angular.module('fdf.config.utils', [])
             }
         }
     };
+
+
 
 }]);
 

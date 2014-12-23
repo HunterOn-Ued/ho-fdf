@@ -15,6 +15,10 @@ angular.module('demoApp.controllers.front', [])
         app._evt($event);
     };
 
+    var a = [1, 2, 3, 3, 4];
+    var b = {'s':1};
+
+
     return vm;
 }])
 
