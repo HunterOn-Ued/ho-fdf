@@ -694,6 +694,42 @@ mu.push = function(/*AOC*/aoc, /**T*/ val, /**SI*/key){
  * 数组 Array
  * -----------------
  */
+/**
+ * mu.top(Array arr, T t)
+ * 数组添加一项，并置顶
+ * @param arr
+ * @param t
+ * @returns {Array}
+ */
+mu.top = function(/**Array*/ arr, /**T*/ t){
+    arr.unshift(t);
+    return arr;
+};
+
+/**
+ * mu.bottom(Array arr, T t)
+ * 数组添加一项，并放在底部
+ * @param arr
+ * @param t
+ * @returns {Array}
+ */
+mu.bottom =  function(/**Array*/ arr, /**T*/ t){
+    return $$.push(arr, t);
+};
+
+/**
+ *
+ * @param arr
+ * @param t
+ * @param n 所在数组中的索引值 || 0；
+ * @returns {Array}
+ */
+mu.insert = function(/**Array*/ arr, /**T*/ t, /**Int*/ n){
+    var l = arr.length;
+    n = n > l ? l : n < 0 ? 0 : n || 0;
+    arr["splice"](n, 0, t);
+    return arr;
+};
 
 /**
  * mu.reindex(Array arr)
@@ -715,15 +751,30 @@ mu.reindex = function(/**Array*/ arr){
  * mu.indexOf(Array arr, T item)
  * 返回 item 所处在数组的索引位置
  * @param arr
+ * @param fn
  * @param item
  * @returns {number}
  */
-mu.indexOf = function(/**Array*/ arr, /**T*/ item){
-    for(var i = 0, l= arr.length; i < l; i++){
-        if(arr[i] === item){
-            return i;
+mu.indexOf = function(/**Array*/ arr, /**Function*/ fn, /**T*/ item){
+    var args = $$.args(arguments);
+    var i, l, scope, val;
+    if(typeof fn === "function"){
+        scope = item;
+        for(i in arr) if( arr.hasOwnProperty(i)) {
+            val = arr[i];
+            if(fn.call(scope, val, i, arr)){
+                return i;
+            }
+        }
+    }else{
+        item = args[1];
+        for(i = 0, l= arr.length; i < l; i++){
+            if(arr[i] === item){
+                return i;
+            }
         }
     }
+
     return -1;
 };
 
@@ -801,6 +852,82 @@ mu.last.except = function(/**Array*/arr, /**Int*/n){
     }
 
     return arr['slice'](0, Math.max(arr.length -(n || 1), 0));
+};
+
+/**
+ * mu.update(Array arr, Function fn, T item)
+ * 更新列表数据
+ * @param arr
+ * @param fn 更新数据的条件，可以是fn， 也可以是基本数据值
+ * @param item 更新的数据
+ * @returns {Array}
+ */
+
+/** exp.
+    var list = [
+        {id:1, name:"mizi.lin", age:32 },
+        {id:2, name:"张三", age:13 },
+        {id:3, name:"李思思", age:22 },
+        {id:4, name:"王五", age:111 },
+        "test"
+    ];
+
+    var item = {id:3, name:"李四", age:28 };
+
+    mu.update(list, function(o){
+        return o.id == this.id;
+    }, item);
+
+    mu.update(list, "test", item);
+
+*/
+
+mu.update = function(/**Array*/arr, /**Function*/ fn, /**T*/ item){
+    var index = $$.indexOf(arr, fn, item);
+    if(index === -1 ){
+        console.log('error:::::更新失败:::::');
+        return arr;
+    }
+    arr[index] = item;
+    return arr;
+};
+
+/**
+ * mu.update.top(Array arr, Function fn, T item)
+ * 更新数据，并将该项置顶
+ * @param arr
+ * @param fn
+ * @param item
+ * @returns {Array}
+ */
+mu.update.top = function(/**Array*/ arr, /**Function*/ fn, /**T*/ item){
+    var index = $$.indexOf(arr, fn, item);
+    if(index === -1 ){
+        console.log('error:::::更新失败:::::');
+        return arr;
+    }
+    delete arr[index];
+    arr.unshift(item);
+    return $$.reindex(arr);
+};
+
+/**
+ * mu.update.bottom(Array arr, Function fn, T item)
+ * 更新数据，并将该项移到数组底部
+ * @param arr
+ * @param fn
+ * @param item
+ * @returns {Array}
+ */
+mu.update.bottom = function(/**Array*/ arr, /**Function*/ fn, /**T*/ item){
+    var index = $$.indexOf(arr, fn, item);
+    if(index === -1 ){
+        console.log('error:::::更新失败:::::');
+        return arr;
+    }
+    delete arr[index];
+    arr[arr.length] = item;
+    return $$.reindex(arr);
 };
 
 /**
