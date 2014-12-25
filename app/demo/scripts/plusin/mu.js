@@ -9,19 +9,23 @@
  */
 (function(window, undefined){
 
-'use strict';
+//'use strict';
 // 创建闭包全局
 var root = this;
+var $$, mu;
 
 // 创建对象式的调用方式， 返回一个包装器
 // 包装器对象中包含所有的 mu 方法
 // mu 为一个函数对象，实例服从单例模式
-var mu = function(obj){
-    return mu[obj];
+// 模拟 Underscore 的 _(obj)
+mu = $$ = function(/**T*/obj){
+    //如果参数为$$对象，说明已经实例化过了，所以直接返回
+    if (obj instanceof $$) return obj;
+    //如果实例化时没有使用new，那么在这里包装一下，使得this指向该实例
+    if (!(this instanceof $$)) return new $$(obj);
+    //将obj保存在内部属性_wrapped中
+    this._wrapped = obj;
 };
-
-// 创建内部私有替代器
-var $$ = mu;
 
 mu.VERSION = '1.5.0';
 
@@ -145,6 +149,7 @@ mu.type = function(/**T*/ t, /**String*/type ){
 /**
  * mu.dat(T dat, T ...t)
  * 若 dat 为fn 的时候，参数为 t， 若非 fn 则直接返回
+ * dat 为 fn 就是闭包的写法
  * @param dat
  * @param t
  * @returns {T}
@@ -265,7 +270,7 @@ mu.each = function(/**AOC*/aoc, /**Fn*/fn, /**Obj*/scope){
     // 鸭式判断数组（字符串）aoc.length === + aoc.length
     if(aoc.length === + aoc.length){
         for(var i = 0, l = aoc.length; i < l; i ++){
-            if(fn.call(scope, aoc[i], i, aoc) != null){
+            if(fn.call(scope, aoc[i], i, aoc) == false){
                 return;
             }
         }
@@ -273,7 +278,7 @@ mu.each = function(/**AOC*/aoc, /**Fn*/fn, /**Obj*/scope){
     }else{
         for(var key in aoc){
             if(aoc.hasOwnProperty(key)){
-                if(fn.call(scope, aoc[key], key, aoc) != null){
+                if(fn.call(scope, aoc[key], key, aoc) == false){
                     break;
                 }
             }
@@ -477,7 +482,7 @@ mu.pick.except = function(/**AOC*/ aoc, /**SI...*/ keys){
  * @returns {Object}
  */
 mu.extend = function(/**Obj*/target, /**obj*/src ){
-    if(typeof t != "object"){
+    if(typeof target != "object"){
         return target;
     }
 
@@ -687,6 +692,32 @@ mu.push = function(/*AOC*/aoc, /**T*/ val, /**SI*/key){
         aoc[key] = val;
     }
     return aoc;
+};
+
+/**
+ * mu.remove(AOC aoc, SI si)
+ * 删除对象或数组某一项
+ * @param aoc
+ * @param si 数组为 Int index, 对象 String key
+ * @returns {AOC} array: 重建索引值
+ */
+mu.remove = function(/*AOC*/aoc, /**SI*/si){
+    if(aoc.length === + aoc.length){
+        aoc["splice"](si, 1);
+    }else{
+        delete aoc[si];
+    }
+    return aoc;
+};
+
+/**
+ * mu.size(AOC aoc)
+ * 返回对象属性个数 && 数组长度
+ * @param aoc
+ * @returns {int}
+ */
+mu.size = function(/*AOC*/ aoc){
+    return $$.keys(aoc).length;
 };
 
 /**
@@ -931,6 +962,55 @@ mu.update.bottom = function(/**Array*/ arr, /**Function*/ fn, /**T*/ item){
 };
 
 /**
+ * mu.unique(Array arr)
+ * 数组去重，重建索引
+ * @param arr
+ * @returns {Array}
+ */
+mu.unique = function(arr){
+    var rst = [], l = arr.length;
+    for(var i = 0; i < l; i++) {
+        for(var j = i + 1; j <= l; j++) {
+            if( arr[i] === arr[j]){
+                l = $$.remove(arr, j).length;
+                break;
+            }
+            rst[i] = arr[i];
+        }
+    }
+
+    return rst;
+};
+
+/**
+ * mu.pluck(Array arr, String key)
+ * 获得列表每个对象的key的属性值，返回一个数组
+ * @param arr
+ * @param key
+ * @returns {*}
+ */
+mu.pluck = function(/**Array*/arr, /**String*/key){
+    return $$.map(arr, function(v){
+        return v[key];
+    })
+};
+
+/**
+ * mu.function(Object obj)
+ * 返回一个对象的方法名，并排序
+ * @param obj
+ * @returns {Array.<T>}
+ */
+mu.functions = function(/**Object*/obj) {
+    var names = [];
+    var key;
+    for (key in obj) if (typeof obj[key] === "function") {
+        names.push(key);
+    }
+    return names.sort();
+};
+
+/**
  * -----------------
  * 字符串 String
  * -----------------
@@ -1053,6 +1133,14 @@ mu.timestamp = function(/**Date*/dt){
  * -----------------
  */
 
+mu.isFunction = function(/**T*/ t){
+    return typeof t === "function";
+};
+
+mu.isObject = function(/**T*/ t){
+    return $$.type(t, "object");
+};
+
 /**
  * mu.eq(T target, T src...)
  * 基本类型比较（强比较）
@@ -1092,9 +1180,97 @@ mu.ie = function(/**Int*/ ver){
     }
 };
 
+mu.result = function(object, property) {
+    if (object == null) return void 0;
+    var value = object[property];
+    return typeof value === "function" ? object[property]() : value;
+};
+
+/**
+ * -----------------
+ * 链式调用语法
+ * -----------------
+ */
+
+/**
+ * mu.chain(T t)
+ * 返回一个封装的对象. 在封装的对象上调用方法会返回封装的对象本身, 直道 value 方法调用为止.
+ * 需要注意的是第一个参数为obj，在对象式调用时会省掉
+ * @param t
+ * @return mu
+ */
+mu.chain = function(/**T*/t){
+    var instance = $$(t);
+    instance._chain = true;
+    return instance;
+};
+
+/**
+ * _result(t)
+ * 判断是否链式调用
+ * @param t
+ * @returns {mu|*}
+ * @private
+ */
+var _result = function(/**T*/ t) {
+    return this._chain ? $$(t).chain() : t;
+};
+
+/**
+ * mu.tap(T t, Function fn)
+ * 主要用来调试链式调用的中间步骤
+ * 把 t 作为参数来调用fn， 并返回本身 t
+ * @param t
+ * @param fn
+ * @returns {T}
+ */
+mu.tap = function(/**T*/t, /**Function*/ fn){
+    fn(t);
+    return t;
+};
+
+/**
+ * chain..value()
+ * 获得链接调用的最终结果
+ * @returns {T|*|_._wrapped|h._wrapped}
+ */
+mu.prototype.value = function() {
+    return this._wrapped;
+};
+
+//此方法暴露出来，供自定义扩展使用
+mu.mixin = function(obj) {
+    $$.each($$.functions(obj), function(name){
+        //定义方法，供函数式调用
+        var func = $$[name] = obj[name];
+        //定义到prototype上，供对象式调用
+        $$.prototype[name] = function() {
+            //将实例化时传递给构造函数的对象作为第一个参数
+            var args = [this._wrapped];
+            // 合并参数
+            Array.prototype.push.apply(args, arguments);
+            //判断是否要链式调用
+            return _result.call(this, func.apply($$, args));
+        };
+
+        var funcs = $$.functions(func);
+        if(funcs.length){
+            $$.each(funcs, function(method){
+                $$.prototype[name+"."+method] = function() {
+                    var args = [this._wrapped];
+                    Array.prototype.push.apply(args, arguments);
+                    return _result.call(this, func[method].apply($$, args));
+                };
+            });
+        }
+    });
+};
+
+//到$$上的方法附加到$$的prototype上，实现对象式调用
+mu.mixin($$);
 
 
-mu.extend(mu);
+
 window.mu = mu;
 })(window);
 

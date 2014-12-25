@@ -232,7 +232,7 @@ angular.module('fdf.config.setting', [])
 
         // 方法类
         // angular 1.2.27 的 extend 有bug， 1.3.2 无
-        app = utils.extend(app, utils);
+        app = mu.extend(app, utils);
 
         // 常用服务初始化
         app.$injector = $injector;
@@ -626,7 +626,7 @@ angular.module('fdf.config.utils', [])
      * underscroe 中文文档
      * http://www.css88.com/doc/underscore/
      */
-    utils = angular.extend(utils, _);
+    utils = angular.extend(utils, mu);
     var __ = {};
 
     /**
