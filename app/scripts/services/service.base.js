@@ -19,36 +19,129 @@ angular.module('fdf.services.base', [])
         };
 
         /**
-         * 事件处理
+         * 简单事件记录
+         * 没有相关遮罩效果等
          * @param e
-         * @param res
-         * @param opts
+         * @param name
          * @param fn
-         * @returns {*}
          */
-        base.evt = function(e, res, opts, fn){
-            var arg = Array.prototype.slice.call(arguments, 0);
-            e = arg.shift();
-            res = arg.shift();
+        base.evt = function(e, name, fn){
+            //发送用户行为
+            base.bahavior(e, name || '');
+            //执行回调喊出
+            fn && fn.call(null, e);
+        };
 
-            // 若倒数两个参数都是函数，则倒1为 errorfn, 倒2为 successfn
-            // 若只有倒1为函数，则为 successfn
-            fn = arg[arg.length - 1];
-            var _fn = arg[arg.length - 2];
-            var fn_ = function(rst){
-                base.evt.end(e);
-                return fn.call(window, rst);
-            };
+        base.disabled = function (elm) {
 
-            if(app.isFunction(_fn)){
-                fn = _fn;
-                arg[arg.length - 2] = fn_;
+        };
+
+        base.disabled.remove = function(elm){
+
+        };
+
+        base.mask = function(elm){
+
+        };
+
+        base.mask.remove = function(elm){
+
+        };
+
+        base.loading = function(elm){
+
+        };
+
+        base.loading.remove = function(elm){
+
+        };
+
+        /**
+         * 事件整合处理
+         * @param opts
+         * @param eventfn
+         * @param successfn
+         * @param errorfn
+         */
+        base.event = function(opts, eventfn, successfn, errorfn){
+            var args = app.args(arguments), rst;
+
+            if(app.type(args[0], "function")){
+                opts = {};
+                eventfn = args[0];
+                successfn = args[1] || app.noop();
+                errorfn = args[2] || app.noop();
             }
 
-            arg[arg.length-1] = fn_;
-            base.evt.begin(e);
+            opts = app.extend({
+                e: null,
+                elm: null,
+                name: "",
+                isLoading: true,
+                isMask: true,
+                isDisable: true
+            }, opts);
 
-            return res.apply(window, arg);
+            var e = opts.e;
+            var elm = opts.elm || e.target;
+            // 发送用户行为
+            base.bahavior(e, opts.name);
+
+            if(args.length === 1){
+                return;
+            }else if(args.length === 2){
+                rst = false;
+                successfn = eventfn;
+            }else{
+                rst = eventfn.call(null, e);
+            }
+
+            //结束事件
+            var thend = function(opts, fn){
+                var e = opts.e;
+                var elm = opts.elm || e.target;
+                // 禁止双击事件
+                opts.isDisabled && base.disabled.remove(elm);
+                // 遮罩
+                opts.isMask && base.mask.remove(elm);
+                // 显示Loading载入条
+                opts.isLoading && base.loading.remove(elm);
+
+                fn.call(null, e);
+            };
+
+            // 禁止双击事件
+            opts.isDisabled && base.disabled(elm);
+            // 遮罩
+            opts.isMask && base.mask(elm);
+            // 显示Loading载入条
+            opts.isLoading && base.loading(elm);
+
+            // 若返回值为false，则执行原方法
+            app.run(!rst, function(){
+                successfn();
+            }, function(){
+                // 若返回对象，则默认返回 resource
+                app.run(app.type(rst, "object"), function(){
+                    rst.$promise.then(function(rst){
+                        var args = app.args(arguments);
+                        thend(opts, function(e){
+                            successfn.apply(null, args);
+                        });
+                    }, function(err){
+                        var args = app.args(arguments);
+                        thend(opts, function(e){
+                            errorfn.apply(null, args);
+                        });
+
+                    });
+                }, function(){
+                    thend(opts, function(e){
+                        successfn();
+                    });
+                });
+            });
+
         };
 
         /**
@@ -88,8 +181,8 @@ angular.module('fdf.services.base', [])
                 return app.storage(app.KEY.VERSION) || '1.1.0';
             });
 
-            // IE8 不设置当前版本号
-            app.run(app.ie() == 8, function(){
+            // IE8 不设置当前版本号, 使用时间戳，强制刷新（清缓存）
+            app.run(app.equals(app.ie(), 8, 9), function(){
                ver = app.timestamp();
             });
 

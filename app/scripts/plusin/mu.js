@@ -1403,7 +1403,7 @@ mu.isArray = function(/**T*/ t){
     mu.eq("0", 1, 2, false, 0, "ddd") =-> false;
     mu.eq("0", 1, 2, "0") =-> true;
  */
-mu.eq = mu.equlas = function(/**T*/ target, /**T...*/ src){
+mu.eq = mu.equals = function(/**T*/ target, /**T...*/ src){
     var args = $$.args(arguments);
     if(args.length === 2){
         return target === src;

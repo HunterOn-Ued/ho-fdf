@@ -29,3 +29,6 @@ git ls-remote --tags
 //删除服务端tag
 git push origin :refs/tags/1.1.0
 
+// browerify
+browserify fdf.src.js > fdf.js
+

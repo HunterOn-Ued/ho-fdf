@@ -2,7 +2,12 @@
 
 'use strict';
 
-angular.module('fdf.controllers.candidate', [])
+angular.module('demoApp.controllers.candidate', [])
+
+.run(['app', function(app){
+    app.$Candidate = app.$injector.get('$Candidate');
+    app.$_Candidate = app.$injector.get('$_Candidate');
+}])
 
 .controller('CandidateListCtrl', ['app', function (app) {
     var vm = this;
@@ -10,7 +15,6 @@ angular.module('fdf.controllers.candidate', [])
     app.$_Candidate.list.get({}, function (res) {
         vm.list = res.data;
     });
-
 }])
 
 .controller('CandidateDetailCtrl', ['app', function (app) {

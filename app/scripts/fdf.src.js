@@ -1,3 +1,4 @@
+require('./plusin/mu.js');
 require('./config/global.js');
 require('./config/setting.js');
 require('./utils/utils.js');

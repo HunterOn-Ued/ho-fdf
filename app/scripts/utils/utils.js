@@ -13,41 +13,8 @@ angular.module('fdf.config.utils', [])
      * underscroe 中文文档
      * http://www.css88.com/doc/underscore/
      */
-    utils = angular.extend(utils, _);
+    utils = angular.extend(utils, mu);
     var __ = {};
-
-    /**
-     * 匿名函数输出
-     * @param condition
-     * @param fn
-     * @param fn1
-     * @returns {*}
-     */
-    utils.run = function (condition, fn, fn1) {
-        if (utils.isFunction(condition)) {
-            return condition();
-        } else {
-            return condition ? fn() : fn1 ? fn1() : null;
-        }
-    };
-
-    /**
-     * 判断ie浏览器版本
-     * @returns {Number|*} -> 大于0 ie
-     */
-    utils.ie = function(){
-        var myNav = navigator.userAgent.toLowerCase();
-        return (myNav.indexOf('msie') != -1) ? parseInt(myNav.split('msie')[1]) : false;
-    };
-
-    /**
-     * 将 arguments 转为一个数组
-     * @param args => arguments
-     * @returns {Array.<T>}
-     */
-    utils.args = function( args ){
-        return Array.prototype.slice.call( args, 0 );
-    };
 
     /**
      * 本地localStroage 存储读取
@@ -70,14 +37,6 @@ angular.module('fdf.config.utils', [])
         }, function () {
             localStorage.setItem(key, JSON.stringify(val));
         });
-    };
-
-    /**
-     * 获得当前时间戳
-     * @returns {number}
-     */
-    utils.timestamp = function () {
-        return (+new Date());
     };
 
     /**

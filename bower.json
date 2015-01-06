@@ -1,11 +1,15 @@
 {
     "name": "ho-fdf",
-    "version": "1.1.0",
+    "version": "1.2.2",
     "authors": [
         "Mizi <mizi.lin@hunteron.com>"
     ],
     "description": "hunteron front-end development framework // bower 版本必须升级到1.3.9以上",
-    "main": "app/scripts/app.js",
+    "main": [
+        "app/scripts/fdf.js",
+        "app/styles/reset.css",
+        "app/styles/util.css"
+    ],
     "dependencies": {
         "angular": "1.2.26",
         "json3": "~3.3.1",
@@ -20,7 +24,8 @@
         "angular-ui-router": "0.2.13",
         "angular-bootstrap": "0.12.0",
         "angular-ui": "0.4.0",
-        "notify.js": "~1.2.3"
+        "notify.js": "~1.2.3",
+        "lodash": "~2.4.1"
     },
     "keywords": [
         "hunteron",
