@@ -521,6 +521,18 @@ mu.extend = function(/**Obj*/target, /**obj*/src ){
 };
 
 /**
+ * mu.isEmptyObject(Object obj)
+ * 判断对象是否为空对象
+ * @param obj
+ * @returns {boolean}
+ */
+mu.isEmptyObject = function(/**Object*/obj){
+    for(var key in obj) if(t.hasOwnProperty(key)) {
+        return false;
+    }
+};
+
+/**
  * mu.has(Object obj, String key)
  * 判断对象是否有key这个属性
  * @param obj
@@ -1409,7 +1421,7 @@ mu.eq = mu.equals = function(/**T*/ target, /**T...*/ src){
         return target === src;
     }else{
         for(var i = 1, l = args.length; i < l; i++ ){
-            if( src ===args[i] ){
+            if(target ===args[i]){
                 return true;
             }
         }

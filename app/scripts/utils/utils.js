@@ -55,6 +55,7 @@ angular.module('fdf.config.utils', [])
             host: a.hostname,
             port: a.port,
             query: a.search,
+            origin: a.origin,
             params: (function () {
                 var ret = {},
                     seg = a.search.replace(/^\?/, '').split('&'),
@@ -93,9 +94,9 @@ angular.module('fdf.config.utils', [])
             var o = utils.parseUrl(url),
                 p = utils.params(params);
             if (o.query) {
-                return o.path + o.query + '&' + p;
+                return o.origin + o.path + o.query + '&' + p;
             } else {
-                return o.path + '?' + p;
+                return o.origin + o.path + '?' + p;
             }
         }
     };

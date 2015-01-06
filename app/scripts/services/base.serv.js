@@ -83,7 +83,7 @@ angular.module('fdf.services.base', [])
             }, opts);
 
             var e = opts.e;
-            var elm = opts.elm || e.target;
+            var elm = angular.element(opts.elm || e.target);
             // 发送用户行为
             base.bahavior(e, opts.name);
 
@@ -219,11 +219,25 @@ angular.module('fdf.services.base', [])
          * @param name
          */
         base.bahavior = function (e, name) {
-            if(!app.SYS.BAHAVIOR.RUN){
-               return false;
-            }
+            //if(!app.SYS.BAHAVIOR.RUN){
+            //   return false;
+            //}
 
             var currentUser = base.currentUser();
+
+            var elm = angular.element(e.target);
+            var moduleElm, moduleName, position;
+
+            // 向上冒泡寻找当前dom所在的module
+            moduleElm = elm.hasClass('fdf-module') ? elm: elm.closest('.fdf-module');
+            moduleName = moduleElm ? moduleElm.attr("fdf-module") : '';
+
+            // 获得当前dom的scope，若有$index，则为该dom 所在list 的位置
+            position = elm.scope().$index;
+            position = position != null ? position + 1: null;
+
+            // 若evt没传入name，则再到dom中获取
+            name = name || elm.attr('fdf-name');
 
             var evtInfo = {
                 type: e.type,
@@ -279,18 +293,23 @@ angular.module('fdf.services.base', [])
 
             //	点击元素所在模块位置（clickPosition）
             //	页面停留时间（duration）
-
             // 向后端传递
-            app.$_Base.bahavior.post({
+            var bhinfo = JSON.stringify({
                 userId: currentUser.id,
                 clickTime: evtInfo.timeStamp,
                 clickPage: app.$rootScope.page,
                 clickElement: name,
-                url: app.$location.path(),
+                clickModule: moduleName,
+                clickPosition: position,
+                url: app.$location.absUrl(),
                 duration: '',
                 userAgent: '',
                 token: '',
                 fe: evtInfo
+            });
+
+            app.$_Base.bahavior.post({
+                bahavior:bhinfo
             });
         };
 

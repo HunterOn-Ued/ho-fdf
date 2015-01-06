@@ -936,6 +936,18 @@ mu.extend = function(/**Obj*/target, /**obj*/src ){
 };
 
 /**
+ * mu.isEmptyObject(Object obj)
+ * 判断对象是否为空对象
+ * @param obj
+ * @returns {boolean}
+ */
+mu.isEmptyObject = function(/**Object*/obj){
+    for(var key in obj) if(t.hasOwnProperty(key)) {
+        return false;
+    }
+};
+
+/**
  * mu.has(Object obj, String key)
  * 判断对象是否有key这个属性
  * @param obj
@@ -1824,7 +1836,7 @@ mu.eq = mu.equals = function(/**T*/ target, /**T...*/ src){
         return target === src;
     }else{
         for(var i = 1, l = args.length; i < l; i++ ){
-            if( src ===args[i] ){
+            if(target ===args[i]){
                 return true;
             }
         }
@@ -1950,7 +1962,7 @@ angular.module('fdf.resources.base', [])
 
 .service('$_Base', ['$resource', function ($resource) {
     return {
-        bahavior: $resource('/bahavior', null, {
+        bahavior: $resource('http://post.hunteron.com/post/', null, {
             'post': {
                 method: 'POST',
                 uri: 'bahavior'
@@ -2046,7 +2058,7 @@ angular.module('fdf.services.base', [])
             }, opts);
 
             var e = opts.e;
-            var elm = opts.elm || e.target;
+            var elm = angular.element(opts.elm || e.target);
             // 发送用户行为
             base.bahavior(e, opts.name);
 
@@ -2179,13 +2191,28 @@ angular.module('fdf.services.base', [])
         /**
          * 保存用户行为
          * @param e
+         * @param name
          */
-        base.bahavior = function (e) {
-            if(!app.SYS.BAHAVIOR.RUN){
-               return false;
-            }
+        base.bahavior = function (e, name) {
+            //if(!app.SYS.BAHAVIOR.RUN){
+            //   return false;
+            //}
 
             var currentUser = base.currentUser();
+
+            var elm = angular.element(e.target);
+            var moduleElm, moduleName, position;
+
+            // 向上冒泡寻找当前dom所在的module
+            moduleElm = elm.hasClass('fdf-module') ? elm: elm.closest('.fdf-module');
+            moduleName = moduleElm ? moduleElm.attr("fdf-module") : '';
+
+            // 获得当前dom的scope，若有$index，则为该dom 所在list 的位置
+            position = elm.scope().$index;
+            position = position != null ? position + 1: null;
+
+            // 若evt没传入name，则再到dom中获取
+            name = name || elm.attr('fdf-name');
 
             var evtInfo = {
                 type: e.type,
@@ -2241,16 +2268,23 @@ angular.module('fdf.services.base', [])
 
             //	点击元素所在模块位置（clickPosition）
             //	页面停留时间（duration）
-
             // 向后端传递
-            app.$_Base.bahavior.post({
+            var bhinfo = JSON.stringify({
                 userId: currentUser.id,
-                userName: currentUser.trueName,
                 clickTime: evtInfo.timeStamp,
-                clickModule: app.$rootScope.module,
-                clickElement: evtInfo.info.target.tagName,
-                clickPage: app.$location.path(),
-                evtInfo: evtInfo
+                clickPage: app.$rootScope.page,
+                clickElement: name,
+                clickModule: moduleName,
+                clickPosition: position,
+                url: app.$location.absUrl(),
+                duration: '',
+                userAgent: '',
+                token: '',
+                fe: evtInfo
+            });
+
+            app.$_Base.bahavior.post({
+                bahavior:bhinfo
             });
         };
 
@@ -2345,6 +2379,7 @@ angular.module('fdf.config.utils', [])
             host: a.hostname,
             port: a.port,
             query: a.search,
+            origin: a.origin,
             params: (function () {
                 var ret = {},
                     seg = a.search.replace(/^\?/, '').split('&'),
@@ -2383,9 +2418,9 @@ angular.module('fdf.config.utils', [])
             var o = utils.parseUrl(url),
                 p = utils.params(params);
             if (o.query) {
-                return o.path + o.query + '&' + p;
+                return o.origin + o.path + o.query + '&' + p;
             } else {
-                return o.path + '?' + p;
+                return o.origin + o.path + '?' + p;
             }
         }
     };
