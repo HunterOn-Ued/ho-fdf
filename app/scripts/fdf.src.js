@@ -2,8 +2,9 @@ require('./plusin/mu.js');
 require('./config/global.js');
 require('./config/setting.js');
 require('./utils/utils.js');
-require('./resources/resource.base.js');
-require('./services/service.base.js');
+require('./directives/base.directive.js');
+require('./resources/base.res.js');
+require('./services/base.serv.js');
 
 (function(window, angular, undefined){
     'use strict';
@@ -27,6 +28,7 @@ require('./services/service.base.js');
     ]);
 
     angular.module('fdf.directives', [
+      'fdf.directives.base'
 //    'fdf.directives.dom',
 //    'fdf.directives.ui',
 //    'fdf.directives.widget'
