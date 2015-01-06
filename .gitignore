@@ -6,5 +6,4 @@ old/
 coverage/
 karma.conf.js
 .idea/
-dist/
 app/lib

@@ -216,8 +216,9 @@ angular.module('fdf.services.base', [])
         /**
          * 保存用户行为
          * @param e
+         * @param name
          */
-        base.bahavior = function (e) {
+        base.bahavior = function (e, name) {
             if(!app.SYS.BAHAVIOR.RUN){
                return false;
             }
@@ -282,12 +283,14 @@ angular.module('fdf.services.base', [])
             // 向后端传递
             app.$_Base.bahavior.post({
                 userId: currentUser.id,
-                userName: currentUser.trueName,
                 clickTime: evtInfo.timeStamp,
-                clickModule: app.$rootScope.module,
-                clickElement: evtInfo.info.target.tagName,
-                clickPage: app.$location.path(),
-                evtInfo: evtInfo
+                clickPage: app.$rootScope.page,
+                clickElement: name,
+                url: app.$location.path(),
+                duration: '',
+                userAgent: '',
+                token: '',
+                fe: evtInfo
             });
         };
 
