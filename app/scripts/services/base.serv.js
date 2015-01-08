@@ -239,7 +239,10 @@ angular.module('fdf.services.base', [])
             position = position != null ? position + 1 : null;
 
             // 若evt没传入name，则再到dom中获取
-            name = name || elm.attr('fdf-name');
+            var name = opts.name || elm.attr('fdf-name');
+            if(!app.isEmptyObject(ELM)){
+                name = ELM[name];
+            }
 
             var lastUrl = app.$rootScope.lastUrl;
             app.$rootScope.lastUrl = app.$location.absUrl();

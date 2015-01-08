@@ -34,10 +34,11 @@ angular.module('fdf.config.setting', [])
     }];
 
     //默认给每次ajax 请求加上 head 信息
-    //$httpProvider.defaults.headers.common = angular.extend($httpProvider.defaults.headers.common, {
-    //    'Device': 'Desktop',
-    //    'X-citime': +new Date()
-    //});
+    $httpProvider.defaults.headers.common = angular.extend($httpProvider.defaults.headers.common, {
+        //'Device': 'Desktop',
+        //'X-citime': +new Date(),
+          'X-PROP': ''
+    });
 
     /**
      * http 拦截器设置
