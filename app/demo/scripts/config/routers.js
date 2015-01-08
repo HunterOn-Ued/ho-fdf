@@ -33,6 +33,7 @@
                             templateUrl: '/demo/views/front.html',
                             controller: ['app', function (app) {
                                 app.$rootScope.area = app.AREA_FRONT;
+                                app.$rootScope.channel ="P_FRONT";
                             }]
                         }
                     }
@@ -85,8 +86,13 @@
                         'backend@': {
                             templateUrl: '/demo/views/backend.html',
                             controller: ['app', function (app) {
+                                var vm = this;
                                 app.$rootScope.area = app.AREA_BACKEND;
-                            }]
+                                app.$rootScope.channel ="P_BACKEND";
+                                vm.module = "backend";
+                                return vm;
+                            }],
+                            controllerAs: 'backend'
                         }
                     }
                 })
@@ -102,7 +108,11 @@
                         'main@b': {
                             templateUrl: '/demo/views/backend/layout.html',
                             controller: ['app', function (app) {
+
                                 app.$rootScope.layout = app.LAYOUT_DOUBLE;
+                                app.$rootScope.channel ="P_BACKEND";
+
+
                             }]
                         }
                     }
@@ -114,7 +124,8 @@
                     views: {
                         'list@b.m': {
                             templateUrl: '/demo/views/backend/candidate/candidate.list.html',
-                            controller: 'CandidateListCtrl as cdds'
+                            controller: 'CandidateListCtrl',
+                            controllerAs: 'cdds'
                         }
                     }
                 })

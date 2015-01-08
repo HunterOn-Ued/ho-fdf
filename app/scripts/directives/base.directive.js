@@ -3,6 +3,22 @@
 
     angular.module('fdf.directives.base', [])
 
+    .directive('fdfLink', ['app', function(app){
+        return {
+            restrict: 'AC',
+            transclude: false,
+            link: function(scope, elm, attr){
+                elm.bind('click', function(e){
+                    app.$Base.event({
+                        e: e,
+                        name: attr.fdfLink,
+                        isChangePage: attr.fdfPage === "true"
+                    });
+                });
+            }
+        }
+    }])
+
     .directive('fdfBtn', ['app', function(app){
         return {
             restrict: 'AC',

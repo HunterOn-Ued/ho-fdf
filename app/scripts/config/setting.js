@@ -34,10 +34,10 @@ angular.module('fdf.config.setting', [])
     }];
 
     //默认给每次ajax 请求加上 head 信息
-    $httpProvider.defaults.headers.common = angular.extend($httpProvider.defaults.headers.common, {
-        'Device': 'Desktop',
-        'X-citime': +new Date()
-    });
+    //$httpProvider.defaults.headers.common = angular.extend($httpProvider.defaults.headers.common, {
+    //    'Device': 'Desktop',
+    //    'X-citime': +new Date()
+    //});
 
     /**
      * http 拦截器设置
@@ -198,7 +198,7 @@ angular.module('fdf.config.setting', [])
          * @param e => $event
          */
         app._evt = function(e){
-            return app.$Base.evt.begin(e);
+            return app.$Base.evt(e);
         };
 
         /**
@@ -208,16 +208,6 @@ angular.module('fdf.config.setting', [])
          */
         app._ver = function (url){
             return app.$Base.ver(url);
-        };
-
-        app._uri = function(url, type){
-            switch(type){
-                case 'bahavior':
-                    return 'bahavior' + url;
-                default:
-                    var uri = location.pathname;
-                    return uri + url;
-            }
         };
 
         //身份令牌的设置
@@ -233,6 +223,11 @@ angular.module('fdf.config.setting', [])
 
             app.$rootScope.current = app.storage(app.KEY.CURRENT) || {};
             app.$rootScope.area = app.AREA_BACKEND;
+
+            // 页面载入时间
+            app.$rootScope.startTime = app.now();
+            // 上次事件操作时间
+            app.$rootScope.lastTime = app.now();
         });
 
     }])

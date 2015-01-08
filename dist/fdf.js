@@ -93,10 +93,10 @@ angular.module('fdf.config.setting', [])
     }];
 
     //默认给每次ajax 请求加上 head 信息
-    $httpProvider.defaults.headers.common = angular.extend($httpProvider.defaults.headers.common, {
-        'Device': 'Desktop',
-        'X-citime': +new Date()
-    });
+    //$httpProvider.defaults.headers.common = angular.extend($httpProvider.defaults.headers.common, {
+    //    'Device': 'Desktop',
+    //    'X-citime': +new Date()
+    //});
 
     /**
      * http 拦截器设置
@@ -257,7 +257,7 @@ angular.module('fdf.config.setting', [])
          * @param e => $event
          */
         app._evt = function(e){
-            return app.$Base.evt.begin(e);
+            return app.$Base.evt(e);
         };
 
         /**
@@ -267,16 +267,6 @@ angular.module('fdf.config.setting', [])
          */
         app._ver = function (url){
             return app.$Base.ver(url);
-        };
-
-        app._uri = function(url, type){
-            switch(type){
-                case 'bahavior':
-                    return 'bahavior' + url;
-                default:
-                    var uri = location.pathname;
-                    return uri + url;
-            }
         };
 
         //身份令牌的设置
@@ -292,6 +282,11 @@ angular.module('fdf.config.setting', [])
 
             app.$rootScope.current = app.storage(app.KEY.CURRENT) || {};
             app.$rootScope.area = app.AREA_BACKEND;
+
+            // 页面载入时间
+            app.$rootScope.startTime = app.now();
+            // 上次事件操作时间
+            app.$rootScope.lastTime = app.now();
         });
 
     }])
@@ -305,6 +300,22 @@ angular.module('fdf.config.setting', [])
     'use strict';
 
     angular.module('fdf.directives.base', [])
+
+    .directive('fdfLink', ['app', function(app){
+        return {
+            restrict: 'AC',
+            transclude: false,
+            link: function(scope, elm, attr){
+                elm.bind('click', function(e){
+                    app.$Base.event({
+                        e: e,
+                        name: attr.fdfLink,
+                        isChangePage: attr.fdfPage === "true"
+                    });
+                });
+            }
+        }
+    }])
 
     .directive('fdfBtn', ['app', function(app){
         return {
@@ -2000,9 +2011,9 @@ angular.module('fdf.services.base', [])
          * @param name
          * @param fn
          */
-        base.evt = function(e, name, fn){
+        base.evt = function(e, fn){
             //发送用户行为
-            base.bahavior(e, name || '');
+            base.bahavior(e);
             //执行回调喊出
             fn && fn.call(null, e);
         };
@@ -2060,7 +2071,7 @@ angular.module('fdf.services.base', [])
             var e = opts.e;
             var elm = angular.element(opts.elm || e.target);
             // 发送用户行为
-            base.bahavior(e, opts.name);
+            base.bahavior(e, opts);
 
             if(args.length === 1){
                 return;
@@ -2191,32 +2202,54 @@ angular.module('fdf.services.base', [])
         /**
          * 保存用户行为
          * @param e
-         * @param name
+         * @param opts
          */
-        base.bahavior = function (e, name) {
+        base.bahavior = function (e, opts) {
             //if(!app.SYS.BAHAVIOR.RUN){
             //   return false;
             //}
 
+            // 获得当前用户信息
             var currentUser = base.currentUser();
 
+            // 获得当前DOM信息
             var elm = angular.element(e.target);
-            var moduleElm, moduleName, position;
+            // 获得当前DOM上所绑定的ng scope信息
+            var scope = elm.scope();
 
             // 向上冒泡寻找当前dom所在的module
-            moduleElm = elm.hasClass('fdf-module') ? elm: elm.closest('.fdf-module');
-            moduleName = moduleElm ? moduleElm.attr("fdf-module") : '';
+            var moduleName = base.findModule(scope), duration;
 
             // 获得当前dom的scope，若有$index，则为该dom 所在list 的位置
-            position = elm.scope().$index;
-            position = position != null ? position + 1: null;
+            var position = scope.$index;
+            position = position != null ? position + 1 : null;
 
             // 若evt没传入name，则再到dom中获取
             name = name || elm.attr('fdf-name');
 
+            var lastUrl = app.$rootScope.lastUrl;
+            app.$rootScope.lastUrl = app.$location.absUrl();
+
+            // 若页面跳转，计算页面存在时间
+            if(opts.isChangePage){
+                duration = app.now() - app.$rootScope.startTime;
+                app.$rootScope.startTime = app.now();
+            }
+
             var evtInfo = {
+                // 当前事件类型
                 type: e.type,
+                // 当前事件触发时间
                 timeStamp: e.timeStamp,
+                // 当前事件与上次触发事件的间隔时间
+                intervalTime: app.now() - app.$rootScope.lastTime,
+                // 当前浏览器userAgent 信息
+                userAgent: navigator.userAgent,
+                // 当前用户操作系统信息
+                os: currentUser.os,
+                // 上次打开的页面url
+                lastUrl: lastUrl,
+                // 当前事件信息
                 info: {
                     // 当事件被触发时鼠标指针向对于浏览器页面（或客户区）的坐标
                     clientX: e.clientX,
@@ -2230,6 +2263,7 @@ angular.module('fdf.services.base', [])
                     // 窗口的左上角在屏幕上的的 x 坐标和 y 坐标 (ie不支持)
                     screenX: e.screenX,
                     screenY: e.ecreenY,
+                    // 当前DOM的信息
                     target: {
                         innerHTML: e.target.innerHTML,
                         tagName: e.target.tagName,
@@ -2270,22 +2304,69 @@ angular.module('fdf.services.base', [])
             //	页面停留时间（duration）
             // 向后端传递
             var bhinfo = JSON.stringify({
+                // 当前用户ID
                 userId: currentUser.id,
+                // 事件触发事件
                 clickTime: evtInfo.timeStamp,
-                clickPage: app.$rootScope.page,
+                // 事件触发所在页面
+                clickPage: app.$rootScope.channel,
+                // 事件触发的 element 信息
                 clickElement: name,
+                // 事件触发所在模块
                 clickModule: moduleName,
+                // DOM 所在列表中的位置
                 clickPosition: position,
+                // 当前url full path
                 url: app.$location.absUrl(),
-                duration: '',
-                userAgent: '',
-                token: '',
+                // 页面跳出时间
+                duration: duration,
+                // 当前产品名称
+                productName: app.storage('PRODUCT_NAME'),
+                // 当前事件距页面打开时间的间隔时间
+                openToClickTime: app.now() - app.$rootScope.startTime,
+                // 当前用户token
+                token: currentUser.token,
+                // 前端关注的事件信息
                 fe: evtInfo
             });
 
+            app.$log.log(bhinfo);
+
             app.$_Base.bahavior.post({
-                bahavior:bhinfo
+                bahavior: bhinfo
+            }, function(){
+                app.$rootScope.lastTime = app.now();
+            }, function(){
+                app.$rootScope.lastTime = app.now();
             });
+        };
+
+        //通过向上冒泡，寻找当前scope所在最近距离的module信息
+        base.findModule = function(scope){
+            if(!app.isObject(scope)){
+                return null;
+            }
+
+            var key = "module", moduleName, isFind;
+            if(!scope[key]){
+                app.each(scope, function(o){
+                    if(app.type(o, "object")){
+                        if(o[key]){
+                            moduleName = o[key];
+                            isFind = true;
+                            return false;
+                        }
+                    }
+                });
+
+                if(!isFind){
+                    moduleName = base.findModule(scope.$parent);
+                }
+            }else{
+                moduleName = scope[key];
+            }
+
+            return moduleName;
         };
 
         /**

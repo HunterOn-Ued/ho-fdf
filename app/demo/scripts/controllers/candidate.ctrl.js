@@ -11,6 +11,7 @@ angular.module('demoApp.controllers.candidate', [])
 
 .controller('CandidateListCtrl', ['app', function (app) {
     var vm = this;
+    app.$rootScope.channel ="P_CANDIDATE_LIST";
     vm.module = "CandidateListCtrl";
 
     app.$_Candidate.list.get({}, function (res) {
@@ -31,6 +32,9 @@ angular.module('demoApp.controllers.candidate', [])
 
     app.run(stateParams.layout, function () {
         app.$rootScope.layout = stateParams.layout == app.LAYOUT_SINGLE ? app.LAYOUT_SINGLE : app.LAYOUT_DOUBLE;
+        if(stateParams.layout == app.LAYOUT_SINGLE){
+            app.$rootScope.channel ="P_CANDIDATE_DETAIL_SINGLE";
+        }
     });
 
     app.$_Candidate.detail.get({}, function (res) {
