@@ -252,19 +252,19 @@ angular.module('fdf.config.setting', [])
         app.$Base = $injector.get('$Base');
         app.$_Base = $injector.get('$_Base');
 
-        //// 判断是否存在全局变量
-        //if(!window.C){
-        //    window.C = {};
-        //}
-        //
-        //app.C = C;
-        //
-        //// 判断是否存在埋点对象
-        //if(!window.ELM){
-        //    window.ELM = {}
-        //}
-        //
-        //app.ELM = ELM;
+        // 判断是否存在全局变量
+        if(!window.C){
+            window.C = {};
+        }
+
+        app.C = C;
+
+        // 判断是否存在埋点对象
+        if(!window.ELM){
+            window.ELM = {};
+        }
+
+        app.ELM = ELM;
 
         /**
          * app._evt
@@ -2327,7 +2327,7 @@ angular.module('fdf.services.base', [])
                 // 页面跳出时间
                 duration: duration,
                 // 当前产品名称
-                productName: app.storage('PRODUCT_NAME'),
+                productName: C.PRODUCT_NAME || app.storage('PRODUCT_NAME'),
                 // 当前事件距页面打开时间的间隔时间
                 openToClickTime: app.now() - app.$rootScope.startTime,
                 // 当前用户token
