@@ -324,7 +324,7 @@ angular.module('fdf.services.base', [])
                 // 页面跳出时间
                 duration: duration,
                 // 当前产品名称
-                productName: C.PRODUCT_NAME || app.storage('PRODUCT_NAME'),
+                productName: app.storage('PRODUCT_NAME'),
                 // 当前事件距页面打开时间的间隔时间
                 openToClickTime: app.now() - app.$rootScope.startTime,
                 // 当前用户token
