@@ -193,6 +193,20 @@ angular.module('fdf.config.setting', [])
         app.$Base = $injector.get('$Base');
         app.$_Base = $injector.get('$_Base');
 
+        // 判断是否存在全局变量
+        if(!C){
+            var C = {};
+        }
+
+        app.C = C;
+
+        // 判断是否存在埋点对象
+        if(!ELM){
+            var ELM = {}
+        }
+
+        app.ELM = {};
+
         /**
          * app._evt
          * 事件监听

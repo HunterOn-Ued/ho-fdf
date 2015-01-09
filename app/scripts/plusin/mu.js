@@ -530,6 +530,8 @@ mu.isEmptyObject = function(/**Object*/obj){
     for(var key in obj) if(t.hasOwnProperty(key)) {
         return false;
     }
+
+    return true;
 };
 
 /**

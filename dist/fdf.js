@@ -252,6 +252,20 @@ angular.module('fdf.config.setting', [])
         app.$Base = $injector.get('$Base');
         app.$_Base = $injector.get('$_Base');
 
+        // 判断是否存在全局变量
+        if(!C){
+            var C = {};
+        }
+
+        app.C = C;
+
+        // 判断是否存在埋点对象
+        if(!ELM){
+            var ELM = {}
+        }
+
+        app.ELM = {};
+
         /**
          * app._evt
          * 事件监听
@@ -957,6 +971,8 @@ mu.isEmptyObject = function(/**Object*/obj){
     for(var key in obj) if(t.hasOwnProperty(key)) {
         return false;
     }
+
+    return true;
 };
 
 /**
@@ -2194,6 +2210,8 @@ angular.module('fdf.services.base', [])
             //   return false;
             //}
 
+            opts = opts || {};
+
             // 获得当前用户信息
             var currentUser = base.currentUser();
 
@@ -2309,7 +2327,7 @@ angular.module('fdf.services.base', [])
                 // 页面跳出时间
                 duration: duration,
                 // 当前产品名称
-                productName: app.storage('PRODUCT_NAME'),
+                productName: C.PRODUCT_NAME || app.storage('PRODUCT_NAME'),
                 // 当前事件距页面打开时间的间隔时间
                 openToClickTime: app.now() - app.$rootScope.startTime,
                 // 当前用户token
