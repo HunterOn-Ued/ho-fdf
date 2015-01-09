@@ -968,7 +968,7 @@ mu.extend = function(/**Obj*/target, /**obj*/src ){
  * @returns {boolean}
  */
 mu.isEmptyObject = function(/**Object*/obj){
-    for(var key in obj) if(t.hasOwnProperty(key)) {
+    for(var key in obj) if(obj.hasOwnProperty(key)) {
         return false;
     }
 
