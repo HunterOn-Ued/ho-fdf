@@ -195,17 +195,17 @@ angular.module('fdf.config.setting', [])
 
         // 判断是否存在全局变量
         if(!C){
-            var C = {};
+            window.C = {};
         }
 
         app.C = C;
 
         // 判断是否存在埋点对象
         if(!ELM){
-            var ELM = {}
+            window.ELM = {}
         }
 
-        app.ELM = {};
+        app.ELM = ELM;
 
         /**
          * app._evt
