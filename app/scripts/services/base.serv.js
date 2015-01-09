@@ -79,7 +79,9 @@ angular.module('fdf.services.base', [])
                 name: "",
                 isLoading: true,
                 isMask: true,
-                isDisable: true
+                isDisable: true,
+                isChangePage: false,
+                isBefore: false
             }, opts);
 
             var e = opts.e;
@@ -100,6 +102,9 @@ angular.module('fdf.services.base', [])
             var thend = function(opts, fn){
                 var e = opts.e;
                 var elm = opts.elm || e.target;
+
+                !opts.isBefore && fn.call(null, e);
+
                 // 禁止双击事件
                 opts.isDisabled && base.disabled.remove(elm);
                 // 遮罩
@@ -107,7 +112,7 @@ angular.module('fdf.services.base', [])
                 // 显示Loading载入条
                 opts.isLoading && base.loading.remove(elm);
 
-                fn.call(null, e);
+                opts.isBefore && fn.call(null, e);
             };
 
             // 禁止双击事件
@@ -142,27 +147,6 @@ angular.module('fdf.services.base', [])
                 });
             });
 
-        };
-
-        /**
-         * 开始监控事件
-         * @param e
-         * @returns {*}
-         */
-        base.evt.begin = function(e){
-            return app.$Base.bahavior(e);
-        };
-
-        /**
-         * 监控介绍按钮返回
-         * @param e
-         */
-        base.evt.end = function(e){
-            var elm = angular.element(e.currentTarget);
-            app.$timeout(function(){
-                elm.removeClass('loading').removeAttr('disabled');
-                elm.attr('ng-disabled', 'false');
-            }, 500);
         };
 
         /**
