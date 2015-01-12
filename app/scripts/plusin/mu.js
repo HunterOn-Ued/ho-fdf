@@ -1370,24 +1370,78 @@ mu.after = function(/**Int*/n, /**Function*/fn, /**Object*/scope){
     };
 };
 
-    /**
-     * mu.debounce(Function fn, Int wait)
-     * 如果用手指一直按住一个弹簧，它将不会弹起直到你松手为止。
-     * 也就是说当调用动作n毫秒后，才会执行该动作，若在这n毫秒内又调用此动作则将重新计算执行时间
-     * @param fn
-     * @param wait
-     * @param immediate
-     */
-mu.debounce = function(/**Function*/fn, /**Int*/wait, /**Boolean*/immediate){
-    var timeout, args, scope, timestamp, rst;
-    wait = wait || 300;
-    immediate = immediate || false;
-
-};
-
+//函数节流的意思，通俗一点就是函数调用的频度控制器，是连续执行时间间隔控制
 //如果将水龙头拧紧直到水是以水滴的形式流出，那你会发现每隔一段时间，就会有一滴水流出。
 //也就是会说预先设定一个执行周期，当调用动作的时刻大于等于执行周期则执行该动作，然后进入下一个新周期。
-//throttle　　　　　　　　　　　　　　　　　　　　　　　　　　　　　
+//throttle　　　　
+mu.throttle = function(/**Function*/fn, /**Int*/wait, /**Boolean*/immediate, /**Boolean*/debounce){
+    // 当前时间
+    var currentTime = $$.now(),
+    // 上次调用时间
+    lastTime,
+    // 上次函数调用时间
+    lastExecTime,
+    // 时间差
+    diffTime,
+    // 回调ID
+    timeoutId,
+    // 传递参数
+    args,
+    // 作用域，上下文
+    scope,
+    // 执行函数
+    exec = function(){
+        lastExecTime = currentTime;
+        fn.call(scope, args);
+    };
+
+    return function(){
+        currentTime = $$.now();
+        scope = this;
+        args = $$.args(arguments);
+        diffTime = currentTime - (debounce ? lastTime : lastExecTime) - wait;
+        clearTimeout(timeoutId);
+        if(debounce){
+            if(immediate){
+                timeoutId = setTimeout(exec, wait);
+            }else if(diffTime >= 0){
+                exec();
+            }
+        }else{
+            if(diffTime >= 0){
+                exec();
+            }else if(immediate){
+                timeoutId = setTimeout(exec, -diffTime);
+            }
+        }
+
+        lastTime = currentTime;
+    };
+};
+
+
+/**
+ * mu.debounce(Function fn, Int wait)
+ * 如果用手指一直按住一个弹簧，它将不会弹起直到你松手为止。
+ * 也就是说当调用动作n毫秒后，才会执行该动作，若在这n毫秒内又调用此动作则将重新计算执行时间
+ * @param fn
+ * @param wait
+ * @param immediate
+ */
+mu.debounce = function(/**Function*/fn, /**Int*/wait, /**Boolean*/immediate){
+    var timeout;
+    return function() {
+        var scope = this, args = arguments;
+        var later = function() {
+            timeout = null;
+            if (!immediate) fn.apply(scope, args);
+        };
+        var callNow = immediate && !timeout;
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+        if (callNow) fn.apply(scope, args);
+    };
+};
 
 /**
  * -----------------

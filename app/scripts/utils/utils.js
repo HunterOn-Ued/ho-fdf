@@ -93,10 +93,11 @@ angular.module('fdf.config.utils', [])
         } else {
             var o = utils.parseUrl(url),
                 p = utils.params(params);
+            var origin = o.origin || '';
             if (o.query) {
-                return o.origin + o.path + o.query + '&' + p;
+                return origin + o.path + o.query + '&' + p;
             } else {
-                return o.origin + o.path + '?' + p;
+                return origin + o.path + '?' + p;
             }
         }
     };
