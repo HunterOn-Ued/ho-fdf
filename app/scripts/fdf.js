@@ -383,6 +383,7 @@ require('./config/global.js');
 require('./config/setting.js');
 require('./utils/utils.js');
 require('./directives/base.directive.js');
+require('./filters/base.filter.js');
 require('./resources/base.res.js');
 require('./services/base.serv.js');
 
@@ -401,17 +402,11 @@ require('./services/base.serv.js');
     ]);
 
     angular.module('fdf.filters', [
-//    'fdf.filters.string',
-//    'fdf.filters.data',
-//    'fdf.filters.array',
-//    'fdf.filters.math'
+      'fdf.filters.base'
     ]);
 
     angular.module('fdf.directives', [
       'fdf.directives.base'
-//    'fdf.directives.dom',
-//    'fdf.directives.ui',
-//    'fdf.directives.widget'
     ]);
 
     angular.module('fdf.config', [
@@ -438,7 +433,56 @@ require('./services/base.serv.js');
 
 
 
-},{"./config/global.js":1,"./config/setting.js":2,"./directives/base.directive.js":3,"./plusin/mu.js":5,"./resources/base.res.js":6,"./services/base.serv.js":7,"./utils/utils.js":8}],5:[function(require,module,exports){
+},{"./config/global.js":1,"./config/setting.js":2,"./directives/base.directive.js":3,"./filters/base.filter.js":5,"./plusin/mu.js":6,"./resources/base.res.js":7,"./services/base.serv.js":8,"./utils/utils.js":9}],5:[function(require,module,exports){
+(function(window, angular, undefined){
+'use strict';
+
+/*
+ * 过滤器
+ */
+angular.module('fdf.filters.base', [])
+
+/*
+ * 时间格式化(文本)
+ * @params String date 符合时间格式的字符串
+ * @params format 格式化类型 || 'yyyy-MM-dd'
+ * @return String;
+ * @extend $filter('date')
+ */
+
+/**
+ exp.
+ {{ '2013-04-21 00:00:00' | mdate:'yyyy-MM-dd' }} => 2013-04-21
+ {{ '1232221221' | mdate:'yyyy年' }} => 2013年
+ {{ '21/04/2013 00:00:00' | mdate }} => 2013-04-21
+ {{ '21/04/2013 00:00:00' | 'eeee' }} => 星期一
+ {{ '21/04/2013 00:00:00' | 'ee' }} => 周一
+ */
+
+.filter('fdfDate', ['$filter',
+    function($filter) {
+        return function(date, format) {
+            if (!date) {
+                return;
+            }
+
+            var eeee = ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"];
+            var ee = ["周日", "周一", "周二", "周三", "周四", "周五", "周六"];
+            var dateVal = $filter('date')(new Date(date), format || 'yyyy-MM-dd');
+            var day = new Date(date).getDay();
+            if(dateVal.indexOf('eeee')>-1){
+                dateVal = dateVal.replace(/eeee/g, eeee[day]);
+            }else if(dateVal.indexOf('ee')>-1){
+                dateVal = dateVal.replace(/ee/g, ee[day]);
+            }
+
+            return dateVal;
+        };
+    }
+]);
+
+})(window, angular);
+},{}],6:[function(require,module,exports){
 /**
  * mizi utils
  * 米子的工具类库
@@ -710,6 +754,18 @@ mu.ifempty = function(/**T*/t, /**T*/emptyVal, /**T*/existVal){
 };
 
 /**
+ * mu.ifexist(T t, T existVal, T nullVal)
+ * 与ifnull相反，若t存在，显示existVal, 不存在 nullVal
+ * @param t
+ * @param existVal
+ * @param nullVal
+ * @returns {*|*|Object}
+ */
+mu.ifexist = function(/**T*/t, /**T*/existVal, /**T*/nullVal){
+    return $$.ifnull(t, nullVal, existVal);
+};
+
+/**
  * ---------------------------
  * 数据和集合（对象） collection
  * ---------------------------
@@ -772,34 +828,31 @@ mu.each = function(/**AOC*/aoc, /**Fn*/fn, /**Obj*/scope){
      }, "object")  =-> {12345: "id", card: "no"}
  */
 mu.map = function(/**AOC*/aoc, /**Fn*/fn, /**String*/type, /**Obj*/scope){
+    if(aoc == null || fn == null){
+        return aoc;
+    }
+
     var arg = $$.args(arguments);
 
-    if(arg[0] == null){
-        return;
+    if(typeof type !== "string"){
+        scope = $$.clone(type);
+        type = null;
     }
 
-    if(arg[1] == null){
-        return arg[0];
-    }
+    type = type || $$.type(aoc);
 
-    if(typeof arg[2] !== "string"){
-        type = "array";
-        scope = arg[2];
-    }
-
-    if(type !=="object"){
-        type = "array";
-    }
-
-    var rst = type === "array" ? [] : {};
+    var rst = type === "object" ? {} : [];
 
     mu.each(aoc, function(v, k, aoc){
         var cb = fn.call(scope, v, k, aoc);
         if(cb != null ){
             if(type === "object"){
-                var val = cb.__val__;
-                val = val === undefined ? undefined : val === null ? cb : val;
-                rst[ cb.__key__ || k ] = val;
+                if(cb.__val__ != null){
+                    rst[ cb.__key__ || k ] = cb.__val__;
+                }else{
+                    rst[k] = cb;
+                }
+
             }else{
                 rst[rst.length] = cb;
             }
@@ -1903,6 +1956,17 @@ mu.isArray = function(/**T*/ t){
 };
 
 /**
+ * mu.isBaseType(T t)
+ * 判断对象是否为基本类型
+ * 基本类型： null, undefined, string, number, boolean
+ * @param t
+ * @returns {boolean}
+ */
+mu.isBaseType = function(/**T*/ t){
+    return Object(t) !== t;
+};
+
+/**
  * mu.eq(T target, T src...)
  * 基本类型比较（强比较）
  * @type {boolean}
@@ -1946,6 +2010,185 @@ mu.result = function(object, property) {
     var value = object[property];
     return typeof value === "function" ? object[property]() : value;
 };
+
+/**
+ * mu.parseUrl(String url)
+ * 对象化链接信息
+ * @param url
+ * @returns {{source: (*|string), protocol: *, host: (options.hostname|*|.connect.options.hostname|string|urlResolve.hostname|ua.hostname), port: *, query: (Function|string|ui.autocomplete.search|search|urlResolve.search|ua.search|*), params: {query, hash, hashQuery}, file: (string|*), hash: *, path: string, relative: *, segments: (Array|*)}}
+ */
+mu.parseUrl = function (/**String*/url) {
+    url = url || location.href;
+    var a = document.createElement('a');
+    a.href = url;
+
+    var query = function(/**String*/str){
+        var ret = {},
+            seg = str.replace(/^[\?\#]/, '').split('&'),
+            len = seg.length, i = 0, s;
+        for (; i < len; i++) {
+            if (!seg[i]) {
+                continue;
+            }
+            s = seg[i].split('=');
+            ret[s[0]] = s[1] || null;
+        }
+        return ret;
+    };
+
+    var hash = function(/**String*/str){
+        var seg = str.split('?');
+        return query(seg[0]);
+    };
+
+    var hashQuery = function(/**String*/str){
+        var seg = str.split('?');
+        return seg.length > 1 ?  query(seg[1]) : null;
+    };
+
+    var locations = {
+        source: url,
+        protocol: a.protocol.replace(':', ''),
+        host: a.hostname,
+        port: a.port,
+        query: a.search,
+        params: {
+            query: query(a.search),
+            hash: hash(a.hash),
+            hashQuery: hashQuery(a.hash)
+        },
+        file: (a.pathname.match(/\/([^\/?#]+)$/i) || [, ''])[1],
+        hash: a.hash.replace('#', ''),
+        path: a.pathname.replace(/^([^\/])/, '/$1'),
+        relative: (a.href.match(/tps?:\/\/[^\/]+(.+)/) || [, ''])[1],
+        segments: a.pathname.replace(/^\//, '').split('/')
+    };
+
+    locations.origin = a.origin || a.protocol + "//" + locations.host + $$.ifnull(a.port, '', function(val){
+        return ":" + val;
+    });
+
+    return locations;
+};
+
+/**
+ * mu.flat(Object obj, String ns)
+ * 扁平化数据
+ * @param obj
+ * @param ns
+ * @returns {*}
+ */
+mu.flat = function(/*Object*/obj, /**String*/ns){
+    if($$.empty(obj)){
+        return false;
+    }
+
+    var result = {};
+
+    var recurse = function(cur, prop) {
+        if($$.isBaseType(cur)){
+            result[prop] = cur;
+        } else if ($$.isArray(cur)) {
+            $$.each(cur, function(v, i){
+                recurse(v, $$.concat(prop, "[", i ,"]"));
+            });
+
+            if (cur.length == 0){
+                result[prop] = [];
+            }
+        } else {
+            var isEmpty = true;
+            var key;
+
+            for (key in cur) {
+                isEmpty = false;
+                recurse(cur[key], prop ? prop + '.' + key : key);
+            }
+
+            if (isEmpty){
+                result[prop] = {};
+            }
+        }
+    };
+
+    if(ns){
+        var o = {};
+        o[ns] = obj;
+        obj = $$.clone(o);
+    }
+
+    recurse(obj, "");
+
+    return result;
+};
+
+/**
+ * mu.params(Object params, Object opts)
+ * 将对象参数化
+ * @param params
+ * @param opts
+ * @returns {string}
+ */
+mu.params = function(/**Object*/params, /**Object*/opts){
+    var flat = $$.flat(params);
+    // 默认连接符号
+    opts = $$.extend({
+        "__equals__": "=",
+        "__join__": "&"
+    }, opts || {});
+
+    var arr = $.map(flat, function(v, key){
+        return $$.concat(key, opts.__equals__, v);
+    });
+
+    return arr.join(opts.__join__);
+};
+
+/**
+ * mu.url(String url, Object params, Boolean isExtend)
+ * @param url
+ * @param params Object{query,hash,hashQuery} || default query
+ * @param isExtend Boolean:是否继承当前链接属性 || dafault true
+ * @returns {*|ng.ui.IUrlMatcher|Array.<T>|string|UrlMatcher}
+ */
+mu.url = function(/**String*/url, /**Object*/params, /**Boolean*/isExtend){
+    var parseUrl = $$.parseUrl(url), params__ = parseUrl.params || {};
+    var opts = {};
+    params = params || {};
+    isExtend = isExtend == null ? true : isExtend;
+
+    // 若params不设置具体的参数位，则默认为 query
+    if( params.query == null && params.hash == null && params.hashQuery == null ){
+        opts.query = $$.clone(params);
+    }else{
+        opts = $$.clone(params);
+    }
+
+    // 是否继承原链接的参数
+    $$.run(isExtend, function(){
+        params__ = $$.map(params__, function(v, k){
+            return $$.extend(v, opts[k] || {});
+        });
+    }, function(){
+        params__ = $$.clone(opts);
+    });
+
+    // 拼接链接信息
+    var querys = $$.run(!$$.empty(params__.query), function(){
+        return "?" + $$.params(params__.query);
+    });
+
+    var hashs = $$.run(!$$.empty(params__.hash), function(){
+        return "#" + $$.params(params__.hash);
+    });
+
+    var hashQuerys = $$.run(!$$.empty(params__.hashQuery), function(){
+        return "?" + $$.params(params__.hashQuery);
+    });
+
+    return $$.concat(parseUrl.origin, parseUrl.path, querys, hashs, hashQuerys);
+};
+
 
 /**
  * -----------------
@@ -2036,7 +2279,7 @@ window.mu = mu;
 
 
 
-},{}],6:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 (function (window, angular, undefined) {
 'use strict';
 
@@ -2054,7 +2297,7 @@ angular.module('fdf.resources.base', [])
 }]);
 
 })(window, angular);
-},{}],7:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 (function (window, angular, undefined) {
 'use strict';
 
@@ -2227,7 +2470,7 @@ angular.module('fdf.services.base', [])
                ver = app.timestamp();
             });
 
-            return app.params(url, {'v': ver } );
+            return app.url(url, {'v': ver } );
         };
 
         /**
@@ -2462,7 +2705,7 @@ angular.module('fdf.services.base', [])
     }]);
 
 })(window, angular);
-},{}],8:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 (function (window, angular, undefined) {
 'use strict';
 
@@ -2503,71 +2746,6 @@ angular.module('fdf.config.utils', [])
             localStorage.setItem(key, JSON.stringify(val));
         });
     };
-
-    /**
-     * urils.paseUrl（String url)
-     * 解构一个url地址
-     * @param url
-     * @returns {{source: (*|string), protocol: *, host: (options.hostname|*|.connect.options.hostname|string|ua.hostname|urlResolve.hostname), port: *, query: *, params, file: *, hash: *, path: *, relative: *, segments: *}}
-     */
-    utils.parseUrl = function (url) {
-        url = url || location.href;
-        var a = document.createElement('a');
-        a.href = url;
-        return {
-            source: url,
-            protocol: a.protocol.replace(':', ''),
-            host: a.hostname,
-            port: a.port,
-            query: a.search,
-            origin: a.origin,
-            params: (function () {
-                var ret = {},
-                    seg = a.search.replace(/^\?/, '').split('&'),
-                    len = seg.length, i = 0, s;
-                for (; i < len; i++) {
-                    if (!seg[i]) {
-                        continue;
-                    }
-                    s = seg[i].split('=');
-                    ret[s[0]] = s[1];
-                }
-                return ret;
-            })(),
-            file: (a.pathname.match(/\/([^\/?#]+)$/i) || [, ''])[1],
-            hash: a.hash.replace('#', ''),
-            path: a.pathname.replace(/^([^\/])/, '/$1'),
-            relative: (a.href.match(/tps?:\/\/[^\/]+(.+)/) || [, ''])[1],
-            segments: a.pathname.replace(/^\//, '').split('/')
-        };
-    };
-
-    /**
-     * utils.params(params)
-     * 创建一个序列化的数组或对象，适用于一个URL地址查询字符串或Ajax请求
-     * utils.params(url, params)
-     * 创建一个序列化的数组或对象，返回一个完整的url地址
-     * @param url
-     * @param params
-     * @use utils.parseUrl
-     */
-    utils.params = function (url, params) {
-        var arr = Array.prototype.slice.call(arguments, 0);
-        if (utils.isObject(arr[0])) {
-            return jQuery.param(arr[0]);
-        } else {
-            var o = utils.parseUrl(url),
-                p = utils.params(params);
-            var origin = o.origin || '';
-            if (o.query) {
-                return origin + o.path + o.query + '&' + p;
-            } else {
-                return origin + o.path + '?' + p;
-            }
-        }
-    };
-
-
 
 }]);
 

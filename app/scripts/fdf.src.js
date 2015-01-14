@@ -3,6 +3,7 @@ require('./config/global.js');
 require('./config/setting.js');
 require('./utils/utils.js');
 require('./directives/base.directive.js');
+require('./filters/base.filter.js');
 require('./resources/base.res.js');
 require('./services/base.serv.js');
 
@@ -21,17 +22,11 @@ require('./services/base.serv.js');
     ]);
 
     angular.module('fdf.filters', [
-//    'fdf.filters.string',
-//    'fdf.filters.data',
-//    'fdf.filters.array',
-//    'fdf.filters.math'
+      'fdf.filters.base'
     ]);
 
     angular.module('fdf.directives', [
       'fdf.directives.base'
-//    'fdf.directives.dom',
-//    'fdf.directives.ui',
-//    'fdf.directives.widget'
     ]);
 
     angular.module('fdf.config', [

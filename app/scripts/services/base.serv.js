@@ -170,7 +170,7 @@ angular.module('fdf.services.base', [])
                ver = app.timestamp();
             });
 
-            return app.params(url, {'v': ver } );
+            return app.url(url, {'v': ver } );
         };
 
         /**
