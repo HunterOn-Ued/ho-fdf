@@ -198,14 +198,15 @@ angular.module('fdf.config.setting', [])
             window.C = {};
         }
 
-        app.C = C;
+        app.$rootScope.C = C;
+
 
         // 判断是否存在埋点对象
         if(!window.ELM){
             window.ELM = {};
         }
 
-        app.ELM = ELM;
+        app.$rootScope.ELM = ELM;
 
         /**
          * app._evt
@@ -233,11 +234,8 @@ angular.module('fdf.config.setting', [])
 
         //init
         app.run(function(){
-            app.storage(app.KEY.CURRENT, {});
-            app.storage(app.KEY.VERSION, '1.1.0');
 
-            app.$rootScope.current = app.storage(app.KEY.CURRENT) || {};
-            app.$rootScope.area = app.AREA_BACKEND;
+            app.$rootScope.current = app.storage(C.STORAGE.CURRENT) || {};
 
             // 页面载入时间
             app.$rootScope.startTime = app.now();

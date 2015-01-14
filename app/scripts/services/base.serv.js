@@ -22,7 +22,6 @@ angular.module('fdf.services.base', [])
          * 简单事件记录
          * 没有相关遮罩效果等
          * @param e
-         * @param name
          * @param fn
          */
         base.evt = function(e, fn){
@@ -161,9 +160,7 @@ angular.module('fdf.services.base', [])
             }
 
             // 获取当前版本号
-            var ver = app.run(function(){
-                return app.storage(app.KEY.VERSION) || '1.1.0';
-            });
+            var ver = C.VERSION || '1.1.0';
 
             // IE8 不设置当前版本号, 使用时间戳，强制刷新（清缓存）
             app.run(app.equals(app.ie(), 8, 9), function(){
@@ -324,7 +321,7 @@ angular.module('fdf.services.base', [])
                 // 页面跳出时间
                 duration: duration,
                 // 当前产品名称
-                productName: C.PRODUCT_NAME || app.storage('PRODUCT_NAME'),
+                productName: app.concat(C.PRODUCT_NAME, " ", C.RELEASE),
                 // 当前事件距页面打开时间的间隔时间
                 openToClickTime: app.now() - app.$rootScope.startTime,
                 // 当前用户token
@@ -334,6 +331,12 @@ angular.module('fdf.services.base', [])
             });
 
             app.$log.log(bhinfo);
+
+            //是否发送用户行为记录
+            if(!C.CTRL.BAHAVIOR){
+                app.$rootScope.lastTime = app.now();
+                return false;
+            }
 
             app.$_Base.bahavior.post({
                 bahavior: bhinfo
