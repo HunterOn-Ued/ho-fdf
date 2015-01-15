@@ -4,7 +4,7 @@
     "authors": [
         "Mizi <mizi.lin@hunteron.com>"
     ],
-    "description": "hunteron front-end development framework // bower 版本必须升级到1.3.9以上",
+    "description": "hunteron front-end development framework",
     "main": [
         "./dist/fdf.js",
         "./dist/styles/reset.css",
