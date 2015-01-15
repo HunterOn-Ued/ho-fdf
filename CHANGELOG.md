@@ -1,10 +1,12 @@
 Hunteron fdf
 ======
 
-### 1.2.15
-mu.js 新添方法 mu.flat, mu.params, mu.url, mu.parseUrl
-mu.js 优化 mu.map
-base.filter.js 新添过滤器 fdfDate, 支持中文星期
+### 1.2.14
+mu 新添方法 mu.flat, mu.params, mu.url, mu.parseUrl, mu.storage
+mu 优化 mu.map, 支持对象与数组间转换
+mu 优化 mu.extend, 支持深拷贝
+filter 新添过滤器 fdfDate, 支持中文星期
+添加全局环境变量配置
 
 ### 1.2.6
 * 对用户行为分析记录进行优化
