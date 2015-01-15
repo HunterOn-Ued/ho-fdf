@@ -8,3 +8,4 @@ karma.conf.js
 .idea/
 app/lib
 app/demo
+projectFilesBackup/
