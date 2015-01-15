@@ -6,6 +6,10 @@ angular.module('fdf.config.global', [])
 
 //设置全局常量
 .constant('constant', {
+    VERSION: '1.2.15',
+    RELEASE: 'PROD',
+    PRODUCT_NAME: 'FDF',
+
     // 架构控制参数
     FDF:{
         // 控制开关
@@ -173,7 +177,7 @@ angular.module('fdf.config.setting', [])
                     url = config.url;
 
                 // 用户未登录
-                if (!rst.success && rst.error == app.ERROR.NO_LOGIN) {
+                if (!rst.success && rst.error == C.ERROR.NO_LOGIN) {
                     app.$log.log('::::::user no login or user session out:::::');
                     //TODO no login to do
                     return false;
@@ -252,15 +256,12 @@ angular.module('fdf.config.setting', [])
     //1.2.x 版本暂时还不支持对 $resourceProvider 进行配置，1.3.x 支持
 }])
 
-.run(['app', 'constant', 'utils', '$injector',
-    function (app, constant, utils, $injector) {
-
-        // 常量赋值
-        app = angular.extend(app, constant);
+.run(['app', 'constant', '$injector',
+    function (app, constant, $injector) {
 
         // 方法类
         // angular 1.2.27 的 extend 有bug， 1.3.2 无
-        app = utils.extend(app, utils);
+        app = mu.extend(app, mu);
 
         // 常用服务初始化
         app.$injector = $injector;
@@ -285,7 +286,7 @@ angular.module('fdf.config.setting', [])
                 window.C = {};
             }
 
-            window.C = app.extend(true, constant.FDF, window.C.FDF);
+            window.C = app.extend(true, constant, window.C);
         });
 
         app.$rootScope.C = C;
@@ -317,14 +318,14 @@ angular.module('fdf.config.setting', [])
 
         //身份令牌的设置
         app.run(function () {
-            var loginInfo = app.storage(app.KEY.LOGIN_INFO) || {};
+            var loginInfo = app.storage(C.KEY.LOGIN_INFO) || {};
             app.$http.defaults.headers.common['X-AUTH-TOKEN'] = loginInfo['userToken'] || 'user token value';
         });
 
         //init
         app.run(function(){
 
-            app.$rootScope.current = app.storage(C.STORAGE.CURRENT) || {};
+            app.$rootScope.current = app.storage(C.FDF.STORAGE.CURRENT) || {};
 
             // 页面载入时间
             app.$rootScope.startTime = app.now();
@@ -409,7 +410,6 @@ angular.module('fdf.config.setting', [])
 require('./plusin/mu.js');
 require('./config/global.js');
 require('./config/setting.js');
-require('./utils/utils.js');
 require('./directives/base.directive.js');
 require('./filters/base.filter.js');
 require('./resources/base.res.js');
@@ -438,7 +438,6 @@ require('./services/base.serv.js');
     ]);
 
     angular.module('fdf.config', [
-        'fdf.config.utils',
         'fdf.config.global',
         'fdf.config.setting'
     ]);
@@ -461,7 +460,7 @@ require('./services/base.serv.js');
 
 
 
-},{"./config/global.js":1,"./config/setting.js":2,"./directives/base.directive.js":3,"./filters/base.filter.js":5,"./plusin/mu.js":6,"./resources/base.res.js":7,"./services/base.serv.js":8,"./utils/utils.js":9}],5:[function(require,module,exports){
+},{"./config/global.js":1,"./config/setting.js":2,"./directives/base.directive.js":3,"./filters/base.filter.js":5,"./plusin/mu.js":6,"./resources/base.res.js":7,"./services/base.serv.js":8}],5:[function(require,module,exports){
 (function(window, angular, undefined){
 'use strict';
 
@@ -1046,15 +1045,16 @@ mu.extend = function(/**Boolean*/isDeep,  /**Obj*/src, /**obj*/target ){
         for(key in target){
             if(target.hasOwnProperty(key)){
                 if(isDeep && $$.isObject(target[key]) && $$.isObject(src[key])){
-                    rst[key] = $$.extend(isDeep, src[key], target[key]);
+                    rst = $$.clone(src[key]);
+                    src[key] = $$.extend(isDeep, rst, target[key]);
                 }else{
-                    rst[key] = target[key];
+                    src[key] = target[key];
                 }
             }
         }
     }
 
-    return rst;
+    return src;
 };
 
 /**
@@ -2232,6 +2232,24 @@ mu.url = function(/**String*/url, /**Object*/params, /**Boolean*/isExtend){
     return $$.concat(parseUrl.origin, parseUrl.path, querys, hashs, hashQuerys);
 };
 
+mu.storage = function (/**String*/key, /**T*/val) {
+    return $$.run(val == null, function () {
+        var _val = localStorage.getItem(key);
+        if (typeof _val != 'string') {
+            return undefined;
+        }
+
+        try {
+            return JSON.parse(_val);
+        } catch (e) {
+            return _val || undefined;
+        }
+
+    }, function () {
+        localStorage.setItem(key, JSON.stringify(val));
+    });
+};
+
 
 /**
  * -----------------
@@ -2356,7 +2374,7 @@ angular.module('fdf.services.base', [])
         base.currentUser = function(){
             var currentUser = app.$rootScope.currentUser || {};
             if(app.isEmptyObject(currentUser)){
-                currentUser = app.storage(app.KEY.CURRENT) || {};
+                currentUser = app.storage(C.FDF.STORAGE.CURRENT) || {};
             }
             return currentUser;
         };
@@ -2749,51 +2767,6 @@ angular.module('fdf.services.base', [])
 
         return base;
     }]);
-
-})(window, angular);
-},{}],9:[function(require,module,exports){
-(function (window, angular, undefined) {
-'use strict';
-
-angular.module('fdf.config.utils', [])
-
-.constant('utils', {
-    version: '0.3.0'
-})
-
-//用户工具类
-.run(['utils', function (utils) {
-    /**
-     * underscroe 中文文档
-     * http://www.css88.com/doc/underscore/
-     */
-    utils = angular.extend(utils, mu);
-    var __ = {};
-
-    /**
-     * 本地localStroage 存储读取
-     * @param key
-     * @param val
-     */
-    utils.storage = function (key, val) {
-        return utils.run(val == null, function () {
-            var _val = localStorage.getItem(key);
-            if (typeof _val != 'string') {
-                return undefined;
-            }
-
-            try {
-                return JSON.parse(_val);
-            } catch (e) {
-                return _val || undefined;
-            }
-
-        }, function () {
-            localStorage.setItem(key, JSON.stringify(val));
-        });
-    };
-
-}]);
 
 })(window, angular);
 },{}]},{},[4]);

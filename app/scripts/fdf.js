@@ -258,7 +258,6 @@ angular.module('fdf.config.setting', [])
 
 .run(['app', 'constant', '$injector',
     function (app, constant, $injector) {
-        console.debug(app);
 
         // 方法类
         // angular 1.2.27 的 extend 有bug， 1.3.2 无

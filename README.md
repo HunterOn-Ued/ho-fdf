@@ -32,3 +32,26 @@ git push origin :refs/tags/1.1.0
 // browerify
 browserify fdf.src.js > fdf.js
 
+
+### npm install bower-json
+```javascript
+var bowerJson = require('bower-json');
+
+// Can also be used by simply calling bowerJson()
+bowerJson.read('./bower.json', function (err, json) {
+    if (err) {
+        console.error('There was an error reading the file');
+        console.error(err.message);
+        return;
+    }
+
+    console.log('JSON: ', json);
+});
+```
+node checkBower.js
+检查bower.json 是否正确
+
+
+git config --global url."https://".insteadOf git://
+git config --global --unset url."https://".insteadOf
+
