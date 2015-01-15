@@ -87,7 +87,7 @@ angular.module('fdf.config.setting', [])
                     url = config.url;
 
                 // 用户未登录
-                if (!rst.success && rst.error == app.ERROR.NO_LOGIN) {
+                if (!rst.success && rst.error == C.ERROR.NO_LOGIN) {
                     app.$log.log('::::::user no login or user session out:::::');
                     //TODO no login to do
                     return false;
@@ -166,15 +166,12 @@ angular.module('fdf.config.setting', [])
     //1.2.x 版本暂时还不支持对 $resourceProvider 进行配置，1.3.x 支持
 }])
 
-.run(['app', 'constant', 'utils', '$injector',
-    function (app, constant, utils, $injector) {
-
-        // 常量赋值
-        app = angular.extend(app, constant);
+.run(['app', 'constant', '$injector',
+    function (app, constant, $injector) {
 
         // 方法类
         // angular 1.2.27 的 extend 有bug， 1.3.2 无
-        app = utils.extend(app, utils);
+        app = mu.extend(app, mu);
 
         // 常用服务初始化
         app.$injector = $injector;
@@ -193,13 +190,16 @@ angular.module('fdf.config.setting', [])
         app.$Base = $injector.get('$Base');
         app.$_Base = $injector.get('$_Base');
 
-        // 判断是否存在全局变量
-        if(!window.C){
-            window.C = {};
-        }
+        // 全局常量设置
+        app.run(function(){
+            if(!window.C){
+                window.C = {};
+            }
+
+            window.C = app.extend(true, constant, window.C);
+        });
 
         app.$rootScope.C = C;
-
 
         // 判断是否存在埋点对象
         if(!window.ELM){
@@ -228,14 +228,14 @@ angular.module('fdf.config.setting', [])
 
         //身份令牌的设置
         app.run(function () {
-            var loginInfo = app.storage(app.KEY.LOGIN_INFO) || {};
+            var loginInfo = app.storage(C.KEY.LOGIN_INFO) || {};
             app.$http.defaults.headers.common['X-AUTH-TOKEN'] = loginInfo['userToken'] || 'user token value';
         });
 
         //init
         app.run(function(){
 
-            app.$rootScope.current = app.storage(C.STORAGE.CURRENT) || {};
+            app.$rootScope.current = app.storage(C.FDF.STORAGE.CURRENT) || {};
 
             // 页面载入时间
             app.$rootScope.startTime = app.now();

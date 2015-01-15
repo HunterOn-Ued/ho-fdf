@@ -13,7 +13,7 @@ angular.module('fdf.services.base', [])
         base.currentUser = function(){
             var currentUser = app.$rootScope.currentUser || {};
             if(app.isEmptyObject(currentUser)){
-                currentUser = app.storage(app.KEY.CURRENT) || {};
+                currentUser = app.storage(C.FDF.STORAGE.CURRENT) || {};
             }
             return currentUser;
         };

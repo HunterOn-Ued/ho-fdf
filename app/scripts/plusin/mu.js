@@ -504,29 +504,45 @@ mu.pick.except = function(/**AOC*/ aoc, /**SI...*/ keys){
  */
 
 /**
- * mu.extend(Object target, Object ...src)
+ * mu.extend([Boolean isDeep,]Object target, Object ...src)
  * 将src的属性覆盖到target上，若有相同的属性，会完全覆盖
+ * @param isDeep 是否深转换, default false
  * @param target
  * @param src
  * @returns {Object}
  */
-mu.extend = function(/**Obj*/target, /**obj*/src ){
-    if(typeof target != "object"){
-        return target;
+
+
+mu.extend = function(/**Boolean*/isDeep,  /**Obj*/src, /**obj*/target ){
+    var args = $$.args(arguments);
+
+    if($$.type(isDeep, "boolean")){
+        isDeep = args.shift();
+    }else{
+        isDeep = false;
+        src = args[0];
     }
 
-    var args = $$.args(arguments);
-    var key;
+    if(typeof src != "object"){
+        return src;
+    }
+
+    var key, rst = {};
     for(var i = 0, l = args.length; i<l; i++){
-        src = args[i];
-        for(key in src){
-            if(src.hasOwnProperty(key)){
-                target[key] = src[key];
+        target = args[i];
+        for(key in target){
+            if(target.hasOwnProperty(key)){
+                if(isDeep && $$.isObject(target[key]) && $$.isObject(src[key])){
+                    rst = $$.clone(src[key]);
+                    src[key] = $$.extend(isDeep, rst, target[key]);
+                }else{
+                    src[key] = target[key];
+                }
             }
         }
     }
 
-    return target;
+    return src;
 };
 
 /**
@@ -1702,6 +1718,24 @@ mu.url = function(/**String*/url, /**Object*/params, /**Boolean*/isExtend){
     });
 
     return $$.concat(parseUrl.origin, parseUrl.path, querys, hashs, hashQuerys);
+};
+
+mu.storage = function (/**String*/key, /**T*/val) {
+    return $$.run(val == null, function () {
+        var _val = localStorage.getItem(key);
+        if (typeof _val != 'string') {
+            return undefined;
+        }
+
+        try {
+            return JSON.parse(_val);
+        } catch (e) {
+            return _val || undefined;
+        }
+
+    }, function () {
+        localStorage.setItem(key, JSON.stringify(val));
+    });
 };
 
 

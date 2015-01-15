@@ -5,6 +5,37 @@ angular.module('fdf.config.global', [])
 
 //设置全局常量
 .constant('constant', {
+    VERSION: '1.2.15',
+    RELEASE: 'PROD',
+    PRODUCT_NAME: 'FDF',
+
+    // 架构控制参数
+    FDF:{
+        // 控制开关
+        CTRL: {
+            // 是否打开用户行为统计
+            BAHAVIOR: false,
+            // 用户行为提交地址
+            BAHAVIOR_URL: "http://post.hunteron.com/post/index.html",
+            // 是否打开百度统计
+            BAIDU_TONGJI: false,
+            // 百度统计ID
+            BAIDU_TONGJI_ID: '1234566',
+            // 是否打开GA统计
+            GA: false,
+            // GA ID
+            GA_ID: '1234566',
+            // 是否打开QQ
+            QQ: false
+        },
+        // storage key
+        STORAGE: {
+            CURRENT: 'CURRENT'
+        }
+    },
+
+
+
     /**
      * 页面样式
      */

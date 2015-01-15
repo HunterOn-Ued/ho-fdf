@@ -1,7 +1,6 @@
 require('./plusin/mu.js');
 require('./config/global.js');
 require('./config/setting.js');
-require('./utils/utils.js');
 require('./directives/base.directive.js');
 require('./filters/base.filter.js');
 require('./resources/base.res.js');
@@ -30,7 +29,6 @@ require('./services/base.serv.js');
     ]);
 
     angular.module('fdf.config', [
-        'fdf.config.utils',
         'fdf.config.global',
         'fdf.config.setting'
     ]);

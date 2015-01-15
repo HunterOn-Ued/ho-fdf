@@ -28,7 +28,6 @@ angular.module('fdf.directives', [
 ]);
 
 angular.module('fdf.config', [
-    'fdf.config.utils',
     'fdf.config.global',
     'fdf.config.setting',
     'fdf.config.routers'

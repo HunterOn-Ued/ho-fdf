@@ -6,6 +6,33 @@ angular.module('fdf.config.global', [])
 
 //设置全局常量
 .constant('constant', {
+    // 架构控制参数
+    FDF:{
+        // 控制开关
+        CTRL: {
+            // 是否打开用户行为统计
+            BAHAVIOR: false,
+            // 用户行为提交地址
+            BAHAVIOR_URL: "http://post.hunteron.com/post/index.html",
+            // 是否打开百度统计
+            BAIDU_TONGJI: false,
+            // 百度统计ID
+            BAIDU_TONGJI_ID: '1234566',
+            // 是否打开GA统计
+            GA: false,
+            // GA ID
+            GA_ID: '1234566',
+            // 是否打开QQ
+            QQ: false
+        },
+        // storage key
+        STORAGE: {
+            CURRENT: 'CURRENT'
+        }
+    },
+
+
+
     /**
      * 页面样式
      */
@@ -252,13 +279,16 @@ angular.module('fdf.config.setting', [])
         app.$Base = $injector.get('$Base');
         app.$_Base = $injector.get('$_Base');
 
-        // 判断是否存在全局变量
-        if(!window.C){
-            window.C = {};
-        }
+        // 全局常量设置
+        app.run(function(){
+            if(!window.C){
+                window.C = {};
+            }
+
+            window.C = app.extend(true, constant.FDF, window.C.FDF);
+        });
 
         app.$rootScope.C = C;
-
 
         // 判断是否存在埋点对象
         if(!window.ELM){
@@ -987,29 +1017,44 @@ mu.pick.except = function(/**AOC*/ aoc, /**SI...*/ keys){
  */
 
 /**
- * mu.extend(Object target, Object ...src)
+ * mu.extend([Boolean isDeep,]Object target, Object ...src)
  * 将src的属性覆盖到target上，若有相同的属性，会完全覆盖
+ * @param isDeep 是否深转换, default false
  * @param target
  * @param src
  * @returns {Object}
  */
-mu.extend = function(/**Obj*/target, /**obj*/src ){
-    if(typeof target != "object"){
-        return target;
+
+
+mu.extend = function(/**Boolean*/isDeep,  /**Obj*/src, /**obj*/target ){
+    var args = $$.args(arguments);
+
+    if($$.type(isDeep, "boolean")){
+        isDeep = args.shift();
+    }else{
+        isDeep = false;
+        src = args[0];
     }
 
-    var args = $$.args(arguments);
-    var key;
+    if(typeof src != "object"){
+        return src;
+    }
+
+    var key, rst = {};
     for(var i = 0, l = args.length; i<l; i++){
-        src = args[i];
-        for(key in src){
-            if(src.hasOwnProperty(key)){
-                target[key] = src[key];
+        target = args[i];
+        for(key in target){
+            if(target.hasOwnProperty(key)){
+                if(isDeep && $$.isObject(target[key]) && $$.isObject(src[key])){
+                    rst[key] = $$.extend(isDeep, src[key], target[key]);
+                }else{
+                    rst[key] = target[key];
+                }
             }
         }
     }
 
-    return target;
+    return rst;
 };
 
 /**
@@ -2285,7 +2330,7 @@ angular.module('fdf.resources.base', [])
 
 .service('$_Base', ['$resource', function ($resource) {
     return {
-        bahavior: $resource('http://post.hunteron.com/post/index.html', null, {
+        bahavior: $resource(C.FDF.CTRL.BAHAVIOR_URL, null, {
             'post': {
                 method: 'POST',
                 uri: 'bahavior'
@@ -2458,9 +2503,7 @@ angular.module('fdf.services.base', [])
             }
 
             // 获取当前版本号
-            var ver = app.run(function(){
-                return app.storage(app.KEY.VERSION) || '1.1.0';
-            });
+            var ver = C.VERSION || '1.1.0';
 
             // IE8 不设置当前版本号, 使用时间戳，强制刷新（清缓存）
             app.run(app.equals(app.ie(), 8, 9), function(){
