@@ -2385,12 +2385,12 @@ angular.module('fdf.services.base', [])
          * @param e
          * @param fn
          */
-        base.evt = function(e, fn){
+        base.evt = app.debounce(function(){
             //发送用户行为
             base.bahavior(e);
             //执行回调喊出
             fn && fn.call(null, e);
-        };
+        }, 300);
 
         base.disabled = function (elm) {
 
@@ -2423,7 +2423,7 @@ angular.module('fdf.services.base', [])
          * @param successfn
          * @param errorfn
          */
-        base.event = function(opts, eventfn, successfn, errorfn){
+        base.event = app.debounce(function(opts, eventfn, successfn, errorfn){
             var args = app.args(arguments), rst;
 
             if(app.type(args[0], "function")){
@@ -2506,8 +2506,7 @@ angular.module('fdf.services.base', [])
                     });
                 });
             });
-
-        };
+        }, 300);
 
         /**
          * 给当前的url添加版本号
@@ -2694,7 +2693,7 @@ angular.module('fdf.services.base', [])
             app.$log.log(bhinfo);
 
             //是否发送用户行为记录
-            if(!C.CTRL.BAHAVIOR){
+            if(!C.FDF.CTRL.BAHAVIOR){
                 app.$rootScope.lastTime = app.now();
                 return false;
             }

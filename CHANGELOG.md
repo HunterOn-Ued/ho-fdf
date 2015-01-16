@@ -1,7 +1,10 @@
 Hunteron fdf
 ======
 
-### 1.2.14
+### 1.2.16
+$Base.evt, $Base.event 添加对双击事件的支持
+
+### 1.2.15
 mu 新添方法 mu.flat, mu.params, mu.url, mu.parseUrl, mu.storage
 mu 优化 mu.map, 支持对象与数组间转换
 mu 优化 mu.extend, 支持深拷贝
@@ -31,4 +34,3 @@ filter 新添过滤器 fdfDate, 支持中文星期
 
 ## 1.1.1 
 * 打包注册bower
-
