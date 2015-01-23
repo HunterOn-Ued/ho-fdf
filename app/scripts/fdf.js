@@ -6,9 +6,17 @@ angular.module('fdf.config.global', [])
 
 //设置全局常量
 .constant('constant', {
+    // 版本号
     VERSION: '1.2.15',
+    // 生产环境
     RELEASE: 'PROD',
+    // 项目名称
     PRODUCT_NAME: 'FDF',
+
+    // Header信息 -> X-TOKEN 在 storage 支持
+    X_TOKEN: 'X-TOKEN',
+    // Header信息 -> X-PROP 在 参数中的key
+    X_PROP: 'X-PROP',
 
     // 架构控制参数
     FDF:{
@@ -125,9 +133,7 @@ angular.module('fdf.config.setting', [])
 
     //默认给每次ajax 请求加上 head 信息
     $httpProvider.defaults.headers.common = angular.extend($httpProvider.defaults.headers.common, {
-        //'Device': 'Desktop',
-        //'X-citime': +new Date(),
-          'X-PROP': ''
+        "X-TOKEN": mu.storage(C.X_TOKEN) || ''
     });
 
     /**
@@ -136,7 +142,31 @@ angular.module('fdf.config.setting', [])
     $httpProvider.interceptors.push(function () {
         return {
             request: function (config) {
+                // 给所请求的URL加版本号
                 var url = app.$Base.version(config.url);
+
+                // 从参数中设置 header "X-PROP"
+                var data = config.data || {};
+                var params = config.params || {};
+                var prop = function(obj){
+                    mu.run(!mu.empty(obj["X-PROP"]), function(){
+                        var p = obj["X-PROP"];
+                        if(mu.type(p, "array")){
+                            p = p.join(",");
+                        }
+                        config.headers["X-PROP"] = p;
+                    });
+                    delete obj["X-PROP"];
+                    return obj;
+                };
+
+                mu.run(!mu.empty(params), function(){
+                    config.params = prop(params);
+                });
+
+                mu.run(!mu.empty(data), function(){
+                    config.data = prop(data);
+                });
 
                 /**
                  * 添加百度统计对异步页的监控
@@ -315,12 +345,6 @@ angular.module('fdf.config.setting', [])
         app._ver = function (url){
             return app.$Base.ver(url);
         };
-
-        //身份令牌的设置
-        app.run(function () {
-            var loginInfo = app.storage(C.KEY.LOGIN_INFO) || {};
-            app.$http.defaults.headers.common['X-AUTH-TOKEN'] = loginInfo['userToken'] || 'user token value';
-        });
 
         //init
         app.run(function(){
@@ -1699,12 +1723,23 @@ mu.timestamp = function(/**Date*/dt){
 };
 
 /**
- * mu.now()
+ * mu.now([String ignore])
  * 返回当前时间戳
+ * @param ignore 非必要，是否忽略秒或毫秒 || 默认忽略毫秒
  * @returns {*|number}
  */
-mu.now = function(){
-    return $$.timestamp();
+mu.now = function(/**String*/ignore){
+    if(!ignore){
+        return $$.timestamp();    
+    }else{
+         var d = new Date();
+         d.setMilliseconds(0);
+         if(ignore == "ss" ){
+            d.setSeconds(0);
+         }
+         return d.getTime();
+    }
+    
 };
 
 
@@ -2180,9 +2215,9 @@ mu.params = function(/**Object*/params, /**Object*/opts){
         "__join__": "&"
     }, opts || {});
 
-    var arr = $.map(flat, function(v, key){
+    var arr = $$.map(flat, function(v, key){
         return $$.concat(key, opts.__equals__, v);
-    });
+    }, "array");
 
     return arr.join(opts.__join__);
 };

@@ -5,9 +5,17 @@ angular.module('fdf.config.global', [])
 
 //设置全局常量
 .constant('constant', {
+    // 版本号
     VERSION: '1.2.15',
+    // 生产环境
     RELEASE: 'PROD',
+    // 项目名称
     PRODUCT_NAME: 'FDF',
+
+    // Header信息 -> X-TOKEN 在 storage 支持
+    X_TOKEN: 'X-TOKEN',
+    // Header信息 -> X-PROP 在 参数中的key
+    X_PROP: 'X-PROP',
 
     // 架构控制参数
     FDF:{

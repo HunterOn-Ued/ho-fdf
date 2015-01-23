@@ -1187,12 +1187,23 @@ mu.timestamp = function(/**Date*/dt){
 };
 
 /**
- * mu.now()
+ * mu.now([String ignore])
  * 返回当前时间戳
+ * @param ignore 非必要，是否忽略秒或毫秒 || 默认忽略毫秒
  * @returns {*|number}
  */
-mu.now = function(){
-    return $$.timestamp();
+mu.now = function(/**String*/ignore){
+    if(!ignore){
+        return $$.timestamp();    
+    }else{
+         var d = new Date();
+         d.setMilliseconds(0);
+         if(ignore == "ss" ){
+            d.setSeconds(0);
+         }
+         return d.getTime();
+    }
+    
 };
 
 
@@ -1668,9 +1679,9 @@ mu.params = function(/**Object*/params, /**Object*/opts){
         "__join__": "&"
     }, opts || {});
 
-    var arr = $.map(flat, function(v, key){
+    var arr = $$.map(flat, function(v, key){
         return $$.concat(key, opts.__equals__, v);
-    });
+    }, "array");
 
     return arr.join(opts.__join__);
 };

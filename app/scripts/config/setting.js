@@ -35,9 +35,7 @@ angular.module('fdf.config.setting', [])
 
     //默认给每次ajax 请求加上 head 信息
     $httpProvider.defaults.headers.common = angular.extend($httpProvider.defaults.headers.common, {
-        //'Device': 'Desktop',
-        //'X-citime': +new Date(),
-          'X-PROP': ''
+        "X-TOKEN": mu.storage(C.X_TOKEN) || ''
     });
 
     /**
@@ -46,7 +44,31 @@ angular.module('fdf.config.setting', [])
     $httpProvider.interceptors.push(function () {
         return {
             request: function (config) {
+                // 给所请求的URL加版本号
                 var url = app.$Base.version(config.url);
+
+                // 从参数中设置 header "X-PROP"
+                var data = config.data || {};
+                var params = config.params || {};
+                var prop = function(obj){
+                    mu.run(!mu.empty(obj["X-PROP"]), function(){
+                        var p = obj["X-PROP"];
+                        if(mu.type(p, "array")){
+                            p = p.join(",");
+                        }
+                        config.headers["X-PROP"] = p;
+                    });
+                    delete obj["X-PROP"];
+                    return obj;
+                };
+
+                mu.run(!mu.empty(params), function(){
+                    config.params = prop(params);
+                });
+
+                mu.run(!mu.empty(data), function(){
+                    config.data = prop(data);
+                });
 
                 /**
                  * 添加百度统计对异步页的监控
@@ -225,12 +247,6 @@ angular.module('fdf.config.setting', [])
         app._ver = function (url){
             return app.$Base.ver(url);
         };
-
-        //身份令牌的设置
-        app.run(function () {
-            var loginInfo = app.storage(C.KEY.LOGIN_INFO) || {};
-            app.$http.defaults.headers.common['X-AUTH-TOKEN'] = loginInfo['userToken'] || 'user token value';
-        });
 
         //init
         app.run(function(){

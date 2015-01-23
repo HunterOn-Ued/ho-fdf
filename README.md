@@ -55,3 +55,8 @@ node checkBower.js
 git config --global url."https://".insteadOf git://
 git config --global --unset url."https://".insteadOf
 
+### browserify
+browserify fdf.src.js > fdf.js
+
+
+

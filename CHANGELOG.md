@@ -2,7 +2,11 @@ Hunteron fdf
 ======
 
 ### 1.2.16
-$Base.evt, $Base.event 添加对双击事件的支持
+$Base.evt, $Base.event 使用debound方法构建，可以有效的防止双击事件;
+mu 优化mu.now() 可以设置获得当前时间，是否可以忽略到秒或毫秒;
+全局变量添加 X-TOKEN，X-PROP
+http 请求头添加对 X-TOKEN，X-PROP 的支持，X-PROP支持直接从data或params传递参数;
+
 
 ### 1.2.15
 mu 新添方法 mu.flat, mu.params, mu.url, mu.parseUrl, mu.storage
