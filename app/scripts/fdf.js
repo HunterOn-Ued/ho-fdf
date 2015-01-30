@@ -2142,13 +2142,16 @@ mu.parseUrl = function (/**String*/url) {
         segments: a.pathname.replace(/^\//, '').split('/')
     };
 
-    locations.origin = a.origin || a.protocol + "//" + locations.host + $$.ifnull(a.port, '', function(val){
+    // 若host为null, (ie8,9)
+    locations.host = locations.host || location.host;
+    locations.protocol = locations.protocol || location.protocol.replace(':', '');
+    locations.origin = locations.protocol.origin || (locations.protocol + "://" + locations.host + $$.ifempty(locations.port, '', function(val){
         return ":" + val;
-    });
+    }));
 
     return locations;
 };
-
+    
 /**
  * mu.flat(Object obj, String ns)
  * 扁平化数据
