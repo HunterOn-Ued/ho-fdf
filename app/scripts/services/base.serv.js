@@ -24,7 +24,7 @@ angular.module('fdf.services.base', [])
          * @param e
          * @param fn
          */
-        base.evt = app.debounce(function(){
+        base.evt = app.debounce(function(e, fn){
             //发送用户行为
             base.bahavior(e);
             //执行回调喊出
@@ -210,15 +210,19 @@ angular.module('fdf.services.base', [])
 
             // 获得当前DOM信息
             var elm = angular.element(e.target);
+
             // 获得当前DOM上所绑定的ng scope信息
-            var scope = elm.scope();
+            var scope = elm.scope() || opts.scope;
+
+            var moduleName, position, duration;
 
             // 向上冒泡寻找当前dom所在的module
-            var moduleName = base.findModule(scope), duration;
+            moduleName = base.findModule(scope);
 
             // 获得当前dom的scope，若有$index，则为该dom 所在list 的位置
-            var position = scope.$index;
+            position = scope.$index;
             position = position != null ? position + 1 : null;
+
 
             // 若evt没传入name，则再到dom中获取
             var name = opts.name || elm.attr('fdf-name');
@@ -270,7 +274,7 @@ angular.module('fdf.services.base', [])
                         offsetHeight: e.target.offsetHeight,
                         offsetLeft: e.target.offsetLeft,
                         offsetTop: e.target.offsetTop,
-                        offsetParentTagName: e.target.offsetParent.tagName,
+                        offsetParentTagName: mu.prop(e, "target.offsetParent.tagName"),
                         scrollHeight: e.target.scrollHeight,
                         scrollLeft: e.target.scrollLeft,
                         scrollTop: e.target.scrollTop,

@@ -1,5 +1,10 @@
 Hunteron fdf
 ======
+### 1.2.18
+修改用户行为统计，非<A>标签设置 ui-serf 跳转产生获取不到 scope 的错误
+修改用户行为统计，事件传递错误
+优化 mu.parseUrl 支持IE8
+
 
 ### 1.2.16
 $Base.evt, $Base.event 使用debound方法构建，可以有效的防止双击事件;

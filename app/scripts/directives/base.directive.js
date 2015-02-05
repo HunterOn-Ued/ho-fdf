@@ -12,6 +12,7 @@
                     app.$Base.event({
                         e: e,
                         name: attr.fdfLink,
+                        scope: scope,
                         isChangePage: attr.fdfPage === "true"
                     });
                 });
