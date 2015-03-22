@@ -24,6 +24,14 @@
 var root = this;
 var $$, mu;
 
+if(!window.console){
+    window.console = {
+        log: function(){},
+        debug:function(){},
+        dir: function(){}
+    }
+}
+
 // 创建对象式的调用方式， 返回一个包装器
 // 包装器对象中包含所有的 mu 方法
 // mu 为一个函数对象，实例服从单例模式

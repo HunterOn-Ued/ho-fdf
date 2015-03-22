@@ -35,7 +35,9 @@ angular.module('fdf.config.setting', [])
 
     //默认给每次ajax 请求加上 head 信息
     $httpProvider.defaults.headers.common = angular.extend($httpProvider.defaults.headers.common, {
-        "X-TOKEN": mu.storage(C.X_TOKEN) || ''
+        "X-TOKEN": function(){
+            return mu.storage(C.X_TOKEN) || '';
+        }
     });
 
     /**
@@ -143,9 +145,9 @@ angular.module('fdf.config.setting', [])
                         url = config.url;
 
                     if (alertError) {
-                        app.$log.log(':::::load fail::::', res.status, '::::::', url);
+                        app.$log.log(':::::load fail::::' + res.status + '::::::', url);
                     } else {
-                        app.$log.log(':::::load fail no alert::::', res.status, '::::::', url)
+                        app.$log.log(':::::load fail no alert::::' + res.status + '::::::', url)
                     }
 
                     return app.$q.reject(res);
@@ -156,32 +158,32 @@ angular.module('fdf.config.setting', [])
         };
     });
 
-    //载入条效果
-    (function () {
-        var count = 0;
-
-        //ajax start
-        $httpProvider.defaults.transformRequest.push(function (data, h) {
-            count += 1;
-            if (count == 1) {
-                app.$log.log(':::load start::::');
-//              app.ngProgressLite.start();
-            }
-            return data;
-        });
-
-        $httpProvider.defaults.transformResponse.push(function (data) {
-            count -= 1;
-            if (!count) {
-                app.$timeout(function () {
-                    app.$log.log(':::load end ::::');
-//                  app.ngProgressLite.done();
-                }, 500);
-            }
-            return data;
-        });
-
-    })();
+//    //载入条效果
+//    (function () {
+//        var count = 0;
+//
+//        //ajax start
+//        $httpProvider.defaults.transformRequest.push(function (data, h) {
+//            count += 1;
+//            if (count == 1) {
+//                app.$log.log(':::load start::::');
+////              app.ngProgressLite.start();
+//            }
+//            return data;
+//        });
+//
+//        $httpProvider.defaults.transformResponse.push(function (data) {
+//            count -= 1;
+//            if (!count) {
+//                app.$timeout(function () {
+//                    app.$log.log(':::load end ::::');
+////                  app.ngProgressLite.done();
+//                }, 500);
+//            }
+//            return data;
+//        });
+//
+//    })();
 }])
 
 .config(['$resourceProvider', function($resourceProvider) {
