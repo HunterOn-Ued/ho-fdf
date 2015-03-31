@@ -396,7 +396,7 @@ mu.clone = function(/**T*/ t){
         return t;
     }
 
-    if(t.length === +t.lenght ){
+    if(t.length === +t.length ){
         return t.silce();
     }
 
