@@ -935,7 +935,7 @@ mu.clone = function(/**T*/ t){
         return t;
     }
 
-    if(t.length === +t.lenght ){
+    if(t.length === +t.length ){
         return t.silce();
     }
 
@@ -2572,7 +2572,8 @@ angular.module('fdf.services.base', [])
             var ver = C.VERSION || '1.1.0';
 
             // IE8 不设置当前版本号, 使用时间戳，强制刷新（清缓存）
-            app.run(app.equals(app.ie(), 8, 9), function(){
+            // IE 下强请求 -> modify by mizi.20150421 
+            app.run(app.ie(), function(){
                ver = app.timestamp();
             });
 
