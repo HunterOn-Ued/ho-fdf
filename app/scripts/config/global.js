@@ -6,7 +6,7 @@ angular.module('fdf.config.global', [])
 //设置全局常量
 .constant('constant', {
     // 版本号
-    VERSION: '1.2.18',
+    VERSION: '1.2.22',
     // 生产环境
     RELEASE: 'PROD',
     // 项目名称
