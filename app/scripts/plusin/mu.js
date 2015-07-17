@@ -1756,7 +1756,9 @@ mu.storage = function (/**String*/key, /**T*/val) {
         }
 
     }, function () {
-        localStorage.setItem(key, JSON.stringify(val));
+        var str = JSON.stringify(val);
+        str = str.replace(/^\"(.*)\"$/, '$1');
+        localStorage.setItem(key, str);
     });
 };
 
@@ -1846,6 +1848,5 @@ mu.mixin($$);
 
 window.mu = mu;
 })(window);
-
 
 
